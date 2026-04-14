@@ -3,120 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codex 依頼テンプレ</title>
+  <title>押印 | 推し活観測ログ</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
-      <p class="eyebrow">Codex Notes</p>
-      <h1>Codex に渡す依頼テンプレ</h1>
-      <p class="lead">
-        Claude Code が崩れた時に、Codex に何をどう渡せばぶれにくいかを、
-        そのままコピペできる文面つきでまとめたページです。
-      </p>
-    </section>
-
-    <section class="panel">
-      <h2>結論</h2>
-      <p>
-        <strong>Claude Code が崩れた時は、Codex に渡す用に「やること・完成条件・今の異常」を短く固定して投げる</strong>
-        のが一番ぶれにくいです。Codex はコードを書いたり、既存コードを読んだり、
-        バグ修正やレビュー用変更提案を進める用途に向いています。
-      </p>
-    </section>
-
-    <section class="grid">
-      <article class="panel">
-        <h2>要約</h2>
-        <ul class="summary-list">
-          <li>Codex は <strong>ローカルやクラウドでコード作業を進めるコーディングエージェント</strong> として案内されています。</li>
-          <li>最初の入力は、長い背景説明より <strong>「今回やること」「ゴール」「壊れている点」</strong> の3点に絞る方が通しやすいです。</li>
-          <li>Codex は ChatGPT のプランに含まれる案内があります。</li>
-          <li>なので今回は、原因究明を長く書くより <strong>再現条件つきの修正依頼</strong> にした方がいいです。</li>
-        </ul>
-      </article>
-
-      <article class="panel">
-        <h2>参考リンク</h2>
-        <ul class="link-list">
-          <li><a href="https://developers.openai.com/codex?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI Developers: Codex</a></li>
-          <li><a href="https://openai.com/codex/get-started/?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI: Get started with Codex</a></li>
-          <li><a href="https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI Help Center</a></li>
-        </ul>
-      </article>
-    </section>
-
-    <section class="panel">
-      <div class="section-head">
-        <h2>Codex にそのまま投げる文面</h2>
-        <p>最小修正の意図がぶれにくい形に整理しています。</p>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <p class="brand-kicker">Oshi Log</p>
+        <h1>押印</h1>
+        <p class="brand-copy">推しごとの観測記録を静かに積み上げるログブック。</p>
       </div>
 
-      <pre class="code-block"><code>いまのアプリ実装が壊れています。原因調査と最小修正をしてください。
-
-## 今回やってほしいこと
-- 現在のエラー原因を特定する
-- 最小修正で動作を復旧する
-- 修正内容と原因を短く説明する
-
-## 現状
-- 期待動作:
-  - 推しごとの一覧が表示される
-  - ログ画面で記録追加できる
-  - メンカラが正しく反映される
-- 実際:
-  - Claude Codeで途中から意味不明な状態になった
-  - 画面や状態管理のどこかが崩れている
-
-## 優先順位
-1. コンパイル/実行を通す
-2. 画面崩れや状態崩れを直す
-3. 不要な大改修はしない
-
-## 制約
-- 既存UIの黒ベース世界観は維持
-- 推しの色は以下を基準にする
-  - はうき: #4A86B8
-  - めーとる: #F3F0EB
-  - M: #E8A3BE
-  - JOKER: #B88AD8
-- まずは最小修正優先
-- 足りない箇所は仮実装でよい
-
-## 完成条件
-- 実行できる
-- 推し一覧が表示される
-- 色設定が反映される
-- 何を直したか箇条書きで報告する
-
-コード全体を確認して、原因→修正→確認手順の順で進めてください。</code></pre>
-    </section>
-
-    <section class="grid">
-      <article class="panel">
-        <h2>スクショ付きで渡すなら追加</h2>
-        <pre class="code-block"><code>補足:
-- 現在の画面スクショあり
-- 左サイドバーに「はうきさん / めーとる / M / JOKER」が並ぶ構成
-- ログ画面は empty state で「まだ観測記録がありません」と表示されている
-- この構成を壊さずに直してほしい</code></pre>
-      </article>
-
-      <article class="panel">
-        <h2>さらに強い投げ方</h2>
-        <ul class="summary-list">
-          <li><strong>今のコード一式</strong> を一緒に渡す。</li>
-          <li><strong>出ているエラー文</strong> をそのまま貼る。</li>
-          <li><strong>期待している完成画面のスクショ</strong> を添える。</li>
-        </ul>
-
-        <div class="note">
-          <span>必要なら次で、この内容をさらに短い超短縮版にもできます。</span>
-          <code>short prompt ready</code>
+      <section class="sidebar-section">
+        <div class="section-title-row">
+          <h2 class="section-title">推し一覧</h2>
+          <span id="oshiCount" class="count-chip">4人</span>
         </div>
-      </article>
+        <nav id="oshiList" class="oshi-list" aria-label="推し一覧"></nav>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <header class="workspace-header">
+        <div>
+          <p class="workspace-kicker">観測ログ</p>
+          <h2 id="viewTitle" class="workspace-title">はうきさん</h2>
+        </div>
+        <div id="memberBadge" class="member-badge">SECRET BLUE</div>
+      </header>
+
+      <section class="hero-card">
+        <div class="hero-copy">
+          <p id="memberRole" class="hero-label">SECRET BLUE</p>
+          <h3 id="memberName" class="hero-name">はうきさん</h3>
+          <p id="memberDescription" class="hero-description"></p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <span class="meta-label">ログ件数</span>
+            <strong id="logCount">0</strong>
+          </div>
+          <div class="meta-box">
+            <span class="meta-label">最新記録</span>
+            <strong id="lastObserved">まだありません</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Log</p>
+              <h3>記録を追加</h3>
+            </div>
+          </div>
+
+          <form id="logForm" class="log-form">
+            <label class="field">
+              <span>タイトル</span>
+              <input id="logTitle" name="title" type="text" placeholder="例: 配信を見た" required>
+            </label>
+
+            <label class="field">
+              <span>日付</span>
+              <input id="logDate" name="date" type="date" required>
+            </label>
+
+            <label class="field">
+              <span>メモ</span>
+              <textarea id="logMemo" name="memo" rows="5" placeholder="気づいたこと、うれしかったこと、残しておきたいこと"></textarea>
+            </label>
+
+            <button class="primary-button" type="submit">記録を追加する</button>
+            <p id="formMessage" class="form-message" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Timeline</p>
+              <h3>観測記録</h3>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty-state">
+            <p class="empty-title">まだ観測記録がありません</p>
+            <p class="empty-copy">左の推しを選んで、最初の記録を追加してください。</p>
+          </div>
+
+          <ul id="logList" class="log-list" aria-label="観測記録一覧"></ul>
+        </section>
+      </section>
     </section>
   </main>
+
+  <script src="./app.js"></script>
 </body>
 </html>
