@@ -1,770 +1,122 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>観測ログ</title>
-<style>
-:root{
-  --bg:#1a1917;--bg2:#211f1d;--surface:#272422;
-  --border:#3a3632;--border-soft:#302d2a;
-  --text:#e8e4de;--text-mid:#a09890;--text-soft:#6b6560;
-  --accent:#7ba7bc;--accent-soft:#4a7a8f;--accent-pale:#1e3440;
-  --tag-bg:#2e2b28;--danger:#bc7b7b;--gold:#b8a46a;
-  --serif:'Hiragino Mincho ProN','Yu Mincho',Georgia,serif;
-  --mono:'Menlo','Courier New',monospace;
-  --sans:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif;
-  --bnav:60px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;line-height:1.7;display:flex;flex-direction:column;}
-.app{display:flex;flex:1;overflow:hidden;}
-
-/* Sidebar (desktop) */
-.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;}
-.sidebar-header{padding:28px 20px 16px;border-bottom:1px solid var(--border-soft);}
-.sidebar-title{font-family:var(--serif);font-size:13px;font-weight:400;letter-spacing:.12em;color:var(--text-mid);display:block;margin-bottom:2px;}
-.sidebar-sub{font-family:var(--mono);font-size:10px;color:var(--text-soft);}
-.sidebar-section{padding:16px 0 8px;}
-.sidebar-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text-soft);text-transform:uppercase;padding:0 20px 8px;display:block;}
-.nav-item{padding:7px 20px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-mid);transition:background .15s,color .15s;border-left:2px solid transparent;list-style:none;}
-.nav-item:hover{background:var(--bg);color:var(--text);}
-.nav-item.active{background:var(--surface);color:var(--text);border-left-color:var(--accent);}
-.oshi-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;border:1px solid transparent;}
-.oshi-count{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text-soft);}
-.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border-soft);}
-
-/* Main */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
-.top-bar-title{font-family:var(--serif);font-size:15px;font-weight:400;letter-spacing:.06em;}
-.top-bar-meta{font-family:var(--mono);font-size:10px;color:var(--text-soft);margin-left:auto;}
-.btn-hamburger{display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-mid);padding:0;line-height:1;}
-.scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
-/* Filter / view toggle */
-.filter-bar{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border-soft);display:flex;gap:6px;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
-.filter-bar::-webkit-scrollbar{display:none;}
-.filter-chip{padding:4px 11px;border:1px solid var(--border);border-radius:20px;font-family:var(--mono);font-size:10.5px;color:var(--text-mid);cursor:pointer;background:transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
-.filter-chip.active{background:var(--accent);border-color:var(--accent);color:white;}
-.view-toggle{display:flex;gap:4px;margin-left:auto;flex-shrink:0;}
-.view-btn{padding:4px 10px;border:1px solid var(--border);border-radius:20px;font-family:var(--mono);font-size:10px;color:var(--text-soft);cursor:pointer;background:transparent;transition:all .15s;white-space:nowrap;}
-.view-btn.active{background:var(--bg2);border-color:var(--border);color:var(--text-mid);}
-.search-wrap{padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--border-soft);flex-shrink:0;}
-.search-input{width:100%;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;}
-.search-input:focus{border-color:var(--accent-soft);}
-.search-input::placeholder{color:var(--text-soft);}
-
-/* Content */
-.content{padding:14px;}
-
-/* Log cards */
-.log-card{background:var(--surface);border:1px solid var(--border-soft);border-radius:6px;padding:14px 16px;margin-bottom:10px;transition:box-shadow .15s,border-color .15s;cursor:pointer;}
-.log-card:hover{border-color:var(--border);box-shadow:0 2px 12px rgba(0,0,0,.04);}
-.log-card.expanded{border-color:var(--accent-soft);box-shadow:0 2px 16px rgba(123,167,188,.1);}
-.log-card-header{display:flex;align-items:flex-start;gap:10px;}
-.log-type-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;margin-top:2px;}
-.type-live{background:#e8f2f6;color:#4a8faa;}
-.type-goods{background:#f0ede8;color:#8a7060;}
-.type-note{background:#f0ece8;color:#8a6850;}
-.log-title-block{flex:1;min-width:0;}
-.log-title{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.04em;line-height:1.5;margin-bottom:3px;}
-.log-meta-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.log-date{font-family:var(--mono);font-size:10px;color:var(--text-soft);}
-.log-oshi-badge{font-family:var(--mono);font-size:10px;padding:1px 7px;border-radius:10px;color:white;}
-.log-oshi-badge.dark-text{color:var(--text);}
-.log-temp{font-family:var(--mono);font-size:10px;color:var(--text-soft);}
-.temp-light::before{content:"◦ ";}
-.temp-important::before{content:"● ";color:var(--accent);}
-.temp-archive::before{content:"★ ";color:var(--gold);}
-.satisfaction-row{display:flex;gap:2px;flex-shrink:0;}
-.star{font-size:11px;color:var(--border);line-height:1;}
-.star.on{color:var(--gold);}
-.log-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border-soft);}
-.log-card.expanded .log-detail{display:block;}
-.detail-field{margin-bottom:10px;}
-.detail-field label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-bottom:3px;}
-.detail-field p{font-size:12.5px;color:var(--text-mid);line-height:1.6;}
-.obs-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
-.obs-tag{font-family:var(--mono);font-size:9.5px;padding:2px 8px;background:var(--tag-bg);border-radius:3px;color:var(--text-mid);}
-.card-actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
-.btn-sm{padding:6px 14px;border-radius:3px;font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s;}
-.btn-edit{background:transparent;border:1px solid var(--border);color:var(--text-mid);}
-.btn-edit:hover{border-color:var(--accent-soft);color:var(--accent);}
-.btn-delete{background:transparent;border:1px solid var(--border);color:var(--text-soft);}
-.btn-delete:hover{border-color:var(--danger);color:var(--danger);}
-
-/* Timeline */
-.timeline-date-group{margin-bottom:18px;}
-.timeline-month-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-soft);margin-bottom:10px;}
-.timeline-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border-soft);}
-.timeline-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;border:1px solid transparent;}
-.timeline-item-body{flex:1;}
-.timeline-item-title{font-size:13px;color:var(--text);line-height:1.4;}
-.timeline-item-meta{font-family:var(--mono);font-size:10px;color:var(--text-soft);margin-top:2px;}
-
-/* Empty */
-.empty-state{text-align:center;padding:64px 32px;color:var(--text-soft);}
-.empty-state .ei{font-size:36px;margin-bottom:12px;opacity:.4;}
-.empty-state p{font-family:var(--mono);font-size:11px;letter-spacing:.08em;line-height:1.8;}
-
-/* FAB */
-.fab{position:fixed;right:20px;width:44px;height:44px;border-radius:50%;background:var(--accent);border:none;color:white;font-size:20px;cursor:pointer;box-shadow:0 3px 14px rgba(123,167,188,.35);display:flex;align-items:center;justify-content:center;transition:transform .15s;z-index:100;opacity:.92;}
-.fab:hover{transform:scale(1.07);opacity:1;}
-
-/* Bottom nav */
-.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnav);background:var(--surface);border-top:1px solid var(--border);z-index:90;}
-.bottom-nav-inner{display:flex;height:100%;}
-.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;background:none;border:none;font-family:var(--mono);font-size:9px;color:var(--text-soft);transition:color .15s;padding:0;}
-.bnav-item.active{color:var(--accent);}
-.bnav-icon{font-size:18px;line-height:1;}
-
-/* Drawer */
-.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(42,38,35,.35);z-index:150;}
-.drawer-overlay.open{display:block;}
-.drawer{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--surface);box-shadow:4px 0 24px rgba(0,0,0,.12);display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .25s ease;z-index:160;overflow-y:auto;}
-.drawer-overlay.open .drawer{transform:translateX(0);}
-.drawer-header{padding:22px 20px 14px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;}
-.drawer-title{font-family:var(--serif);font-size:14px;font-weight:400;letter-spacing:.08em;color:var(--text-mid);}
-.drawer-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-soft);}
-.drawer-section{padding:12px 0;}
-.drawer-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text-soft);text-transform:uppercase;padding:0 20px 8px;display:block;}
-.drawer-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border-soft);}
-
-/* Cheki */
-.cheki-event-group{margin-bottom:28px;}
-.cheki-group-header{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border-soft);}
-.cheki-group-date{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text-soft);}
-.cheki-group-name{font-family:var(--serif);font-size:14px;font-weight:400;color:var(--text);}
-.cheki-group-oshi{font-family:var(--mono);font-size:10px;padding:1px 8px;border-radius:10px;}
-.cheki-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.cheki-thumb{aspect-ratio:2/3;border-radius:4px;overflow:hidden;background:var(--bg2);cursor:pointer;border:1px solid var(--border-soft);transition:transform .15s;}
-.cheki-thumb:hover{transform:scale(1.02);}
-.cheki-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.cheki-thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-soft);font-size:20px;opacity:.3;}
-@media(min-width:480px){.cheki-grid{grid-template-columns:repeat(4,1fr);}}
-@media(min-width:768px){.cheki-grid{grid-template-columns:repeat(5,1fr);}}
-
-/* Modal */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(42,38,35,.35);z-index:200;align-items:flex-end;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--surface);border-radius:14px 14px 0 0;width:100%;max-width:600px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,.12);animation:slideUp .22s ease;}
-@keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-.modal-header{padding:16px 20px 12px;border-bottom:1px solid var(--border-soft);display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.modal-title{font-family:var(--serif);font-size:15px;font-weight:400;letter-spacing:.06em;}
-.modal-close{margin-left:auto;background:none;border:none;font-size:22px;color:var(--text-soft);cursor:pointer;padding:4px;line-height:1;}
-.modal-body{padding:16px 20px;overflow-y:auto;flex:1;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-.form-group{margin-bottom:12px;}
-.form-label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-bottom:5px;}
-.form-input,.form-select,.form-textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-family:var(--sans);font-size:15px;font-weight:300;color:var(--text);outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent-soft);background:var(--surface);}
-.form-textarea{resize:vertical;min-height:70px;line-height:1.6;}
-.star-input{display:flex;gap:6px;}
-.star-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--border);padding:2px;line-height:1;transition:color .1s;}
-.star-btn.on{color:var(--gold);}
-.temp-options{display:flex;gap:8px;}
-.temp-opt{flex:1;padding:9px 6px;border:1px solid var(--border);border-radius:4px;background:transparent;font-family:var(--mono);font-size:11px;color:var(--text-mid);cursor:pointer;text-align:center;transition:all .15s;}
-.temp-opt.selected{background:var(--accent-pale);border-color:var(--accent-soft);color:var(--accent);}
-.temp-opt.selected.archive{background:#f8f4e8;border-color:#d4c07a;color:var(--gold);}
-.obs-tags-input{display:flex;flex-wrap:wrap;gap:6px;}
-.obs-tag-toggle{padding:7px 11px;border:1px solid var(--border);border-radius:3px;background:transparent;font-family:var(--mono);font-size:11px;cursor:pointer;color:var(--text-soft);transition:all .15s;}
-.obs-tag-toggle.selected{background:var(--tag-bg);border-color:var(--border);color:var(--text);}
-.modal-footer{padding:10px 20px 24px;display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;}
-.btn-cancel{padding:11px 18px;background:transparent;border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:11px;color:var(--text-mid);cursor:pointer;}
-.btn-save{padding:11px 22px;background:var(--accent);border:none;border-radius:4px;font-family:var(--mono);font-size:11px;color:white;cursor:pointer;transition:opacity .15s;}
-.btn-save:hover{opacity:.88;}
-.color-swatches{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
-.color-swatch{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .12s;}
-.color-swatch:hover{transform:scale(1.1);}
-.color-swatch.selected{border-color:var(--text);}
-
-@media(max-width:640px){
-  .sidebar{display:none;}
-  .btn-hamburger{display:block;}
-  .bottom-nav{display:block;}
-  .fab{bottom:calc(var(--bnav)+12px);}
-  .form-row{grid-template-columns:1fr;}
-  body{padding-bottom:var(--bnav);}
-}
-@media(min-width:641px){.fab{bottom:28px;}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex 依頼テンプレ</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div class="app">
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">Codex Notes</p>
+      <h1>Codex に渡す依頼テンプレ</h1>
+      <p class="lead">
+        Claude Code が崩れた時に、Codex に何をどう渡せばぶれにくいかを、
+        そのままコピペできる文面つきでまとめたページです。
+      </p>
+    </section>
 
-  <!-- Sidebar desktop -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <span class="sidebar-title">観測ログ</span>
-      <span class="sidebar-sub">oshi research diary</span>
-    </div>
-    <div class="sidebar-section">
-      <span class="sidebar-label">推し</span>
-      <ul id="sidebar-oshi-nav"></ul>
-    </div>
-    <div class="sidebar-section">
-      <span class="sidebar-label">menu</span>
-      <ul>
-        <li class="nav-item active" data-view="log" onclick="setView('log',this)"><span style="width:16px;display:inline-block;font-size:11px">◈</span> ログ</li>
-        <li class="nav-item" data-view="cheki" onclick="setView('cheki',this)"><span style="width:16px;display:inline-block;font-size:11px">□</span> チェキ</li>
-        <li class="nav-item" data-view="oshi" onclick="setView('oshi',this)"><span style="width:16px;display:inline-block;font-size:11px">✦</span> 推し管理</li>
-      </ul>
-    </div>
-  </aside>
+    <section class="panel">
+      <h2>結論</h2>
+      <p>
+        <strong>Claude Code が崩れた時は、Codex に渡す用に「やること・完成条件・今の異常」を短く固定して投げる</strong>
+        のが一番ぶれにくいです。Codex はコードを書いたり、既存コードを読んだり、
+        バグ修正やレビュー用変更提案を進める用途に向いています。
+      </p>
+    </section>
 
-  <!-- Main -->
-  <div class="main">
-    <div class="top-bar">
-      <button class="btn-hamburger" onclick="openDrawer()">☰</button>
-      <span class="top-bar-title" id="top-title">観測記録</span>
-      <span class="top-bar-meta" id="log-count-label"></span>
-    </div>
+    <section class="grid">
+      <article class="panel">
+        <h2>要約</h2>
+        <ul class="summary-list">
+          <li>Codex は <strong>ローカルやクラウドでコード作業を進めるコーディングエージェント</strong> として案内されています。</li>
+          <li>最初の入力は、長い背景説明より <strong>「今回やること」「ゴール」「壊れている点」</strong> の3点に絞る方が通しやすいです。</li>
+          <li>Codex は ChatGPT のプランに含まれる案内があります。</li>
+          <li>なので今回は、原因究明を長く書くより <strong>再現条件つきの修正依頼</strong> にした方がいいです。</li>
+        </ul>
+      </article>
 
-    <!-- Log view -->
-    <div id="view-log" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
-      <div class="filter-bar">
-        <button class="filter-chip active" data-type="all" onclick="setFilter('all',this)">all</button>
-        <button class="filter-chip" data-type="live" onclick="setFilter('live',this)">live</button>
-        <button class="filter-chip" data-type="goods" onclick="setFilter('goods',this)">goods</button>
-        <button class="filter-chip" data-type="note" onclick="setFilter('note',this)">note</button>
-        <div class="view-toggle">
-          <button class="view-btn active" id="vbtn-list" onclick="setLogView('list')">一覧</button>
-          <button class="view-btn" id="vbtn-timeline" onclick="setLogView('timeline')">時系列</button>
+      <article class="panel">
+        <h2>参考リンク</h2>
+        <ul class="link-list">
+          <li><a href="https://developers.openai.com/codex?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI Developers: Codex</a></li>
+          <li><a href="https://openai.com/codex/get-started/?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI: Get started with Codex</a></li>
+          <li><a href="https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan?utm_source=chatgpt.com" target="_blank" rel="noreferrer">OpenAI Help Center</a></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Codex にそのまま投げる文面</h2>
+        <p>最小修正の意図がぶれにくい形に整理しています。</p>
+      </div>
+
+      <pre class="code-block"><code>いまのアプリ実装が壊れています。原因調査と最小修正をしてください。
+
+## 今回やってほしいこと
+- 現在のエラー原因を特定する
+- 最小修正で動作を復旧する
+- 修正内容と原因を短く説明する
+
+## 現状
+- 期待動作:
+  - 推しごとの一覧が表示される
+  - ログ画面で記録追加できる
+  - メンカラが正しく反映される
+- 実際:
+  - Claude Codeで途中から意味不明な状態になった
+  - 画面や状態管理のどこかが崩れている
+
+## 優先順位
+1. コンパイル/実行を通す
+2. 画面崩れや状態崩れを直す
+3. 不要な大改修はしない
+
+## 制約
+- 既存UIの黒ベース世界観は維持
+- 推しの色は以下を基準にする
+  - はうき: #4A86B8
+  - めーとる: #F3F0EB
+  - M: #E8A3BE
+  - JOKER: #B88AD8
+- まずは最小修正優先
+- 足りない箇所は仮実装でよい
+
+## 完成条件
+- 実行できる
+- 推し一覧が表示される
+- 色設定が反映される
+- 何を直したか箇条書きで報告する
+
+コード全体を確認して、原因→修正→確認手順の順で進めてください。</code></pre>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>スクショ付きで渡すなら追加</h2>
+        <pre class="code-block"><code>補足:
+- 現在の画面スクショあり
+- 左サイドバーに「はうきさん / めーとる / M / JOKER」が並ぶ構成
+- ログ画面は empty state で「まだ観測記録がありません」と表示されている
+- この構成を壊さずに直してほしい</code></pre>
+      </article>
+
+      <article class="panel">
+        <h2>さらに強い投げ方</h2>
+        <ul class="summary-list">
+          <li><strong>今のコード一式</strong> を一緒に渡す。</li>
+          <li><strong>出ているエラー文</strong> をそのまま貼る。</li>
+          <li><strong>期待している完成画面のスクショ</strong> を添える。</li>
+        </ul>
+
+        <div class="note">
+          <span>必要なら次で、この内容をさらに短い超短縮版にもできます。</span>
+          <code>short prompt ready</code>
         </div>
-      </div>
-      <div class="search-wrap">
-        <input class="search-input" type="text" placeholder="search…" id="search-input" oninput="renderLogs()">
-      </div>
-      <div class="scroll-area"><div class="content" id="log-list"></div></div>
-    </div>
-
-    <!-- Cheki view -->
-    <div id="view-cheki" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
-      <div class="scroll-area"><div class="content" id="cheki-content"></div></div>
-    </div>
-
-    <!-- Oshi view -->
-    <div id="view-oshi" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
-      <div class="scroll-area"><div class="content" id="oshi-content"></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- FAB -->
-<button class="fab" onclick="onFab()">＋</button>
-
-<!-- Bottom nav -->
-<nav class="bottom-nav">
-  <div class="bottom-nav-inner">
-    <button class="bnav-item active" id="bnav-log" onclick="setMobileView('log',this)"><span class="bnav-icon">◈</span><span>ログ</span></button>
-    <button class="bnav-item" id="bnav-cheki" onclick="setMobileView('cheki',this)"><span class="bnav-icon">□</span><span>チェキ</span></button>
-    <button class="bnav-item" id="bnav-oshi" onclick="setMobileView('oshi',this)"><span class="bnav-icon">✦</span><span>推し</span></button>
-  </div>
-</nav>
-
-<!-- Drawer -->
-<div class="drawer-overlay" id="drawer-overlay" onclick="overlayClose(event)">
-  <div class="drawer">
-    <div class="drawer-header">
-      <span class="drawer-title">観測ログ</span>
-      <button class="drawer-close" onclick="closeDrawer()">×</button>
-    </div>
-    <div class="drawer-section">
-      <span class="drawer-label">推し</span>
-      <ul id="drawer-oshi-nav"></ul>
-    </div>
-    <div class="drawer-section">
-      <span class="drawer-label">menu</span>
-      <ul>
-        <li class="nav-item" onclick="setView('log');closeDrawer()">◈ ログ</li>
-        <li class="nav-item" onclick="setView('cheki');closeDrawer()">□ チェキ</li>
-        <li class="nav-item" onclick="setView('oshi');closeDrawer()">✦ 推し管理</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Log Modal -->
-<div class="modal-overlay" id="log-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-label">新しい観測を記録</span>
-      <button class="modal-close" onclick="closeLogModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">種類</label>
-          <select class="form-select" id="f-type">
-            <option value="live">live</option>
-            <option value="goods">goods</option>
-            <option value="note">note</option>
-          </select></div>
-        <div class="form-group"><label class="form-label">推し</label>
-          <select class="form-select" id="f-oshi"></select></div>
-      </div>
-      <div class="form-group"><label class="form-label">タイトル / 出来事</label>
-        <input class="form-input" type="text" id="f-title" placeholder="例：ツアーファイナル 大阪"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">日付</label>
-          <input class="form-input" type="date" id="f-date"></div>
-        <div class="form-group"><label class="form-label">温度感</label>
-          <div class="temp-options">
-            <button class="temp-opt selected" data-temp="light" type="button" onclick="setTemp('light',this)">◦</button>
-            <button class="temp-opt" data-temp="important" type="button" onclick="setTemp('important',this)">●</button>
-            <button class="temp-opt archive" data-temp="archive" type="button" onclick="setTemp('archive',this)">★</button>
-          </div></div>
-      </div>
-      <div class="form-group"><label class="form-label">メモ</label>
-        <textarea class="form-textarea" id="f-note" placeholder="ひとことメモ"></textarea></div>
-
-      <!-- 詳細セクション -->
-      <div id="detail-toggle" onclick="toggleDetail()" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 0;margin-bottom:4px;border-top:1px solid var(--border-soft);">
-        <span id="detail-arrow" style="font-family:var(--mono);font-size:10px;color:var(--text-soft);transition:transform .15s;">▶</span>
-        <span style="font-family:var(--mono);font-size:10px;color:var(--text-soft);letter-spacing:.08em;">くわしく書く</span>
-      </div>
-      <div id="detail-fields" style="display:none;">
-        <div class="form-group"><label class="form-label">満足度</label>
-          <div class="star-input">
-            <button class="star-btn" data-v="1" type="button" onclick="setStar(1)">★</button>
-            <button class="star-btn" data-v="2" type="button" onclick="setStar(2)">★</button>
-            <button class="star-btn" data-v="3" type="button" onclick="setStar(3)">★</button>
-            <button class="star-btn" data-v="4" type="button" onclick="setStar(4)">★</button>
-            <button class="star-btn" data-v="5" type="button" onclick="setStar(5)">★</button>
-          </div></div>
-        <div class="form-group"><label class="form-label">刺さった点</label>
-          <textarea class="form-textarea" id="f-point" placeholder="何が刺さったか"></textarea></div>
-        <div class="form-group"><label class="form-label">変化を感じた点</label>
-          <textarea class="form-textarea" id="f-change" placeholder="前回と比べて変わった点"></textarea></div>
-        <div class="form-group"><label class="form-label">観測タグ</label>
-          <div class="obs-tags-input" id="obs-tags-input"></div></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeLogModal()">キャンセル</button>
-      <button class="btn-save" onclick="saveLog()">記録する</button>
-    </div>
-  </div>
-</div>
-
-<!-- Oshi Modal -->
-<div class="modal-overlay" id="oshi-modal">
-  <div class="modal" style="max-height:60vh;">
-    <div class="modal-header">
-      <span class="modal-title" id="oshi-modal-title">推しを追加</span>
-      <button class="modal-close" onclick="closeOshiModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group"><label class="form-label">名前</label>
-        <input class="form-input" type="text" id="o-name" placeholder="例：はうきさん"></div>
-      <div class="form-group"><label class="form-label">カラー</label>
-        <div class="color-swatches" id="color-swatches"></div></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeOshiModal()">キャンセル</button>
-      <button class="btn-save" id="oshi-save-btn" onclick="saveOshi()">追加</button>
-    </div>
-  </div>
-</div>
-
-<!-- Cheki Modal -->
-<div class="modal-overlay" id="cheki-modal">
-  <div class="modal" style="max-height:92vh;">
-    <div class="modal-header">
-      <span class="modal-title">チェキを追加</span>
-      <button class="modal-close" onclick="closeChekiModal()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">写真を選ぶ</label>
-        <div style="border:2px dashed var(--border);border-radius:6px;padding:24px;text-align:center;cursor:pointer;background:var(--bg);" onclick="document.getElementById('cheki-file-input').click()">
-          <div id="cheki-preview-wrap" style="display:none;">
-            <img id="cheki-preview-img" style="max-width:100%;max-height:220px;border-radius:4px;object-fit:contain;" alt="">
-          </div>
-          <div id="cheki-drop-ph" style="color:var(--text-soft);font-family:var(--mono);font-size:11px;">
-            <div style="font-size:28px;margin-bottom:8px;opacity:.4;">□</div>タップして写真を選ぶ
-          </div>
-        </div>
-        <input type="file" id="cheki-file-input" accept="image/*" style="display:none" onchange="onChekiFile(event)">
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">イベント名</label>
-          <input class="form-input" type="text" id="ck-event" placeholder="例：春ツアー 大阪"></div>
-        <div class="form-group"><label class="form-label">日付</label>
-          <input class="form-input" type="date" id="ck-date"></div>
-      </div>
-      <div class="form-group"><label class="form-label">推し</label>
-        <select class="form-select" id="ck-oshi"></select></div>
-      <div class="form-group"><label class="form-label">メモ（任意）</label>
-        <textarea class="form-textarea" id="ck-note" style="min-height:56px;" placeholder="このチェキについて"></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeChekiModal()">キャンセル</button>
-      <button class="btn-save" onclick="saveCheki()">保存する</button>
-    </div>
-  </div>
-</div>
-
-<!-- Lightbox -->
-<div id="lightbox" style="display:none;position:fixed;inset:0;background:rgba(20,18,16,.9);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:16px;" onclick="closeLightbox()">
-  <img id="lb-img" style="max-width:92vw;max-height:72vh;border-radius:6px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.5);" alt="">
-  <div id="lb-meta" style="text-align:center;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:11px;line-height:1.8;max-width:320px;padding:0 16px;"></div>
-  <button onclick="deleteCheki()" style="position:absolute;top:16px;right:16px;background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.6);font-family:var(--mono);font-size:10px;padding:6px 12px;border-radius:3px;cursor:pointer;">削除</button>
-</div>
-
-<script>
-const OBS_TAGS=['ビジュ','衣装','発言','関係性','現場','歌声','MC','演出','グロス','特典'];
-const COLORS=['#4A86B8','#F3F0EB','#E8A3BE','#B88AD8'];
-const WHITE_COLORS=['#F3F0EB'];
-
-let logs   = JSON.parse(localStorage.getItem('oshi-logs')  ||'[]');
-let oshis  = JSON.parse(localStorage.getItem('oshi-list')  ||'[]');
-let chekis = JSON.parse(localStorage.getItem('oshi-chekis')||'[]');
-
-let currentFilter='all', currentOshi='all', currentView='log', logView='list';
-let editingId=null, editingOshiId=null;
-let formStar=0, formTemp='light', formTags=[], selectedColor=COLORS[0];
-let lightboxId=null, chekiImageData=null;
-
-if(!oshis.length){
-  oshis=[
-    {id:'o1',name:'はうきさん',color:'#4A86B8'},
-    {id:'o2',name:'めーとる',color:'#F3F0EB'},
-    {id:'o3',name:'M',color:'#E8A3BE'},
-    {id:'o4',name:'JOKER',color:'#B88AD8'},
-  ];
-  logs=[];
-  save();
-}
-
-function save(){
-  localStorage.setItem('oshi-logs',JSON.stringify(logs));
-  localStorage.setItem('oshi-list',JSON.stringify(oshis));
-}
-function saveChekis(){localStorage.setItem('oshi-chekis',JSON.stringify(chekis));}
-function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function isWhite(c){return WHITE_COLORS.includes(c);}
-function dotStyle(c){return `background:${c};${isWhite(c)?'border-color:#C8C2BA;':''}`;}
-
-// ── Nav ──
-function renderNav(){
-  const makeItem=(id,label,color,cnt)=>`<li class="nav-item ${currentOshi===id?'active':''}"
-    style="border-left-color:${currentOshi===id?(color||'var(--accent)'):'transparent'}"
-    onclick="setOshi('${id}');closeDrawer()">
-    ${color?`<span class="oshi-dot" style="${dotStyle(color)}"></span>`:'<span style="width:7px;display:inline-block"></span>'}
-    ${label}<span class="oshi-count">${cnt}</span></li>`;
-  const html=makeItem('all','すべての推し','',logs.length)
-    +oshis.map(o=>makeItem(o.id,o.name,o.color,logs.filter(l=>l.oshi===o.id).length)).join('');
-  ['sidebar-oshi-nav','drawer-oshi-nav'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.innerHTML=html;
-  });
-  const sel=document.getElementById('f-oshi');
-  if(sel)sel.innerHTML=oshis.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
-}
-
-function setOshi(id){currentOshi=id;renderNav();if(currentView==='log')renderLogs();}
-
-// ── View ──
-function setView(v,el){
-  currentView=v;
-  ['log','cheki','oshi'].forEach(x=>{
-    const d=document.getElementById('view-'+x);
-    if(d)d.style.display=(x===v)?'flex':'none';
-  });
-  document.querySelectorAll('.sidebar .nav-item[data-view]').forEach(i=>i.classList.toggle('active',i.dataset.view===v));
-  const titles={log:'観測記録',cheki:'チェキ保管庫',oshi:'推し管理'};
-  document.getElementById('top-title').textContent=titles[v];
-  // 推し管理画面ではFAB非表示
-  document.querySelector('.fab').style.display=v==='oshi'?'none':'flex';
-  if(v==='log')renderLogs();
-  if(v==='cheki')renderCheki();
-  if(v==='oshi')renderOshiView();
-}
-
-function setMobileView(v,el){
-  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');setView(v);
-}
-
-function setLogView(v){
-  logView=v;
-  document.getElementById('vbtn-list').classList.toggle('active',v==='list');
-  document.getElementById('vbtn-timeline').classList.toggle('active',v==='timeline');
-  renderLogs();
-}
-
-function openDrawer(){document.getElementById('drawer-overlay').classList.add('open');}
-function closeDrawer(){document.getElementById('drawer-overlay').classList.remove('open');}
-function overlayClose(e){if(e.target===document.getElementById('drawer-overlay'))closeDrawer();}
-
-// ── Filter ──
-function setFilter(t,el){
-  currentFilter=t;
-  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');renderLogs();
-}
-
-function filteredLogs(){
-  const q=(document.getElementById('search-input')?.value||'').toLowerCase();
-  return logs.filter(l=>{
-    if(currentOshi!=='all'&&l.oshi!==currentOshi)return false;
-    if(currentFilter!=='all'&&l.type!==currentFilter)return false;
-    if(q&&![l.title,l.note||'',l.point||''].some(s=>s.toLowerCase().includes(q)))return false;
-    return true;
-  }).sort((a,b)=>b.date.localeCompare(a.date));
-}
-
-// ── Render logs ──
-function renderLogs(){
-  const fl=filteredLogs();
-  document.getElementById('log-count-label').textContent=`${fl.length} entries`;
-  const el=document.getElementById('log-list');
-  if(!fl.length){
-    el.innerHTML=`<div class="empty-state"><div class="ei">🔭</div><p>まだ観測記録がありません<br>＋ ボタンから最初の記録を</p></div>`;
-    return;
-  }
-  el.innerHTML = logView==='list' ? fl.map(logCard).join('') : renderTimelineHTML(fl);
-}
-
-function logCard(l){
-  const o=oshis.find(x=>x.id===l.oshi);
-  const stars=[1,2,3,4,5].map(i=>`<span class="star ${i<=l.satisfaction?'on':''}">★</span>`).join('');
-  const tempLabel={light:'◦ 軽い',important:'● 重要',archive:'★ 保存級'}[l.temp||'light'];
-  const tags=(l.tags||[]).map(t=>`<span class="obs-tag">${t}</span>`).join('');
-  const badgeClass=o&&isWhite(o.color)?'log-oshi-badge dark-text':'log-oshi-badge';
-  return `<div class="log-card" id="card-${l.id}" onclick="toggleCard('${l.id}')">
-    <div class="log-card-header">
-      <span class="log-type-badge type-${l.type}">${l.type}</span>
-      <div class="log-title-block">
-        <div class="log-title">${l.title}</div>
-        <div class="log-meta-row">
-          <span class="log-date">${l.date}</span>
-          ${o?`<span class="${badgeClass}" style="background:${o.color}">${o.name}</span>`:''}
-          <span class="log-temp temp-${l.temp||'light'}">${tempLabel}</span>
-        </div>
-      </div>
-      <div class="satisfaction-row">${stars}</div>
-    </div>
-    <div class="log-detail">
-      ${l.point?`<div class="detail-field"><label>刺さった点</label><p>${l.point}</p></div>`:''}
-      ${l.change?`<div class="detail-field"><label>変化を感じた点</label><p>${l.change}</p></div>`:''}
-      ${l.note?`<div class="detail-field"><label>補足メモ</label><p>${l.note}</p></div>`:''}
-      ${tags?`<div class="obs-tags">${tags}</div>`:''}
-      <div class="card-actions">
-        <button class="btn-sm btn-edit" onclick="editLog(event,'${l.id}')">編集</button>
-        <button class="btn-sm btn-delete" onclick="deleteLog(event,'${l.id}')">削除</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderTimelineHTML(fl){
-  const g={};
-  fl.forEach(l=>{const m=l.date.slice(0,7);if(!g[m])g[m]=[];g[m].push(l);});
-  return Object.entries(g).map(([m,items])=>`<div class="timeline-date-group">
-    <div class="timeline-month-label">${m}</div>
-    ${items.map(l=>{
-      const o=oshis.find(x=>x.id===l.oshi);
-      const ds=o?dotStyle(o.color):'background:var(--accent-soft)';
-      const wc=o&&isWhite(o.color)?'border-color:#C8C2BA;':'';
-      return`<div class="timeline-item">
-        <div class="timeline-dot" style="${ds};${wc}"></div>
-        <div class="timeline-item-body">
-          <div class="timeline-item-title">${l.title}</div>
-          <div class="timeline-item-meta">${l.date} · ${l.type}${o?` · ${o.name}`:''}</div>
-        </div>
-        <div class="satisfaction-row">${[1,2,3,4,5].map(i=>`<span class="star ${i<=l.satisfaction?'on':''}">★</span>`).join('')}</div>
-      </div>`;
-    }).join('')}
-  </div>`).join('');
-}
-
-function toggleCard(id){document.getElementById('card-'+id)?.classList.toggle('expanded');}
-function editLog(e,id){e.stopPropagation();const l=logs.find(x=>x.id===id);if(l)openLogModal(l);}
-function deleteLog(e,id){
-  e.stopPropagation();
-  if(!confirm('この記録を削除しますか？'))return;
-  logs=logs.filter(l=>l.id!==id);save();renderNav();renderLogs();
-}
-
-// ── Oshi view ──
-function renderOshiView(){
-  const el=document.getElementById('oshi-content');
-  el.innerHTML=`<div style="margin-bottom:14px">
-    <button class="btn-save" onclick="openOshiModal()" style="padding:10px 20px">+ 推しを追加</button>
-  </div>
-  ${oshis.map(o=>{const cnt=logs.filter(l=>l.oshi===o.id).length;
-    return`<div class="log-card" style="cursor:default">
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="oshi-dot" style="${dotStyle(o.color)};width:12px;height:12px;border-radius:50%;display:inline-block;flex-shrink:0;border:1px solid transparent;${isWhite(o.color)?'border-color:#C8C2BA;':''}"></span>
-        <span style="font-family:var(--serif);font-size:14px">${o.name}</span>
-        <span style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text-soft)">${cnt} entries</span>
-        <button class="btn-sm btn-edit" onclick="editOshi('${o.id}')">編集</button>
-      </div></div>`;}).join('')}
-  ${!oshis.length?`<div class="empty-state"><div class="ei">✦</div><p>推しを追加してください</p></div>`:''}`;
-}
-
-// ── Log modal ──
-function toggleDetail(){
-  const el=document.getElementById('detail-fields');
-  const arrow=document.getElementById('detail-arrow');
-  const open=el.style.display==='none';
-  el.style.display=open?'block':'none';
-  arrow.style.transform=open?'rotate(90deg)':'rotate(0deg)';
-}
-
-function openLogModal(p=null){
-  editingId=p?.id||null;
-  document.getElementById('modal-label').textContent=editingId?'観測を編集':'新しい観測を記録';
-  document.getElementById('f-type').value=p?.type||'live';
-  document.getElementById('f-oshi').value=p?.oshi||(oshis[0]?.id||'');
-  document.getElementById('f-title').value=p?.title||'';
-  document.getElementById('f-date').value=p?.date||new Date().toISOString().slice(0,10);
-  document.getElementById('f-note').value=p?.note||'';
-  document.getElementById('f-point').value=p?.point||'';
-  document.getElementById('f-change').value=p?.change||'';
-  setStar(p?.satisfaction||0);
-  setTemp(p?.temp||'light',document.querySelector(`.temp-opt[data-temp="${p?.temp||'light'}"]`));
-  formTags=[...(p?.tags||[])];renderObsTags();
-  // 編集時は詳細を開く、新規は閉じる
-  const hasDetail=p&&(p.satisfaction||p.point||p.change||(p.tags&&p.tags.length));
-  document.getElementById('detail-fields').style.display=hasDetail?'block':'none';
-  document.getElementById('detail-arrow').style.transform=hasDetail?'rotate(90deg)':'rotate(0deg)';
-  document.getElementById('log-modal').classList.add('open');
-}
-function closeLogModal(){document.getElementById('log-modal').classList.remove('open');editingId=null;}
-function setStar(v){formStar=v;document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.v)<=v));}
-function setTemp(v,el){formTemp=v;document.querySelectorAll('.temp-opt').forEach(b=>b.classList.remove('selected'));if(el)el.classList.add('selected');}
-function renderObsTags(){
-  document.getElementById('obs-tags-input').innerHTML=OBS_TAGS.map(t=>
-    `<button class="obs-tag-toggle ${formTags.includes(t)?'selected':''}" type="button" onclick="toggleTag('${t}')">${t}</button>`).join('');
-}
-function toggleTag(t){formTags.includes(t)?formTags=formTags.filter(x=>x!==t):formTags.push(t);renderObsTags();}
-function saveLog(){
-  const title=document.getElementById('f-title').value.trim();
-  if(!title){document.getElementById('f-title').focus();return;}
-  const e={id:editingId||genId(),
-    type:document.getElementById('f-type').value,
-    oshi:document.getElementById('f-oshi').value,
-    title,date:document.getElementById('f-date').value,
-    satisfaction:formStar,temp:formTemp,
-    point:document.getElementById('f-point').value.trim(),
-    change:document.getElementById('f-change').value.trim(),
-    tags:[...formTags],
-    note:document.getElementById('f-note').value.trim()};
-  if(editingId){const i=logs.findIndex(l=>l.id===editingId);if(i!==-1)logs[i]=e;}
-  else logs.unshift(e);
-  save();closeLogModal();renderNav();renderLogs();
-}
-
-// ── Oshi modal ──
-function openOshiModal(prefill=null){
-  editingOshiId=prefill?.id||null;
-  document.getElementById('o-name').value=prefill?.name||'';
-  selectedColor=prefill?.color||COLORS[0];
-  document.getElementById('oshi-modal-title').textContent=editingOshiId?'推しを編集':'推しを追加';
-  document.getElementById('oshi-save-btn').textContent=editingOshiId?'更新する':'追加';
-  document.getElementById('color-swatches').innerHTML=COLORS.map(c=>
-    `<div class="color-swatch ${c===selectedColor?'selected':''}" style="background:${c};${isWhite(c)?'border-color:#C8C2BA;border-width:2px;':''}" onclick="pickColor('${c}',this)"></div>`).join('');
-  document.getElementById('oshi-modal').classList.add('open');
-}
-function editOshi(id){const o=oshis.find(x=>x.id===id);if(o)openOshiModal(o);}
-function closeOshiModal(){document.getElementById('oshi-modal').classList.remove('open');editingOshiId=null;}
-function pickColor(c,el){selectedColor=c;document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));el.classList.add('selected');}
-function saveOshi(){
-  const name=document.getElementById('o-name').value.trim();
-  if(!name){document.getElementById('o-name').focus();return;}
-  if(editingOshiId){const i=oshis.findIndex(x=>x.id===editingOshiId);if(i!==-1)oshis[i]={...oshis[i],name,color:selectedColor};}
-  else oshis.push({id:genId(),name,color:selectedColor});
-  save();closeOshiModal();renderNav();if(currentView==='oshi')renderOshiView();
-}
-
-// ── FAB ──
-function onFab(){
-  if(currentView==='cheki')openChekiModal();
-  else openLogModal();
-}
-
-// ── Cheki modal ──
-function openChekiModal(){
-  chekiImageData=null;
-  document.getElementById('ck-event').value='';
-  document.getElementById('ck-date').value=new Date().toISOString().slice(0,10);
-  document.getElementById('ck-note').value='';
-  document.getElementById('ck-oshi').innerHTML=oshis.map(o=>`<option value="${o.id}">${o.name}</option>`).join('');
-  document.getElementById('cheki-preview-wrap').style.display='none';
-  document.getElementById('cheki-drop-ph').style.display='block';
-  document.getElementById('cheki-file-input').value='';
-  document.getElementById('cheki-modal').classList.add('open');
-}
-function closeChekiModal(){document.getElementById('cheki-modal').classList.remove('open');chekiImageData=null;}
-function onChekiFile(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    chekiImageData=ev.target.result;
-    document.getElementById('cheki-preview-img').src=chekiImageData;
-    document.getElementById('cheki-preview-wrap').style.display='block';
-    document.getElementById('cheki-drop-ph').style.display='none';
-  };
-  reader.readAsDataURL(file);
-}
-function saveCheki(){
-  chekis.unshift({id:genId(),
-    event:document.getElementById('ck-event').value.trim(),
-    date:document.getElementById('ck-date').value,
-    oshi:document.getElementById('ck-oshi').value,
-    note:document.getElementById('ck-note').value.trim(),
-    img:chekiImageData||null});
-  saveChekis();closeChekiModal();renderCheki();
-}
-
-// ── Cheki gallery ──
-function renderCheki(){
-  const el=document.getElementById('cheki-content');
-  if(!chekis.length){
-    el.innerHTML=`<div class="empty-state"><div class="ei" style="font-size:32px;opacity:.3">□</div><p>まだチェキがありません<br>＋ ボタンで最初の1枚を</p></div>`;
-    return;
-  }
-  const groups={};
-  chekis.forEach(c=>{const k=c.date+'__'+(c.event||'イベント名なし');if(!groups[k])groups[k]=[];groups[k].push(c);});
-  el.innerHTML=Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0])).map(([k,items])=>{
-    const [date,event]=k.split('__');
-    const o=oshis.find(x=>x.id===items[0]?.oshi);
-    const badgeStyle=o?`background:${o.color};${isWhite(o.color)?'color:var(--text-mid);border:1px solid #E8E4DE;':'color:white;'}`:'';
-    return`<div class="cheki-event-group">
-      <div class="cheki-group-header">
-        <span class="cheki-group-date">${date}</span>
-        <span class="cheki-group-name">${event}</span>
-        ${o?`<span class="cheki-group-oshi" style="${badgeStyle}">${o.name}</span>`:''}
-      </div>
-      <div class="cheki-grid">${items.map(c=>`<div class="cheki-thumb" onclick="openLightbox('${c.id}')">
-        ${c.img?`<img src="${c.img}" alt="cheki" loading="lazy">`:`<div class="cheki-thumb-placeholder">□</div>`}
-      </div>`).join('')}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── Lightbox ──
-function openLightbox(id){
-  const c=chekis.find(x=>x.id===id);if(!c)return;
-  lightboxId=id;
-  const o=oshis.find(x=>x.id===c.oshi);
-  document.getElementById('lb-img').src=c.img||'';
-  document.getElementById('lb-img').style.display=c.img?'block':'none';
-  document.getElementById('lb-meta').innerHTML=`${c.date}${c.event?` · ${c.event}`:''}${o?` · ${o.name}`:''}${c.note?`<br>${c.note}`:''}`;
-  document.getElementById('lightbox').style.display='flex';
-}
-function closeLightbox(){document.getElementById('lightbox').style.display='none';lightboxId=null;}
-function deleteCheki(){
-  if(!lightboxId||!confirm('このチェキを削除しますか？'))return;
-  chekis=chekis.filter(c=>c.id!==lightboxId);
-  saveChekis();closeLightbox();renderCheki();
-}
-
-// ── Init ──
-renderObsTags();renderNav();setView('log');
-</script>
+      </article>
+    </section>
+  </main>
 </body>
 </html>
