@@ -162,6 +162,15 @@
   </main>
   <footer class="site-footer">
     <div class="container footer-inner"><p>© Shizuku</p></div>
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.section, .card, .flow-item, .about-box, .contact-box').forEach(el => {
+      el.classList.add('fade-in');
+      observer.observe(el);
+    });
+  </script>
   </footer>
 </body>
 </html>
