@@ -151,7 +151,7 @@ function renderLogs(logs, member) {
   logList.innerHTML = "";
   emptyState.classList.toggle("is-hidden", logs.length > 0);
 
-  logs.forEach((log) => {
+  logs.forEach((log, index) => {
     const item = document.createElement("li");
     item.className = "log-item";
     item.style.setProperty("--accent-color", member.color);
@@ -161,10 +161,21 @@ function renderLogs(logs, member) {
           <h4 class="log-item-title">${escapeHtml(log.title)}</h4>
           <span class="log-date">${formatDate(log.date)}</span>
         </div>
+        <button class="delete-button" type="button" aria-label="削除" data-index="${index}">×</button>
       </div>
       <p>${escapeHtml(log.memo || "メモはまだありません。")}</p>
     `;
     logList.appendChild(item);
+  });
+
+  logList.querySelectorAll(".delete-button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.index);
+      const memberId = state.selectedId;
+      state.logs[memberId] = getLogsForMember(memberId).filter((_, i) => i !== idx);
+      saveLogs();
+      render();
+    });
   });
 }
 
