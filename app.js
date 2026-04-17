@@ -2,10 +2,9 @@ const STORAGE_KEY = "oshi-log-records";
 const MEMBERS_KEY = "oshi-log-members";
 
 const DEFAULT_MEMBERS = [
-  { id: "hauki", name: "はうきさん", label: "SECRET BLUE", color: "#4A86B8", description: "青い余韻ごと保存しておきたいときの観測ログ。静かな熱量や、その日の印象を積み上げます。" },
-  { id: "maetor", name: "めーとる", label: "WHITE", color: "#F3F0EB", description: "やわらかい空気や言葉の残り香を記録するためのログ。白は枠線で見やすさを補っています。" },
-  { id: "m", name: "M", label: "PINK", color: "#E8A3BE", description: "きらっと残った瞬間や、あとで読み返したい高まりをまとめるピンクの観測メモです。" },
-  { id: "joker", name: "JOKER", label: "PURPLE", color: "#B88AD8", description: "紫の存在感ごと残していくログ。印象の強い瞬間や気分の振れ幅を書き留められます。" },
+  { id: "sample1", name: "推し1", label: "BLUE", color: "#4A86B8", description: "" },
+  { id: "sample2", name: "推し2", label: "WHITE", color: "#F3F0EB", description: "" },
+  { id: "sample3", name: "推し3", label: "PINK", color: "#E8A3BE", description: "" },
 ];
 
 function loadMembers() {
