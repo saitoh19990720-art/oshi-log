@@ -122,6 +122,18 @@ When user signals high energy (light / 調子いい):
 - irreversible operations require explicit human approval
 - no auto-apply to jobs
 
+---
+
+## 11. Commands & shortcuts
+
+Slash commands:
+`/compact` `/clear` `/plan` `/rewind` `/simplify` `/model` `/fast` `/effort high` `/insights` `/cost` `/doctor`
+
+Keyboard:
+- `Shift+Tab` — モード切替
+- `Opt+T` — 拡張思考
+- `Opt+P` — モデルピッカー
+
 <!--
 Human-only note:
 - temporary project instructions → Daily Note / Obsidian
