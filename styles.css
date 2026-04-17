@@ -1,13 +1,13 @@
 :root {
-  --bg: #f4f8fa;
-  --panel: rgba(255, 255, 255, 0.72);
-  --panel-border: rgba(168, 196, 204, 0.35);
-  --text: #2c3a42;
-  --muted: #7a9aa8;
-  --blue: #7eb8c8;
-  --blue-soft: rgba(126, 184, 200, 0.15);
-  --pink: #c49aaa;
-  --lavender: #b4a4cc;
+  --bg: #e8f2f6;
+  --panel: rgba(255, 255, 255, 0.85);
+  --panel-border: rgba(100, 160, 180, 0.3);
+  --text: #1a2a32;
+  --muted: #4a7080;
+  --blue: #3a9ab8;
+  --blue-soft: rgba(58, 154, 184, 0.12);
+  --pink: #b07888;
+  --lavender: #8878b0;
   --beige: #c8b8a4;
 }
 
@@ -17,9 +17,9 @@ body {
   font-family: "Hachi Maru Pop", "Yu Gothic UI", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 20% 10%, rgba(168, 196, 204, 0.22), transparent 40%),
-    radial-gradient(circle at 80% 60%, rgba(196, 180, 220, 0.14), transparent 38%),
-    linear-gradient(180deg, #eef5f8 0%, var(--bg) 100%);
+    radial-gradient(circle at 20% 10%, rgba(100, 180, 210, 0.25), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(180, 160, 210, 0.18), transparent 38%),
+    linear-gradient(180deg, #dceef5 0%, var(--bg) 100%);
   min-height: 100vh;
 }
 
