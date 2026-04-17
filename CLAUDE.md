@@ -92,6 +92,8 @@ Priority order: ①日本案件 ②母艦サイト ③Claude運用 ④n8n最小1
 
 Most-used commands: `/proposal` → `/case-log` → `/daily-log`
 
+Meta commands: `/compact`（肥大化時）`/clear`（タスク切替）`/cost`（使用量確認）`/doctor`（設定確認）
+
 ---
 
 ## 8. What NOT to do

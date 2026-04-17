@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>似合いどころ診断 | しずく</title>
+  <meta name="description" content="パーソナルカラー16タイプ・骨格・顔タイプから、あなたに似合う要素を提案します。" />
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container"><div class="logo">似合いどころ診断</div></div>
+  </header>
+
+  <main class="container">
+    <!-- INTRO -->
+    <section id="intro" class="screen">
+      <div class="screen-inner">
+        <p class="eyebrow">16タイプ対応</p>
+        <h1>あなたの<em>「似合い」</em>を整理する</h1>
+        <p class="lead">パーソナルカラー16タイプ・骨格・顔タイプの3つから<br />似合う色・アイテム・コーデのポイントを出します。</p>
+        <button class="btn btn-primary" onclick="goTo('step1a')">診断をはじめる</button>
+      </div>
+    </section>
+
+    <!-- STEP 1a: シーズン -->
+    <section id="step1a" class="screen">
+      <div class="screen-inner">
+        <p class="step-label">Step 1 / 4 — パーソナルカラー（シーズン）</p>
+        <h2>大まかなシーズンは？</h2>
+        <div class="choice-grid">
+          <button class="choice-card" data-key="season" data-val="spring" onclick="selectSeason(this)">
+            <div class="choice-palette spring-palette"></div>
+            <span class="choice-name">イエベ春</span>
+            <span class="choice-sub">明るく暖かみ・フレッシュ</span>
+          </button>
+          <button class="choice-card" data-key="season" data-val="summer" onclick="selectSeason(this)">
+            <div class="choice-palette summer-palette"></div>
+            <span class="choice-name">ブルベ夏</span>
+            <span class="choice-sub">やわらかく涼しげ・エレガント</span>
+          </button>
+          <button class="choice-card" data-key="season" data-val="autumn" onclick="selectSeason(this)">
+            <div class="choice-palette autumn-palette"></div>
+            <span class="choice-name">イエベ秋</span>
+            <span class="choice-sub">深みのあるくすみ・大人っぽい</span>
+          </button>
+          <button class="choice-card" data-key="season" data-val="winter" onclick="selectSeason(this)">
+            <div class="choice-palette winter-palette"></div>
+            <span class="choice-name">ブルベ冬</span>
+            <span class="choice-sub">クリアでコントラスト・スタイリッシュ</span>
+          </button>
+        </div>
+        <p class="step-hint">シーズンが分からない場合は、肌色・髪色・似合う色から近いものを選んでください。</p>
+      </div>
+    </section>
+
+    <!-- STEP 1b: サブタイプ（JS で動的生成） -->
+    <section id="step1b" class="screen">
+      <div class="screen-inner">
+        <p class="step-label">Step 2 / 4 — パーソナルカラー（サブタイプ）</p>
+        <h2 id="step1b-title">サブタイプは？</h2>
+        <div class="choice-grid sub-grid" id="sub-choices"></div>
+        <button class="btn btn-next" onclick="goTo('step1c')" id="next1b" disabled>次へ →</button>
+      </div>
+    </section>
+
+    <!-- STEP 1c: 2ndシーズン（任意） -->
+    <section id="step1c" class="screen">
+      <div class="screen-inner">
+        <p class="step-label">Step 3 / 5 — 2ndシーズン（任意）</p>
+        <h2>2ndシーズンは？</h2>
+        <p class="step-hint">「1st秋/2nd夏」のように診断されている場合に入力。わからない場合はスキップできます。</p>
+        <div class="choice-grid" id="season2-choices">
+          <button class="choice-card" data-key="season2" data-val="spring" onclick="selectSeason2(this)">
+            <div class="choice-palette spring-palette"></div>
+            <span class="choice-name">イエベ春</span>
+          </button>
+          <button class="choice-card" data-key="season2" data-val="summer" onclick="selectSeason2(this)">
+            <div class="choice-palette summer-palette"></div>
+            <span class="choice-name">ブルベ夏</span>
+          </button>
+          <button class="choice-card" data-key="season2" data-val="autumn" onclick="selectSeason2(this)">
+            <div class="choice-palette autumn-palette"></div>
+            <span class="choice-name">イエベ秋</span>
+          </button>
+          <button class="choice-card" data-key="season2" data-val="winter" onclick="selectSeason2(this)">
+            <div class="choice-palette winter-palette"></div>
+            <span class="choice-name">ブルベ冬</span>
+          </button>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+          <button class="btn btn-primary" onclick="goTo('step2')" id="next1c" disabled>次へ →</button>
+          <button class="btn btn-secondary" onclick="skip2nd()">2ndはわからない / なし</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 骨格 -->
+    <section id="step2" class="screen">
+      <div class="screen-inner">
+        <p class="step-label">Step 4 / 5 — 骨格タイプ</p>
+        <h2>骨格タイプは？</h2>
+        <div class="choice-grid">
+          <button class="choice-card" data-key="sk" data-val="straight" onclick="select(this)">
+            <div class="choice-icon">▲</div>
+            <span class="choice-name">ストレート</span>
+            <span class="choice-sub">筋肉質・立体感・上重心</span>
+          </button>
+          <button class="choice-card" data-key="sk" data-val="wave" onclick="select(this)">
+            <div class="choice-icon">◆</div>
+            <span class="choice-name">ウェーブ</span>
+            <span class="choice-sub">やわらか・薄い・下重心</span>
+          </button>
+          <button class="choice-card" data-key="sk" data-val="natural" onclick="select(this)">
+            <div class="choice-icon">■</div>
+            <span class="choice-name">ナチュラル</span>
+            <span class="choice-sub">フレーム感・関節が目立つ</span>
+          </button>
+        </div>
+        <button class="btn btn-next" onclick="goTo('step3')" id="next2" disabled>次へ →</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: 顔タイプ -->
+    <section id="step3" class="screen">
+      <div class="screen-inner">
+        <p class="step-label">Step 5 / 5 — 顔タイプ（任意）</p>
+        <h2>顔タイプは？</h2>
+        <p class="step-hint">診断していない場合はスキップできます。</p>
+        <div class="choice-grid">
+          <button class="choice-card" data-key="face" data-val="cute" onclick="select(this)">
+            <span class="choice-name">キュート</span>
+            <span class="choice-sub">丸みが強い・子供顔</span>
+          </button>
+          <button class="choice-card" data-key="face" data-val="fresh" onclick="select(this)">
+            <span class="choice-name">フレッシュ</span>
+            <span class="choice-sub">直線的・カジュアル・若々しい</span>
+          </button>
+          <button class="choice-card" data-key="face" data-val="feminine" onclick="select(this)">
+            <span class="choice-name">フェミニン</span>
+            <span class="choice-sub">曲線的・大人可愛い</span>
+          </button>
+          <button class="choice-card" data-key="face" data-val="cool" onclick="select(this)">
+            <span class="choice-name">クール</span>
+            <span class="choice-sub">直線的・大人顔・クールカジュアル</span>
+          </button>
+          <button class="choice-card" data-key="face" data-val="elegant" onclick="select(this)">
+            <span class="choice-name">ソフトエレガント</span>
+            <span class="choice-sub">上品・やわらかい大人顔</span>
+          </button>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+          <button class="btn btn-primary" onclick="showResult()" id="next3" disabled>結果を見る</button>
+          <button class="btn btn-secondary" onclick="skipFace()">顔タイプは診断していない</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="result" class="screen">
+      <div class="screen-inner result-inner">
+        <p class="step-label">Result</p>
+        <h2 id="result-title"></h2>
+        <div class="result-palette" id="result-palette"></div>
+        <div class="result-grid">
+          <div class="result-block">
+            <h3>似合う色</h3>
+            <ul id="res-colors"></ul>
+          </div>
+          <div class="result-block">
+            <h3>定番ニュートラル</h3>
+            <ul id="res-neutrals"></ul>
+          </div>
+          <div class="result-block">
+            <h3>メイクのポイント</h3>
+            <ul id="res-makeup"></ul>
+          </div>
+          <div class="result-block">
+            <h3>骨格に合うスタイル</h3>
+            <ul id="res-style"></ul>
+          </div>
+          <div class="result-block">
+            <h3>スタイリングのコツ</h3>
+            <p id="res-skeleton-point" class="result-point"></p>
+          </div>
+          <div class="result-block" id="face-block">
+            <h3>顔タイプ×小物</h3>
+            <p id="res-face-point" class="result-point"></p>
+          </div>
+          <div class="result-block">
+            <h3>キーワード</h3>
+            <div id="res-keywords" class="keyword-chips"></div>
+          </div>
+        </div>
+          <div class="result-block" id="second-block" style="display:none;grid-column:1/-1">
+            <h3>1st×2ndのブリッジカラー</h3>
+            <p id="res-second" class="result-point"></p>
+          </div>
+        <div class="result-block balance-block">
+          <h3>噛み合わないときのバランスのとり方</h3>
+          <p class="result-point">3つが完全に一致する人はほとんどいません。場面で切り替えるのが現実的です。</p>
+          <ul id="res-balance"></ul>
+        </div>
+        <button class="btn btn-secondary" onclick="restart()">もう一度やる</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container"><p>© しずく</p></div>
+  </footer>
+
+  <script>
+    const answers = { season: null, pc: null, season2: null, sk: null, face: null };
+
+    const seasonSubTypes = {
+      spring: [
+        { val:'true_spring',  name:'トゥルースプリング', sub:'暖かくクリア。イエベ春の王道', palette:['#FFB347','#FFF0A0','#98E898','#FF9E7A'] },
+        { val:'light_spring', name:'ライトスプリング',   sub:'明るく軽やか。夏との中間・ふんわり系', palette:['#FFD1B3','#FFF5CC','#C8E8C8','#FFD0D8'] },
+        { val:'warm_spring',  name:'ウォームスプリング', sub:'暖かみ強め。秋との中間・こっくり系も似合う', palette:['#E8924C','#D4A574','#8EC870','#F0C040'] },
+        { val:'bright_spring',name:'ブライトスプリング', sub:'鮮やかでコントラスト強め。冬との中間', palette:['#FF6B9B','#FFE84D','#4DCC91','#FF6B6B'] },
+      ],
+      summer: [
+        { val:'true_summer',  name:'トゥルーサマー',  sub:'やわらかくクール。ブルベ夏の王道', palette:['#C4B4DC','#FFB6C1','#B0D4E8','#D4C4E8'] },
+        { val:'light_summer', name:'ライトサマー',   sub:'明るく淡い。春との中間・ミルキーな色が得意', palette:['#E8D8F0','#FFD6E0','#D0E8F0','#F0E8D8'] },
+        { val:'cool_summer',  name:'クールサマー',   sub:'クールネス強め。冬との中間・コントラストやや強め', palette:['#8888CC','#CC88AA','#6699CC','#AA88CC'] },
+        { val:'soft_summer',  name:'ソフトサマー',   sub:'くすみ・穏やか。秋との中間・マット系が得意', palette:['#A8A0B8','#C0A8B0','#98B0B8','#B8A8A0'] },
+      ],
+      autumn: [
+        { val:'true_autumn',  name:'トゥルーオータム', sub:'深みと暖かみ。イエベ秋の王道', palette:['#C07B54','#8B956D','#C8A951','#722F37'] },
+        { val:'warm_autumn',  name:'ウォームオータム', sub:'暖かみが特に強め。春との中間・明るめも似合う', palette:['#D4885C','#C49A3C','#8BA050','#E8784C'] },
+        { val:'soft_autumn',  name:'ソフトオータム',  sub:'くすみ・穏やか。夏との中間・グレイッシュも得意', palette:['#A88870','#98906C','#8898A0','#B89880'] },
+        { val:'deep_autumn',  name:'ディープオータム', sub:'深く濃い。冬との中間・ダークトーンが映える', palette:['#6B3A24','#4A5A30','#8B3040','#7A5A28'] },
+      ],
+      winter: [
+        { val:'true_winter',  name:'トゥルーウィンター',  sub:'クリアでクール。ブルベ冬の王道', palette:['#4169E1','#2C2C2C','#F5F5FF','#7B2FBE'] },
+        { val:'cool_winter',  name:'クールウィンター',   sub:'クールネス強め。夏との中間・アッシュ系が得意', palette:['#6677BB','#AA77AA','#7799CC','#888899'] },
+        { val:'deep_winter',  name:'ディープウィンター', sub:'深く濃い。秋との中間・ダークでリッチな色が映える', palette:['#1A2470','#1A3A1A','#4A0050','#6A1020'] },
+        { val:'bright_winter',name:'ブライトウィンター', sub:'鮮やかでクリア。春との中間・ビビッドも似合う', palette:['#0040FF','#FF0080','#00B8E0','#FF4000'] },
+      ],
+    };
+
+    const pcData = {
+      true_spring:   { label:'トゥルースプリング',  colors:['コーラルオレンジ','アイボリー','ブライトイエロー','ターコイズ','ゴールド'], neutrals:['アイボリー','キャメル','ライトブラウン'], makeup:['コーラルリップ','オレンジブラウンシャドウ','ピーチチーク','ゴールドハイライト'], keywords:['フレッシュ','明るい','暖かみ','クリア','ポジティブ'] },
+      light_spring:  { label:'ライトスプリング',    colors:['ライトコーラル','ミルキーイエロー','ミントグリーン','ベビーピンク','シャンパン'], neutrals:['オフホワイト','ライトベージュ','ミルキーグレー'], makeup:['ライトコーラルリップ','ピーチシャドウ','ライトピンクチーク','パールハイライト'], keywords:['やわらか','淡い','ふんわり','軽やか','透明感'] },
+      warm_spring:   { label:'ウォームスプリング',  colors:['テラコッタオレンジ','ゴールドイエロー','オリーブグリーン','ウォームベージュ','ブロンズ'], neutrals:['ウォームベージュ','キャメル','ブラウン'], makeup:['オレンジリップ','ブラウンゴールドシャドウ','テラコッタチーク','ゴールドハイライト'], keywords:['暖かみ','こっくり','活発','生命力','ポジティブ'] },
+      bright_spring: { label:'ブライトスプリング',  colors:['ビビッドコーラル','ターコイズ','ライムグリーン','ホットピンク','シルバーゴールド'], neutrals:['ホワイト','アイボリー','ライトネイビー'], makeup:['ビビッドリップ','カラーシャドウ','ビビッドチーク','グリッターハイライト'], keywords:['鮮やか','元気','個性的','コントラスト','明快'] },
+      true_summer:   { label:'トゥルーサマー',      colors:['ラベンダー','ローズピンク','スカイブルー','モーブ','ミルキーホワイト'], neutrals:['グレイッシュネイビー','ダスティグレー','オフホワイト'], makeup:['ローズリップ','モーブシャドウ','ピンクチーク','パールハイライト'], keywords:['上品','涼しげ','やわらか','エレガント','透明感'] },
+      light_summer:  { label:'ライトサマー',        colors:['ペールラベンダー','ミルキーピンク','ベビーブルー','ソフトグリーン','オフホワイト'], neutrals:['ライトグレー','オフホワイト','ペールベージュ'], makeup:['ライトローズリップ','ライトパープルシャドウ','ライトピンクチーク','パールハイライト'], keywords:['淡い','軽やか','ふんわり','やさしい','透明感'] },
+      cool_summer:   { label:'クールサマー',        colors:['ダスティブルー','クールローズ','ラベンダーグレー','アッシュピンク','シルバー'], neutrals:['アッシュグレー','グレイッシュネイビー','クールホワイト'], makeup:['クールローズリップ','スモーキーパープルシャドウ','クールピンクチーク','シルバーハイライト'], keywords:['クール','洗練','シック','都会的','ミステリアス'] },
+      soft_summer:   { label:'ソフトサマー',        colors:['ダスティモーブ','グレイッシュブルー','スモーキーグリーン','ローズグレー','グレージュ'], neutrals:['グレージュ','ダスティグレー','ソフトネイビー'], makeup:['ダスティローズリップ','グレイッシュシャドウ','マットチーク','マットハイライト'], keywords:['くすみ','穏やか','ナチュラル','上品','静かな存在感'] },
+      true_autumn:   { label:'トゥルーオータム',    colors:['テラコッタ','カーキ','チョコブラウン','マスタード','バーガンディ'], neutrals:['キャメル','ダークブラウン','カーキ'], makeup:['テラコッタリップ','ブラウンシャドウ','テラコッタチーク','ゴールドアイライン'], keywords:['こなれ感','くすみ','深み','大人っぽい','ナチュラル'] },
+      warm_autumn:   { label:'ウォームオータム',    colors:['オレンジブラウン','ウォームキャメル','テラコッタ','ゴールドオレンジ','モスグリーン'], neutrals:['キャメル','ウォームブラウン','モスグリーン'], makeup:['オレンジブラウンリップ','ウォームシャドウ','コパーチーク','ゴールドハイライト'], keywords:['暖かい','活発','こっくり','生命力','ナチュラル'] },
+      soft_autumn:   { label:'ソフトオータム',      colors:['グレイッシュテラコッタ','カーキグレー','モーブブラウン','サンドベージュ','スモーキーグリーン'], neutrals:['サンドベージュ','グレイッシュカーキ','スモーキーブラウン'], makeup:['ダスティコーラルリップ','グレイッシュブラウンシャドウ','くすみチーク','マットハイライト'], keywords:['くすみ','穏やか','こなれ感','ナチュラル','大人カジュアル'] },
+      deep_autumn:   { label:'ディープオータム',    colors:['ディープブラウン','フォレストグリーン','ディープワイン','ダークオレンジ','ブラック'], neutrals:['ダークブラウン','ブラック','フォレストグリーン'], makeup:['ダークリップ','ディープブラウンシャドウ','ダークチーク','ブロンズハイライト'], keywords:['深み','濃い','リッチ','ミステリアス','存在感'] },
+      true_winter:   { label:'トゥルーウィンター',  colors:['ロイヤルブルー','ブラック','ホワイト','ショッキングピンク','パープル'], neutrals:['ブラック','ホワイト','ネイビー'], makeup:['バーガンディリップ','スモーキーシャドウ','ローズチーク','シルバーハイライト'], keywords:['コントラスト','クール','鮮明','スタイリッシュ','個性的'] },
+      cool_winter:   { label:'クールウィンター',    colors:['アッシュブルー','クールグレー','ラベンダー','ダスティローズ','シルバー'], neutrals:['クールグレー','アッシュネイビー','オフホワイト'], makeup:['クールローズリップ','アッシュシャドウ','グレイッシュチーク','シルバーハイライト'], keywords:['クール','洗練','アッシュ','都会的','シック'] },
+      deep_winter:   { label:'ディープウィンター',  colors:['ネイビー','フォレストグリーン','ディープパープル','バーガンディ','ブラック'], neutrals:['ブラック','ディープネイビー','チャコールグレー'], makeup:['ダークリップ','スモーキーシャドウ','ダークチーク','シルバーハイライト'], keywords:['深み','リッチ','パワフル','ミステリアス','圧倒的存在感'] },
+      bright_winter: { label:'ブライトウィンター',  colors:['ビビッドブルー','ホットピンク','エメラルド','ビビッドパープル','ホワイト'], neutrals:['ホワイト','ブラック','クリアネイビー'], makeup:['ビビッドリップ','カラーシャドウ','ビビッドチーク','シルバーグリッター'], keywords:['鮮やか','クリア','個性的','インパクト','華やか'] },
+    };
+
+    const skData = {
+      straight: {
+        style: ['Vネック・Uネック', 'タイトシルエット', 'シンプル・コンパクト', '上質な素材感（シルク・ウール）'],
+        point: 'ボディラインを活かすフィット感が得意。シンプルで上質なアイテムが映える。重ね着は少なめに。'
+      },
+      wave: {
+        style: ['フリル・レース・ギャザー', 'フィット＆フレアシルエット', 'ソフトな素材（シフォン・ニット）', 'ウエストマーク'],
+        point: 'やわらかさとボリューム感を活かして。ハイウエストでスタイルアップ。軽い素材が得意。'
+      },
+      natural: {
+        style: ['オーバーサイズトップス', 'リネン・コットン素材', 'レイヤードスタイル', 'ワイドパンツ・ロングスカート'],
+        point: 'ゆったりシルエットとナチュラル素材が得意。重ね着でこなれ感を出すのが最強。'
+      }
+    };
+
+    const faceData = {
+      cute:    { point: '丸みのあるアクセサリー（フープ・パールなど）、ミニバッグ、リボンなど「かわいい」を足すと顔と馴染む。' },
+      fresh:   { point: 'シンプルなフープイヤリング、スニーカー、カジュアルバッグなどスポーティ・カジュアルミックスが得意。' },
+      feminine:{ point: 'パール・フラワーモチーフ・シアーアイテムなど女性らしい小物が顔に合う。重すぎないものがベスト。' },
+      cool:    { point: '直線的なデザインのアクセサリー（バー・スクエア）、マニッシュバッグ、シャープなシルエットが合う。' },
+      elegant: { point: '上品なパール・ゴールド系アクセ、クラシックなバッグ、繊細なデザインが馴染みやすい。' }
+    };
+
+    const seasonLabel = { spring:'イエベ春', summer:'ブルベ夏', autumn:'イエベ秋', winter:'ブルベ冬' };
+    const skLabel = { straight:'ストレート', wave:'ウェーブ', natural:'ナチュラル' };
+    const faceLabel = { cute:'キュート', fresh:'フレッシュ', feminine:'フェミニン', cool:'クール', elegant:'ソフトエレガント' };
+
+    document.addEventListener('DOMContentLoaded', () => goTo('intro'));
+
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectSeason(btn) {
+      const season = btn.dataset.val;
+      answers.season = season;
+      answers.pc = null;
+      document.querySelectorAll('.choice-card[data-key="season"]').forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+
+      // Build sub-type choices
+      document.getElementById('step1b-title').textContent = seasonLabel[season] + 'のサブタイプは？';
+      const grid = document.getElementById('sub-choices');
+      grid.innerHTML = '';
+      seasonSubTypes[season].forEach(sub => {
+        const b = document.createElement('button');
+        b.className = 'choice-card';
+        b.dataset.key = 'pc';
+        b.dataset.val = sub.val;
+        b.onclick = function() { selectSub(this); };
+        b.innerHTML = `
+          <div class="choice-palette" style="background:linear-gradient(90deg,${sub.palette.join(',')})"></div>
+          <span class="choice-name">${sub.name}</span>
+          <span class="choice-sub">${sub.sub}</span>`;
+        grid.appendChild(b);
+      });
+      document.getElementById('next1b').disabled = true;
+      goTo('step1b');
+    }
+
+    function selectSeason2(btn) {
+      answers.season2 = btn.dataset.val;
+      document.querySelectorAll('[data-key="season2"]').forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      document.getElementById('next1c').disabled = false;
+    }
+
+    function skip2nd() {
+      answers.season2 = null;
+      document.querySelectorAll('[data-key="season2"]').forEach(b => b.classList.remove('is-selected'));
+      document.getElementById('next1c').disabled = true;
+      goTo('step2');
+    }
+
+    function selectSub(btn) {
+      answers.pc = btn.dataset.val;
+      document.querySelectorAll('#sub-choices .choice-card').forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      document.getElementById('next1b').disabled = false;
+    }
+
+    function select(btn) {
+      const key = btn.dataset.key;
+      answers[key] = btn.dataset.val;
+      document.querySelectorAll(`.choice-card[data-key="${key}"]`).forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      const nextMap = { sk: 'next2', face: 'next3' };
+      document.getElementById(nextMap[key]).disabled = false;
+    }
+
+    function skipFace() {
+      answers.face = null;
+      showResult();
+    }
+
+    function showResult() {
+      const pc = pcData[answers.pc];
+      const sk = skData[answers.sk];
+      const face = answers.face ? faceData[answers.face] : null;
+      const sub = seasonSubTypes[answers.season].find(s => s.val === answers.pc);
+
+      const s2label = answers.season2 ? `（2nd ${seasonLabel[answers.season2]}）` : '';
+      const facePart = face ? ` × ${faceLabel[answers.face]}` : '';
+      document.getElementById('result-title').textContent =
+        `${pc.label}${s2label} × ${skLabel[answers.sk]}${facePart}`;
+
+      const palette = document.getElementById('result-palette');
+      palette.innerHTML = sub.palette.map(c =>
+        `<span class="palette-dot" style="background:${c}"></span>`).join('');
+
+      document.getElementById('res-colors').innerHTML = pc.colors.map(c => `<li>${c}</li>`).join('');
+      document.getElementById('res-neutrals').innerHTML = pc.neutrals.map(c => `<li>${c}</li>`).join('');
+      document.getElementById('res-makeup').innerHTML = pc.makeup.map(m => `<li>${m}</li>`).join('');
+      document.getElementById('res-style').innerHTML = sk.style.map(s => `<li>${s}</li>`).join('');
+      document.getElementById('res-skeleton-point').textContent = sk.point;
+
+      const faceBlock = document.getElementById('face-block');
+      if (face) {
+        faceBlock.style.display = '';
+        document.getElementById('res-face-point').textContent = face.point;
+      } else {
+        faceBlock.style.display = 'none';
+      }
+
+      document.getElementById('res-keywords').innerHTML = pc.keywords.map(k =>
+        `<span class="chip">${k}</span>`).join('');
+
+      // 2nd season bridge
+      const secondBlock = document.getElementById('second-block');
+      if (answers.season2) {
+        const bridgeMap = {
+          'spring_summer': 'コーラルピンク・ライトオレンジ・ミルキーイエロー。明るくやわらかい色が両方に馴染む。',
+          'spring_autumn': 'ウォームベージュ・ゴールドイエロー・テラコッタ。イエベ系の暖色が共通ゾーン。',
+          'spring_winter': 'ビビッドコーラル・ターコイズ・ライムグリーン。鮮やかで明るい色が両方を活かす。',
+          'summer_spring': 'ライトコーラル・ソフトイエロー・ミルキーピンク。ふんわり明るい色が橋渡しになる。',
+          'summer_autumn': 'ダスティモーブ・グレイッシュグリーン・スモーキーコーラル。くすみ系が両方に使える。',
+          'summer_winter': 'ラベンダー・アッシュピンク・クールローズ。ブルベ系のくすみが共通ゾーン。',
+          'autumn_spring': 'ウォームコーラル・キャメル・ゴールドオレンジ。暖かみのある明るめ色が使いやすい。',
+          'autumn_summer': 'ダスティコーラル・モーブブラウン・スモーキーグリーン。くすみ×暖色の中間が共通ゾーン。',
+          'autumn_winter': 'ディープブラウン・バーガンディ・フォレストグリーン。濃くリッチな色が両方映える。',
+          'winter_spring': 'ビビッドピンク・ターコイズ・ライムグリーン。クリアで鮮やかな色が共通で使える。',
+          'winter_summer': 'クールラベンダー・アッシュブルー・ダスティローズ。ブルベ系の落ち着いた色が橋渡しになる。',
+          'winter_autumn': 'ネイビー・バーガンディ・ダークグリーン。深くリッチな色が両方で映える。',
+        };
+        const bridgeKey = `${answers.season}_${answers.season2}`;
+        const bridgeText = bridgeMap[bridgeKey] || 'どちらのシーズンにも馴染む中間色（くすみ系・落ち着いた色）を軸にするとまとまりやすい。';
+        document.getElementById('res-second').textContent =
+          `1st ${seasonLabel[answers.season]} × 2nd ${seasonLabel[answers.season2]}：${bridgeText}`;
+        secondBlock.style.display = '';
+      } else {
+        secondBlock.style.display = 'none';
+      }
+
+      // Balance tips
+      const balanceTips = [
+        `<strong>色はPC優先</strong>：何を着るか迷ったら色選びにPCを使う。シルエットより色が顔映りに直結する。`,
+        `<strong>形・素材は骨格優先</strong>：服の構造（フィット感・素材・重さ）は骨格で選ぶ。ここで無理すると着心地も見た目も崩れる。`,
+        face ? `<strong>小物・ポイントは顔タイプで調整</strong>：アクセ・バッグ・ヘアスタイルは顔タイプ（${faceLabel[answers.face]}）に寄せると顔周りが整う。` : `<strong>顔タイプ未診断の場合</strong>：アクセ・バッグは「PC色に近いもの」か「骨格に合う重さ感」で選ぶと無難。`,
+        `<strong>全部揃えなくていい</strong>：PC×骨格の2軸が合えば十分。顔タイプはプラスアルファ。`,
+      ];
+      document.getElementById('res-balance').innerHTML = balanceTips.map(t => `<li>${t}</li>`).join('');
+
+      goTo('result');
+    }
+
+    function restart() {
+      Object.keys(answers).forEach(k => answers[k] = null);
+      document.querySelectorAll('.choice-card').forEach(b => b.classList.remove('is-selected'));
+      ['next1b','next2','next3'].forEach(id => document.getElementById(id).disabled = true);
+      document.getElementById('face-block').style.display = '';
+      document.getElementById('second-block').style.display = 'none';
+      document.getElementById('next1c').disabled = true;
+      goTo('intro');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ne Stopper</title>
+<!-- APIキーは環境変数で管理。開発時はここに直書きしてもOK（gitにpushしないこと） -->
+<!-- <meta name="api-key" content="sk-ant-..."> -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ===== テーマ変数 ===== */
+:root {
+  --bg: #0f0f0f;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0ede8;
+  --text2: #888;
+  --text3: #555;
+  --accent: #c8b4ff;
+  --accent-bg: rgba(200,180,255,0.08);
+  --accent-border: rgba(200,180,255,0.25);
+  --warn: #ffb84d;
+  --danger: #ff6b6b;
+  --green: #7dff9e;
+  --mono: 'DM Mono', monospace;
+  --serif: 'Shippori Mincho', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  min-height: 100vh;
+}
+
+/* ===== レイアウト ===== */
+.app {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ===== ヘッダー ===== */
+.header {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.header-title {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 600;
+  color: var(--accent);
+}
+.header-sub {
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* ===== フェーズバー ===== */
+.phases {
+  display: flex; gap: 1px;
+  background: var(--border);
+  border-radius: 6px; overflow: hidden;
+  margin-bottom: 2rem;
+}
+.phase {
+  flex: 1; padding: 8px 4px; text-align: center;
+  font-size: 11px; letter-spacing: 0.06em;
+  color: var(--text3); cursor: pointer;
+  background: var(--surface); transition: all 0.2s;
+}
+.phase.active { background: var(--accent-bg); color: var(--accent); }
+.phase-num { display: block; font-size: 18px; font-weight: 500; margin-bottom: 2px; }
+
+/* ===== セクション共通 ===== */
+.section { margin-bottom: 1.75rem; }
+.section-label {
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 8px;
+}
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+/* ===== ボタン共通 ===== */
+.btn {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 0 16px;
+  color: var(--text2); font-family: var(--mono); font-size: 13px;
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  height: 40px;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn.primary { background: var(--accent-bg); border-color: var(--accent-border); color: var(--accent); }
+
+/* ===== ゴール ===== */
+.goal-row { display: flex; gap: 8px; }
+.goal-row input {
+  flex: 1; background: var(--surface);
+  border: 1px solid var(--border2); border-radius: 6px;
+  padding: 10px 12px; color: var(--text);
+  font-family: var(--mono); font-size: 14px;
+  outline: none; transition: border-color 0.15s; height: 40px;
+}
+.goal-row input:focus { border-color: var(--accent); }
+.goal-row input::placeholder { color: var(--text3); }
+.goal-set {
+  background: var(--accent-bg); border: 1px solid var(--accent-border);
+  border-radius: 6px; padding: 12px 14px;
+  font-family: var(--serif); font-size: 16px;
+  color: var(--accent); line-height: 1.5;
+  min-height: 48px; display: none; cursor: pointer;
+}
+
+/* ===== タイマー ===== */
+.timer-wrap {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 1.5rem;
+  text-align: center; margin-bottom: 1.75rem;
+  position: relative; overflow: hidden;
+}
+.timer-track {
+  position: absolute; bottom: 0; left: 0; height: 2px;
+  background: var(--accent); transition: width 0.9s linear;
+}
+.timer-num {
+  font-size: 52px; font-weight: 500; letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums; line-height: 1;
+  margin-bottom: 16px; transition: color 0.3s;
+}
+.timer-num.warn  { color: var(--warn); }
+.timer-num.danger { color: var(--danger); }
+.timer-controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.timer-presets  { display: flex; gap: 6px; justify-content: center; }
+.preset {
+  font-size: 11px; padding: 4px 12px;
+  background: none; border: 1px solid var(--border2);
+  border-radius: 20px; color: var(--text3);
+  font-family: var(--mono); cursor: pointer; transition: all 0.15s;
+}
+.preset:hover,
+.preset.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+/* ===== アイデア駐車場 ===== */
+.idea-add { display: flex; gap: 8px; margin-bottom: 10px; }
+.idea-add input {
+  flex: 1; background: var(--surface);
+  border: 1px solid var(--border2); border-radius: 6px;
+  padding: 9px 12px; color: var(--text);
+  font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color 0.15s; height: 40px;
+}
+.idea-add input:focus { border-color: var(--accent); }
+.idea-add input::placeholder { color: var(--text3); }
+.idea-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+  transition: opacity 0.2s;
+}
+.idea-item:last-child { border-bottom: none; }
+.idea-item.parked { opacity: 0.35; }
+.idea-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0; transition: background 0.2s;
+}
+.idea-item.parked .idea-dot { background: var(--text3); }
+.idea-text { flex: 1; font-size: 13px; color: var(--text); }
+.idea-item.parked .idea-text { text-decoration: line-through; color: var(--text3); }
+.park-btn {
+  font-size: 10px; padding: 3px 8px; background: none;
+  border: 1px solid var(--border2); border-radius: 4px;
+  color: var(--text3); font-family: var(--mono); cursor: pointer; transition: all 0.15s;
+}
+.park-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== AI相談 ===== */
+.ai-section {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 1.25rem;
+}
+.ai-prompt-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.ai-prompt-row input {
+  flex: 1; background: var(--bg);
+  border: 1px solid var(--border2); border-radius: 6px;
+  padding: 9px 12px; color: var(--text);
+  font-family: var(--mono); font-size: 13px;
+  outline: none; transition: border-color 0.15s; height: 40px;
+}
+.ai-prompt-row input:focus { border-color: var(--accent); }
+.ai-prompt-row input::placeholder { color: var(--text3); }
+.quick-asks { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.quick-ask {
+  font-size: 11px; padding: 5px 10px;
+  background: none; border: 1px solid var(--border2);
+  border-radius: 20px; color: var(--text3);
+  font-family: var(--mono); cursor: pointer; transition: all 0.15s;
+}
+.quick-ask:hover { border-color: var(--accent); color: var(--accent); }
+.ai-response {
+  font-family: var(--serif); font-size: 14px;
+  line-height: 1.8; color: var(--text2);
+  min-height: 20px; white-space: pre-wrap;
+}
+.ai-loading { color: var(--accent); font-size: 12px; letter-spacing: 0.1em; font-family: var(--mono); }
+
+/* ===== 着地チェック ===== */
+.decision-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.decide-btn {
+  flex: 1; min-width: 100px; padding: 10px 8px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 6px; color: var(--text2);
+  font-family: var(--mono); font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.decide-btn:hover,
+.decide-btn.decided { border-color: var(--green); color: var(--green); background: rgba(125,255,158,0.06); }
+.result-display { font-size: 13px; color: var(--text3); font-family: var(--serif); min-height: 20px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <span class="header-title">Ne Stopper</span>
+    <span class="header-sub">INTP / INFP / ENTP / ENFP — 話を着地させる</span>
+  </div>
+
+  <!-- フェーズバー -->
+  <div class="phases">
+    <div class="phase active" onclick="setPhase(0,this)"><span class="phase-num">01</span>目的</div>
+    <div class="phase" onclick="setPhase(1,this)"><span class="phase-num">02</span>話し合い</div>
+    <div class="phase" onclick="setPhase(2,this)"><span class="phase-num">03</span>着地</div>
+  </div>
+
+  <!-- ゴール -->
+  <div class="section">
+    <div class="section-label">今日決めること</div>
+    <div class="goal-row" id="goal-edit">
+      <input type="text" id="goal-input" placeholder="例：ランチの行き先を1つ決める" onkeydown="if(event.key==='Enter')setGoal()" />
+      <button class="btn primary" onclick="setGoal()">セット</button>
+    </div>
+    <div class="goal-set" id="goal-display" onclick="editGoal()"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- タイマー -->
+  <div class="section-label">タイマー</div>
+  <div class="timer-wrap">
+    <div class="timer-track" id="timer-track" style="width:100%"></div>
+    <div class="timer-num" id="timer-num">15:00</div>
+    <div class="timer-controls">
+      <button class="btn primary" id="start-btn" onclick="toggleTimer()">スタート</button>
+      <button class="btn" onclick="resetTimer()">リセット</button>
+    </div>
+    <div class="timer-presets">
+      <button class="preset" onclick="setMin(5,this)">5分</button>
+      <button class="preset active" onclick="setMin(15,this)">15分</button>
+      <button class="preset" onclick="setMin(20,this)">20分</button>
+      <button class="preset" onclick="setMin(30,this)">30分</button>
+    </div>
+  </div>
+
+  <!-- アイデア駐車場 -->
+  <div class="section">
+    <div class="section-label">アイデア駐車場 — 今じゃない話はここへ</div>
+    <div class="idea-add">
+      <input type="text" id="idea-input" placeholder="飛んだ話題を一旦パーク..." onkeydown="if(event.key==='Enter')addIdea()" />
+      <button class="btn" onclick="addIdea()">追加</button>
+    </div>
+    <div id="ideas-list"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- AI相談 -->
+  <div class="section">
+    <div class="section-label">AI に聞く</div>
+    <div class="ai-section">
+      <div id="apikey-section">
+        <div class="section-label" style="margin-bottom:8px">Anthropic API キーを設定</div>
+        <div class="ai-prompt-row">
+          <input type="password" id="apikey-input" placeholder="sk-ant-..." style="font-size:12px" />
+          <button class="btn primary" onclick="saveApiKey()">保存</button>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">ブラウザのlocalStorageに保存されます。共有端末では使わないこと。</div>
+      </div>
+      <div id="ai-ready" style="display:none">
+      <div class="quick-asks">
+        <button class="quick-ask" onclick="quickAsk('今の状況を整理して')">状況整理</button>
+        <button class="quick-ask" onclick="quickAsk('次のアクションを提案して')">次のアクション</button>
+        <button class="quick-ask" onclick="quickAsk('話が脱線してる。ゴールに戻す方法を教えて')">軌道修正</button>
+        <button class="quick-ask" onclick="quickAsk('駐車場のアイデアを次回どう使うか整理して')">駐車場を整理</button>
+      </div>
+      <div class="ai-prompt-row">
+        <input type="text" id="ai-input" placeholder="自由に聞く..." onkeydown="if(event.key==='Enter')askAI()" />
+        <button class="btn primary" onclick="askAI()">送信</button>
+      </div>
+      <div class="ai-response" id="ai-response"></div>
+      </div><!-- /ai-ready -->
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 着地チェック -->
+  <div class="section">
+    <div class="section-label">着地チェック</div>
+    <div class="decision-btns">
+      <button class="decide-btn" onclick="decide('決まった',this)">決まった</button>
+      <button class="decide-btn" onclick="decide('もう少し時間が必要',this)">もう少し</button>
+      <button class="decide-btn" onclick="decide('次回に持ち越し',this)">次回に</button>
+    </div>
+    <div class="result-display" id="result-display"></div>
+  </div>
+
+</div>
+<script>
+/* ===== 状態 ===== */
+let totalSec = 15 * 60;
+let remaining = totalSec;
+let running = false;
+let ticker = null;
+let ideas = [];
+
+/* APIキー取得（localStorage → window.API_KEY） */
+function getApiKey() {
+  return localStorage.getItem('ne_stopper_api_key') || window.API_KEY || '';
+}
+function saveApiKey() {
+  const v = document.getElementById('apikey-input').value.trim();
+  if (!v) return;
+  localStorage.setItem('ne_stopper_api_key', v);
+  document.getElementById('apikey-section').style.display = 'none';
+  document.getElementById('ai-ready').style.display = 'block';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (getApiKey()) {
+    document.getElementById('apikey-section').style.display = 'none';
+    document.getElementById('ai-ready').style.display = 'block';
+  }
+});
+
+/* ===== フェーズ ===== */
+function setPhase(idx, el) {
+  document.querySelectorAll('.phase').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+/* ===== ゴール ===== */
+function setGoal() {
+  const v = document.getElementById('goal-input').value.trim();
+  if (!v) return;
+  document.getElementById('goal-edit').style.display = 'none';
+  const d = document.getElementById('goal-display');
+  d.textContent = v;
+  d.style.display = 'block';
+}
+function editGoal() {
+  document.getElementById('goal-display').style.display = 'none';
+  document.getElementById('goal-edit').style.display = 'flex';
+  document.getElementById('goal-input').value = document.getElementById('goal-display').textContent;
+  document.getElementById('goal-input').focus();
+}
+
+/* ===== タイマー ===== */
+function setMin(m, el) {
+  if (running) return;
+  totalSec = m * 60; remaining = totalSec;
+  document.querySelectorAll('.preset').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  updateTimer();
+}
+function toggleTimer() {
+  if (running) {
+    clearInterval(ticker); running = false;
+    document.getElementById('start-btn').textContent = 'スタート';
+  } else {
+    if (remaining <= 0) remaining = totalSec;
+    running = true;
+    document.getElementById('start-btn').textContent = '一時停止';
+    ticker = setInterval(tick, 1000);
+  }
+}
+function tick() {
+  remaining--;
+  updateTimer();
+  if (remaining <= 0) {
+    clearInterval(ticker); running = false;
+    document.getElementById('start-btn').textContent = 'スタート';
+    document.getElementById('timer-num').textContent = '時間！';
+    document.getElementById('timer-num').className = 'timer-num danger';
+    document.getElementById('timer-track').style.width = '0%';
+  }
+}
+function resetTimer() {
+  clearInterval(ticker); running = false; remaining = totalSec;
+  document.getElementById('start-btn').textContent = 'スタート';
+  updateTimer();
+}
+function updateTimer() {
+  const m = Math.floor(remaining / 60);
+  const s = remaining % 60;
+  const el = document.getElementById('timer-num');
+  el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  const pct = totalSec > 0 ? (remaining / totalSec) * 100 : 0;
+  document.getElementById('timer-track').style.width = pct + '%';
+  if (pct <= 15) el.className = 'timer-num danger';
+  else if (pct <= 33) el.className = 'timer-num warn';
+  else el.className = 'timer-num';
+}
+
+/* ===== アイデア駐車場 ===== */
+function addIdea() {
+  const inp = document.getElementById('idea-input');
+  const v = inp.value.trim(); if (!v) return;
+  ideas.unshift({ text: v, parked: false });
+  inp.value = ''; renderIdeas();
+}
+function renderIdeas() {
+  const el = document.getElementById('ideas-list');
+  el.innerHTML = '';
+  ideas.forEach((idea, i) => {
+    const div = document.createElement('div');
+    div.className = 'idea-item' + (idea.parked ? ' parked' : '');
+    div.innerHTML = `<div class="idea-dot"></div><span class="idea-text">${esc(idea.text)}</span><button class="park-btn" onclick="togglePark(${i})">${idea.parked ? '戻す' : '駐車'}</button>`;
+    el.appendChild(div);
+  });
+}
+function togglePark(i) { ideas[i].parked = !ideas[i].parked; renderIdeas(); }
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ===== AI相談 ===== */
+function quickAsk(q) { document.getElementById('ai-input').value = q; askAI(); }
+async function askAI() {
+  const input = document.getElementById('ai-input');
+  const q = input.value.trim(); if (!q) return;
+  input.value = '';
+  const goal = document.getElementById('goal-display').textContent || '未設定';
+  const active = ideas.filter(i => !i.parked).map(i => i.text).join('、') || 'なし';
+  const elapsedMin = Math.floor((totalSec - remaining) / 60);
+  const system = `あなたは「Ne発散防止アシスタント」です。INTP・INFP・ENTP・ENFPのNe持ちタイプが会話の着地点を見失わないようサポートします。
+現在：ゴール「${goal}」/ 経過${elapsedMin}分 / 駐車中のアイデア：${active}
+短く・具体的に・1〜3文で。日本語で。`;
+  const responseEl = document.getElementById('ai-response');
+  responseEl.innerHTML = '<span class="ai-loading">考え中...</span>';
+  try {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      responseEl.textContent = 'APIキーが未設定です。上の入力欄から設定してください。';
+      document.getElementById('apikey-section').style.display = 'block';
+      document.getElementById('ai-ready').style.display = 'none';
+      return;
+    }
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        system,
+        messages: [{ role: 'user', content: q }]
+      })
+    });
+    const data = await res.json();
+    responseEl.textContent = data.content?.find(b => b.type === 'text')?.text || 'エラーが発生しました。';
+  } catch(e) {
+    responseEl.textContent = '通信エラーが発生しました。';
+  }
+}
+
+/* ===== 着地チェック ===== */
+function decide(label, btn) {
+  document.querySelectorAll('.decide-btn').forEach(b => b.classList.remove('decided'));
+  btn.classList.add('decided');
+  const goal = document.getElementById('goal-display').textContent || '未設定';
+  document.getElementById('result-display').textContent = `「${goal}」→ ${label}`;
+}
+</script>
+</body>
+</html>
