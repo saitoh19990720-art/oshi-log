@@ -48,6 +48,7 @@ const logMemoInput = document.querySelector("#logMemo");
 const addOshiBtn = document.querySelector("#addOshiBtn");
 const addOshiForm = document.querySelector("#addOshiForm");
 const newOshiName = document.querySelector("#newOshiName");
+const logSearch = document.querySelector("#logSearch");
 
 logDateInput.value = new Date().toISOString().slice(0, 10);
 
@@ -184,10 +185,15 @@ function renderMemberView() {
 }
 
 function renderLogs(logs, member) {
+  const query = logSearch.value.trim().toLowerCase();
+  const filtered = query
+    ? logs.filter((l) => l.title.toLowerCase().includes(query) || (l.memo || "").toLowerCase().includes(query))
+    : logs;
+
   logList.innerHTML = "";
   emptyState.classList.toggle("is-hidden", logs.length > 0);
 
-  logs.forEach((log, index) => {
+  filtered.forEach((log, index) => {
     const item = document.createElement("li");
     item.className = "log-item";
     item.style.setProperty("--accent-color", member.color);
@@ -208,7 +214,9 @@ function renderLogs(logs, member) {
     btn.addEventListener("click", () => {
       const idx = Number(btn.dataset.index);
       const memberId = state.selectedId;
-      state.logs[memberId] = getLogsForMember(memberId).filter((_, i) => i !== idx);
+      const allLogs = getLogsForMember(memberId);
+      const targetLog = filtered[idx];
+      state.logs[memberId] = allLogs.filter((l) => l !== targetLog);
       saveLogs();
       render();
     });
@@ -228,6 +236,10 @@ function render() {
   renderSidebar();
   renderMemberView();
 }
+
+logSearch.addEventListener("input", () => {
+  renderLogs(getLogsForMember(state.selectedId), getSelectedMember());
+});
 
 logForm.addEventListener("submit", (event) => {
   event.preventDefault();
