@@ -126,10 +126,17 @@ When user signals high energy (light / 調子いい):
 
 ## 11. Commands & shortcuts
 
-Slash commands:
-`/compact` `/clear` `/plan` `/rewind` `/simplify` `/model` `/fast` `/effort high` `/insights` `/cost` `/doctor`
+必須:
+- `/clear` — 新タスク前
+- `/compact` — コンテキスト70%超えたら
+- `/cost` — 使用量確認
 
-Keyboard:
+便利:
+- `/plan` — 実装前に方針固め
+- `/rewind` — 直前を巻き戻す
+- `/simplify` — コード冗長削除
+
+キー:
 - `Shift+Tab` — モード切替
 - `Opt+T` — 拡張思考
 - `Opt+P` — モデルピッカー
