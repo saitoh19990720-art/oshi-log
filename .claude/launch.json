@@ -1,11 +1,4 @@
 {
   "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "portfolio",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "portfolio"],
-      "autoPort": true
-    }
-  ]
+  "configurations": []
 }
