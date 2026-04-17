@@ -48,6 +48,22 @@ const logMemoInput = document.querySelector("#logMemo");
 const addOshiBtn = document.querySelector("#addOshiBtn");
 const addOshiForm = document.querySelector("#addOshiForm");
 const newOshiName = document.querySelector("#newOshiName");
+const themeToggle = document.querySelector("#themeToggle");
+
+const THEME_KEY = "oshi-log-theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeToggle.textContent = theme === "light" ? "🌙" : "☀";
+}
+
+applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+
+themeToggle.addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
 
 logDateInput.value = new Date().toISOString().slice(0, 10);
 
