@@ -3,106 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>押印 | 推し活観測ログ</title>
+  <title>しずく</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Hachi+Maru+Pop&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <main class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <p class="brand-kicker">Oshi Log</p>
-        <h1>押印</h1>
-        <p class="brand-copy">推しごとの観測記録を静かに積み上げるログブック。</p>
+
+  <nav class="nav">
+    <span class="nav-logo">しずく <span class="nav-heart">♡</span></span>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#works">works</a></li>
+      <li><a href="#likes">好きなもの</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <p class="hero-en">shizuku ✦ designer ✦ oshi-katsu</p>
+    <h1 class="hero-title">好きなものが、<br>そのままわたし。</h1>
+    <p class="hero-sub">
+      地雷・天使・水色界隈が好きで、推し活が日常にあって、<br>
+      FigmaとAIでこっそりものをつくっています。
+    </p>
+    <div class="hero-tags">
+      <span>#地雷系</span><span>#天使界隈</span><span>#水色界隈</span>
+      <span>#ホビ垢</span><span>#Figma</span><span>#AI</span>
+    </div>
+    <a href="#works" class="cta-btn">つくったものを見る ↓</a>
+  </section>
+
+  <section id="about" class="section">
+    <p class="section-label">about ♡</p>
+    <h2 class="section-title">わたしのこと</h2>
+    <div class="about-bio">
+      <p>
+        ホビ垢を運用していたら、界隈の「らしさ」をデザインとして整理したくなって、
+        気づいたらFigmaとAIでつくることが日常になっていました。
+      </p>
+      <p>
+        好きなものの空気感をそのまま設計に持ち込むのが自分のスタイルです。
+        フリーランスで、自分の世界観と合う仕事をゆるく受けています。
+      </p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <p class="about-icon">🎀</p>
+        <h3>推し活・ホビ垢</h3>
+        <p>推し活記録・ホビ垢運用が日常。界隈の空気感は体で知っています。</p>
       </div>
+      <div class="about-card">
+        <p class="about-icon">✦</p>
+        <h3>Figma × AI</h3>
+        <p>FigmaとAI/MCPでつくるのが好き。自動化より「好きに使う」感覚で動かしています。</p>
+      </div>
+      <div class="about-card">
+        <p class="about-icon">🤍</p>
+        <h3>フリーランス</h3>
+        <p>LP・SNSテンプレ・Figmaコンポーネントなど。世界観が合う仕事をゆるく募集中。</p>
+      </div>
+    </div>
+  </section>
 
-      <section class="sidebar-section">
-        <div class="section-title-row">
-          <h2 class="section-title">推し一覧</h2>
-          <span id="oshiCount" class="count-chip">4人</span>
-        </div>
-        <nav id="oshiList" class="oshi-list" aria-label="推し一覧"></nav>
-      </section>
-    </aside>
+  <section id="works" class="section">
+    <p class="section-label">works ✦</p>
+    <h2 class="section-title">つくったもの</h2>
+    <div class="works-grid">
+      <article class="work-card">
+        <div class="work-tag">SNS テンプレ</div>
+        <h3 class="work-title">地雷界隈ストーリーテンプレ</h3>
+        <p class="work-desc">黒×ピンク×ハート構成。Figmaコンポーネントで管理して差し替えだけで量産できるやつ。</p>
+        <span class="work-stack">Figma</span>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">AI × Figma</div>
+        <h3 class="work-title">界隈カラーシステム</h3>
+        <p class="work-desc">地雷／天使／水色のトークンをMCPで切り替える実験。界隈ごとに世界観が変わる。</p>
+        <span class="work-stack">Figma MCP</span>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">Web App</div>
+        <h3 class="work-title">押印 — 推し活観測ログ</h3>
+        <p class="work-desc">自分用に作った推し活記録アプリ。地雷系フォントとダークな世界観で組んでいます。</p>
+        <span class="work-stack">HTML / CSS / JS</span>
+      </article>
+      <article class="work-card work-card--wip">
+        <div class="work-tag">つくってる途中</div>
+        <h3 class="work-title">推し活ストーリー自動生成</h3>
+        <p class="work-desc">推しの画像を投げたら界隈っぽいレイアウトに流し込まれる仕組みを実験中。</p>
+        <span class="work-stack">n8n × Figma API</span>
+      </article>
+    </div>
+  </section>
 
-    <section class="workspace">
-      <header class="workspace-header">
-        <div>
-          <p class="workspace-kicker">観測ログ</p>
-          <h2 id="viewTitle" class="workspace-title">はうきさん</h2>
-        </div>
-        <div id="memberBadge" class="member-badge">SECRET BLUE</div>
-      </header>
+  <section id="likes" class="section">
+    <p class="section-label">好きなもの ♡</p>
+    <h2 class="section-title">すきなこと</h2>
+    <ul class="likes-list">
+      <li><span class="like-icon">🖤</span> 地雷系・天使界隈・水色界隈の世界観</li>
+      <li><span class="like-icon">🎀</span> ホビ垢・推し活・界隈観察</li>
+      <li><span class="like-icon">✦</span> Figmaで設計すること</li>
+      <li><span class="like-icon">🤍</span> AIと話しながらものをつくること</li>
+      <li><span class="like-icon">🌙</span> 夜に作業すること</li>
+      <li><span class="like-icon">🫧</span> 透明感のあるもの・淡い色・泡っぽいデザイン</li>
+    </ul>
+  </section>
 
-      <section class="hero-card">
-        <div class="hero-copy">
-          <p id="memberRole" class="hero-label">SECRET BLUE</p>
-          <h3 id="memberName" class="hero-name">はうきさん</h3>
-          <p id="memberDescription" class="hero-description"></p>
-        </div>
-        <div class="hero-meta">
-          <div class="meta-box">
-            <span class="meta-label">ログ件数</span>
-            <strong id="logCount">0</strong>
-          </div>
-          <div class="meta-box">
-            <span class="meta-label">最新記録</span>
-            <strong id="lastObserved">まだありません</strong>
-          </div>
-        </div>
-      </section>
+  <footer class="footer">
+    <p class="footer-name">しずく ♡</p>
+    <p class="footer-copy">フリーランスデザイナー ／ 地雷・天使・水色界隈</p>
+    <p class="footer-note">お仕事のご連絡はDMでどうぞ</p>
+  </footer>
 
-      <section class="panel-grid">
-        <section class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">Log</p>
-              <h3>記録を追加</h3>
-            </div>
-          </div>
-
-          <form id="logForm" class="log-form">
-            <label class="field">
-              <span>タイトル</span>
-              <input id="logTitle" name="title" type="text" placeholder="例: 配信を見た" required>
-            </label>
-
-            <label class="field">
-              <span>日付</span>
-              <input id="logDate" name="date" type="date" required>
-            </label>
-
-            <label class="field">
-              <span>メモ</span>
-              <textarea id="logMemo" name="memo" rows="5" placeholder="気づいたこと、うれしかったこと、残しておきたいこと"></textarea>
-            </label>
-
-            <button class="primary-button" type="submit">記録を追加する</button>
-            <p id="formMessage" class="form-message" aria-live="polite"></p>
-          </form>
-        </section>
-
-        <section class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">Timeline</p>
-              <h3>観測記録</h3>
-            </div>
-          </div>
-
-          <div id="emptyState" class="empty-state">
-            <p class="empty-title">まだ観測記録がありません</p>
-            <p class="empty-copy">左の推しを選んで、最初の記録を追加してください。</p>
-          </div>
-
-          <ul id="logList" class="log-list" aria-label="観測記録一覧"></ul>
-        </section>
-      </section>
-    </section>
-  </main>
-
-  <script src="./app.js"></script>
 </body>
 </html>
