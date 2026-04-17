@@ -49,6 +49,7 @@ const addOshiBtn = document.querySelector("#addOshiBtn");
 const addOshiForm = document.querySelector("#addOshiForm");
 const newOshiName = document.querySelector("#newOshiName");
 const themeToggle = document.querySelector("#themeToggle");
+const logSearch = document.querySelector("#logSearch");
 
 const THEME_KEY = "oshi-log-theme";
 
@@ -63,6 +64,11 @@ themeToggle.addEventListener("click", () => {
   const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
   localStorage.setItem(THEME_KEY, next);
   applyTheme(next);
+});
+
+logSearch.addEventListener("input", () => {
+  const member = getSelectedMember();
+  if (member) renderLogs(getLogsForMember(member.id), member);
 });
 
 logDateInput.value = new Date().toISOString().slice(0, 10);
@@ -200,10 +206,16 @@ function renderMemberView() {
 }
 
 function renderLogs(logs, member) {
-  logList.innerHTML = "";
-  emptyState.classList.toggle("is-hidden", logs.length > 0);
+  const query = logSearch.value.trim().toLowerCase();
+  const filtered = query
+    ? logs.filter((l) => l.title.toLowerCase().includes(query) || (l.memo || "").toLowerCase().includes(query))
+    : logs;
 
-  logs.forEach((log, index) => {
+  logList.innerHTML = "";
+  emptyState.classList.toggle("is-hidden", filtered.length > 0);
+
+  filtered.forEach((log) => {
+    const originalIndex = logs.indexOf(log);
     const item = document.createElement("li");
     item.className = "log-item";
     item.style.setProperty("--accent-color", member.color);
@@ -213,7 +225,7 @@ function renderLogs(logs, member) {
           <h4 class="log-item-title">${escapeHtml(log.title)}</h4>
           <span class="log-date">${formatDate(log.date)}</span>
         </div>
-        <button class="delete-button" type="button" aria-label="削除" data-index="${index}">×</button>
+        <button class="delete-button" type="button" aria-label="削除" data-index="${originalIndex}">×</button>
       </div>
       <p>${escapeHtml(log.memo || "メモはまだありません。")}</p>
     `;
