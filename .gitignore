@@ -1,0 +1,40 @@
+# secrets / credentials
+*.env
+.env.*
+*_secret*
+*_token*
+*webhook*
+
+# n8n workflows (may contain secrets like webhook URLs)
+n8n_*.json
+.claude/n8n/*.json
+
+# binaries / archives
+*.exe
+*.zip
+*.dmg
+*.pkg
+
+# images (root level only — portfolio/ images are tracked)
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+/*.webp
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editor
+.vscode/
+*.swp
+*.swo
+
+# worktrees (managed by Claude Code)
+.claude/worktrees/
+
+.claude/
+portfolio/
+prompts/
