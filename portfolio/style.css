@@ -1,6 +1,6 @@
 :root {
-  --bg:#f2f4f6;--surface:#f8f9fa;--text:#1f2a37;--muted:#5b6b7a;
-  --line:#d9e6f2;--accent:#a9d6f5;--accent-strong:#6fafd6;
+  --bg:#f5f2ee;--surface:#faf8f5;--text:#252d38;--muted:#5e6e7d;
+  --line:#dddad4;--accent:#b8d8ef;--accent-strong:#5d9ec4;
   --shadow:0 8px 24px rgba(31,42,55,.05);--radius:14px;--max-width:1040px;
 }
 @media(prefers-color-scheme:dark){
