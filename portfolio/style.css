@@ -3,6 +3,16 @@
   --line:#d9e6f2;--accent:#a9d6f5;--accent-strong:#6fafd6;
   --shadow:0 8px 24px rgba(31,42,55,.05);--radius:14px;--max-width:1040px;
 }
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1318;--surface:#1a2030;--text:#e8edf2;--muted:#8a9bb0;
+    --line:#2a3545;--accent:#2a4a6a;--accent-strong:#6fafd6;
+    --shadow:0 8px 24px rgba(0,0,0,.3);
+  }
+  .site-header{background:rgba(15,19,24,.9)}
+  .section-soft{background:rgba(26,32,48,.6);border-color:rgba(42,53,69,.8)}
+  .btn-secondary{background:var(--surface);color:var(--text)}
+}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text);line-height:1.75}
