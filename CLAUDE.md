@@ -122,6 +122,25 @@ When user signals high energy (light / 調子いい):
 - irreversible operations require explicit human approval
 - no auto-apply to jobs
 
+---
+
+## 11. Commands & shortcuts
+
+必須:
+- `/clear` — 新タスク前
+- `/compact` — コンテキスト70%超えたら
+- `/cost` — 使用量確認
+
+便利:
+- `/plan` — 実装前に方針固め
+- `/rewind` — 直前を巻き戻す
+- `/simplify` — コード冗長削除
+
+キー:
+- `Shift+Tab` — モード切替
+- `Opt+T` — 拡張思考
+- `Opt+P` — モデルピッカー
+
 <!--
 Human-only note:
 - temporary project instructions → Daily Note / Obsidian

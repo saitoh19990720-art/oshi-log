@@ -47,7 +47,28 @@ const logMemoInput = document.querySelector("#logMemo");
 const addOshiBtn = document.querySelector("#addOshiBtn");
 const addOshiForm = document.querySelector("#addOshiForm");
 const newOshiName = document.querySelector("#newOshiName");
+const themeToggle = document.querySelector("#themeToggle");
 const logSearch = document.querySelector("#logSearch");
+
+const THEME_KEY = "oshi-log-theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeToggle.textContent = theme === "light" ? "🌙" : "☀";
+}
+
+applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+
+themeToggle.addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
+
+logSearch.addEventListener("input", () => {
+  const member = getSelectedMember();
+  if (member) renderLogs(getLogsForMember(member.id), member);
+});
 
 logDateInput.value = new Date().toISOString().slice(0, 10);
 
@@ -190,9 +211,10 @@ function renderLogs(logs, member) {
     : logs;
 
   logList.innerHTML = "";
-  emptyState.classList.toggle("is-hidden", logs.length > 0);
+  emptyState.classList.toggle("is-hidden", filtered.length > 0);
 
-  filtered.forEach((log, index) => {
+  filtered.forEach((log) => {
+    const originalIndex = logs.indexOf(log);
     const item = document.createElement("li");
     item.className = "log-item";
     item.style.setProperty("--accent-color", member.color);
@@ -202,7 +224,7 @@ function renderLogs(logs, member) {
           <h4 class="log-item-title">${escapeHtml(log.title)}</h4>
           <span class="log-date">${formatDate(log.date)}</span>
         </div>
-        <button class="delete-button" type="button" aria-label="削除" data-index="${index}">×</button>
+        <button class="delete-button" type="button" aria-label="削除" data-index="${originalIndex}">×</button>
       </div>
       <p>${escapeHtml(log.memo || "メモはまだありません。")}</p>
     `;
@@ -213,9 +235,7 @@ function renderLogs(logs, member) {
     btn.addEventListener("click", () => {
       const idx = Number(btn.dataset.index);
       const memberId = state.selectedId;
-      const allLogs = getLogsForMember(memberId);
-      const targetLog = filtered[idx];
-      state.logs[memberId] = allLogs.filter((l) => l !== targetLog);
+      state.logs[memberId] = getLogsForMember(memberId).filter((_, i) => i !== idx);
       saveLogs();
       render();
     });
@@ -235,10 +255,6 @@ function render() {
   renderSidebar();
   renderMemberView();
 }
-
-logSearch.addEventListener("input", () => {
-  renderLogs(getLogsForMember(state.selectedId), getSelectedMember());
-});
 
 logForm.addEventListener("submit", (event) => {
   event.preventDefault();

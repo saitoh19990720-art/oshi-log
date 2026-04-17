@@ -3,123 +3,202 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>押印 | 推し活観測ログ</title>
+  <title>しずく｜界隈デザイン × Figma × AI</title>
+  <meta name="description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="しずく｜界隈デザイン × Figma × AI">
+  <meta property="og:description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+  <meta property="og:url" content="https://oshi-kp3diugpj-sizuku.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="しずく｜界隈デザイン × Figma × AI">
+  <meta name="twitter:description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "しずく",
+    "url": "https://oshi-kp3diugpj-sizuku.vercel.app",
+    "jobTitle": "フリーランス デザイナー・フロントエンドエンジニア",
+    "description": "地雷・天使・水色界隈の世界観をFigmaとAIでプロダクトに落とし込むフリーランスです。",
+    "knowsAbout": ["Figma", "HTML", "CSS", "JavaScript", "AI", "MCP", "界隈デザイン", "n8n"],
+    "sameAs": ["https://github.com/saitoh19990720-art"]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Hachi+Maru+Pop&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <main class="app-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <p class="brand-kicker">Oshi Log</p>
-        <h1>押印</h1>
-        <p class="brand-copy">推しごとの観測記録を静かに積み上げるログブック。</p>
+
+  <nav class="nav">
+    <span class="nav-logo">しずく <span class="nav-heart">♡</span></span>
+    <ul class="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#works">works</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <p class="hero-en">shizuku ✦ designer ✦ oshi-katsu</p>
+    <h1 class="hero-title">好きなものが、<br>そのままわたし。</h1>
+    <p class="hero-sub">
+      地雷・天使・水色界隈が好きで、推し活が日常にあって、<br>
+      FigmaとAIでこっそりものをつくっています。
+    </p>
+    <div class="hero-tags">
+      <span>#地雷系</span><span>#天使界隈</span><span>#水色界隈</span>
+      <span>#ホビ垢</span><span>#Figma</span><span>#AI</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="cta-btn">仕事を依頼する</a>
+      <a href="#works" class="ghost-btn">実績を見る</a>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <p class="section-label">about ♡</p>
+    <h2 class="section-title">わたしのこと</h2>
+    <div class="about-bio">
+      <p>
+        ホビ垢を運用していたら、界隈の「らしさ」をデザインとして整理したくなって、
+        気づいたらFigmaとAIでつくることが日常になっていました。
+      </p>
+      <p>
+        好きなものの空気感をそのまま設計に持ち込むのが自分のスタイルです。
+        フリーランスで、自分の世界観と合う仕事をゆるく受けています。
+      </p>
+    </div>
+
+    <div class="kaiwai-grid">
+      <div class="kaiwai-card" style="--kaiwai-color:#D4A8B8">
+        <span class="kaiwai-label">地雷</span>
+        <span class="kaiwai-desc">黒・くすみピンク・ハート<br>太め丸文字＋病み英字</span>
       </div>
+      <div class="kaiwai-card" style="--kaiwai-color:#C4B4DC">
+        <span class="kaiwai-label">天使</span>
+        <span class="kaiwai-desc">白・ラベンダー・羽<br>細い手書き＋薄エフェクト</span>
+      </div>
+      <div class="kaiwai-card" style="--kaiwai-color:#A8C4CC">
+        <span class="kaiwai-label">水色</span>
+        <span class="kaiwai-desc">水色・白・泡・透明感<br>丸ゴ＋浮遊感レイアウト</span>
+      </div>
+    </div>
 
-      <section class="sidebar-section">
-        <div class="section-title-row">
-          <h2 class="section-title">推し一覧</h2>
-          <span id="oshiCount" class="count-chip">4人</span>
-          <button id="addOshiBtn" class="add-oshi-btn" type="button" aria-label="推しを追加">＋</button>
-        </div>
-        <nav id="oshiList" class="oshi-list" aria-label="推し一覧"></nav>
-        <form id="addOshiForm" class="add-oshi-form is-hidden">
-          <input id="newOshiName" type="text" placeholder="推しの名前" maxlength="20" required />
-          <div class="color-swatches">
-            <button type="button" class="swatch is-selected" data-color="#4A86B8" style="background:#4A86B8"></button>
-            <button type="button" class="swatch" data-color="#E8A3BE" style="background:#E8A3BE"></button>
-            <button type="button" class="swatch" data-color="#B88AD8" style="background:#B88AD8"></button>
-            <button type="button" class="swatch" data-color="#7EC8A0" style="background:#7EC8A0"></button>
-            <button type="button" class="swatch" data-color="#E8B87A" style="background:#E8B87A"></button>
-            <button type="button" class="swatch" data-color="#E07A7A" style="background:#E07A7A"></button>
-            <button type="button" class="swatch" data-color="#7AB8E0" style="background:#7AB8E0"></button>
-            <button type="button" class="swatch" data-color="#C8C2BA" style="background:#C8C2BA"></button>
-          </div>
-          <button class="add-oshi-submit" type="submit">追加する</button>
-        </form>
-      </section>
-    </aside>
+    <div class="about-grid">
+      <div class="about-card">
+        <p class="about-icon">🎀</p>
+        <h3>推し活・ホビ垢</h3>
+        <p>推し活記録・ホビ垢運用が日常。界隈の空気感は体で知っています。</p>
+      </div>
+      <div class="about-card">
+        <p class="about-icon">✦</p>
+        <h3>Figma × AI</h3>
+        <p>FigmaとAI/MCPでつくるのが好き。自動化より「好きに使う」感覚で動かしています。</p>
+      </div>
+      <div class="about-card">
+        <p class="about-icon">🤍</p>
+        <h3>フリーランス</h3>
+        <p>LP・SNSテンプレ・Figmaコンポーネントなど。世界観が合う仕事をゆるく募集中。</p>
+      </div>
+    </div>
+  </section>
 
-    <section class="workspace">
-      <header class="workspace-header">
-        <div>
-          <p class="workspace-kicker">観測ログ</p>
-          <h2 id="viewTitle" class="workspace-title">はうきさん</h2>
-        </div>
-        <div id="memberBadge" class="member-badge">SECRET BLUE</div>
-      </header>
+  <section id="works" class="section">
+    <p class="section-label">works ✦</p>
+    <h2 class="section-title">つくったもの</h2>
+    <div class="works-grid">
+      <article class="work-card">
+        <div class="work-tag">LPコーディング</div>
+        <h3 class="work-title">Lumière — エステサロン LP（デモ）</h3>
+        <p class="work-desc">美容・エステ系サービスのLPデモ。明朝体＋アースカラーで品のある世界観を設計。SP最適化済み。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / Vercel</li>
+          <li><span>担当</span>デザイン / コーディング / SP最適化</li>
+        </ul>
+        <a class="work-link" href="https://salon-demo-shizuku.vercel.app" target="_blank" rel="noopener">デモを見る →</a>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">バナー制作</div>
+        <h3 class="work-title">バナー制作サンプル — 4サイズ</h3>
+        <p class="work-desc">728×90 / 300×250 / 320×50 / 160×600 の4サイズをHTML・CSSのみで制作。Figmaからの書き出しにも対応。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / Vercel</li>
+          <li><span>担当</span>デザイン / コーディング / マルチサイズ</li>
+        </ul>
+        <a class="work-link" href="https://banner-demo-shizuku.vercel.app" target="_blank" rel="noopener">デモを見る →</a>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">Web App</div>
+        <h3 class="work-title">押印 — 推し活観測ログ</h3>
+        <p class="work-desc">自分用に作った推し活記録アプリ。水色透明系の世界観で設計。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / JS</li>
+          <li><span>担当</span>設計 / コーディング</li>
+        </ul>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">AI × Figma</div>
+        <h3 class="work-title">界隈カラーシステム</h3>
+        <p class="work-desc">地雷／天使／水色のトークンをMCPで切り替える実験。界隈ごとに世界観が変わる。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>Figma MCP</li>
+          <li><span>担当</span>設計 / 実装</li>
+        </ul>
+      </article>
+      <article class="work-card work-card--wip">
+        <div class="work-tag">つくってる途中</div>
+        <h3 class="work-title">推し活ストーリー自動生成</h3>
+        <p class="work-desc">推しの画像を投げたら界隈っぽいレイアウトに流し込まれる仕組みを実験中。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>n8n × Figma API</li>
+        </ul>
+      </article>
+    </div>
+  </section>
 
-      <section class="hero-card">
-        <div class="hero-copy">
-          <p id="memberRole" class="hero-label">SECRET BLUE</p>
-          <h3 id="memberName" class="hero-name">はうきさん</h3>
-          <p id="memberDescription" class="hero-description"></p>
-        </div>
-        <div class="hero-meta">
-          <div class="meta-box">
-            <span class="meta-label">ログ件数</span>
-            <strong id="logCount">0</strong>
-          </div>
-          <div class="meta-box">
-            <span class="meta-label">最新記録</span>
-            <strong id="lastObserved">まだありません</strong>
-          </div>
-        </div>
-      </section>
+  <section id="contact" class="section">
+    <p class="section-label">contact ♡</p>
+    <h2 class="section-title">ご依頼・ご相談</h2>
+    <p class="contact-copy">
+      初回のやり取りは以下のいずれかからどうぞ。内容を確認後、対応可否と概算をお返しします。
+    </p>
+    <ul class="contact-list">
+      <li>
+        <span class="contact-label">CrowdWorks</span>
+        <span class="contact-text">「しずく」で検索、またはプロフィールURLをお問い合わせください</span>
+      </li>
+      <li>
+        <span class="contact-label">Lancers</span>
+        <span class="contact-text">「しずく」で検索、またはプロフィールURLをお問い合わせください</span>
+      </li>
+      <li>
+        <span class="contact-label">GitHub</span>
+        <a href="https://github.com/saitoh19990720-art" target="_blank" rel="noopener">実装サンプルを見る →</a>
+      </li>
+    </ul>
+  </section>
 
-      <section class="panel-grid">
-        <section class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">Log</p>
-              <h3>記録を追加</h3>
-            </div>
-          </div>
-
-          <form id="logForm" class="log-form">
-            <label class="field">
-              <span>タイトル</span>
-              <input id="logTitle" name="title" type="text" placeholder="例: 配信を見た" required>
-            </label>
-
-            <label class="field">
-              <span>日付</span>
-              <input id="logDate" name="date" type="date" required>
-            </label>
-
-            <label class="field">
-              <span>メモ</span>
-              <textarea id="logMemo" name="memo" rows="5" placeholder="気づいたこと、うれしかったこと、残しておきたいこと"></textarea>
-            </label>
-
-            <button class="primary-button" type="submit">記録を追加する</button>
-            <p id="formMessage" class="form-message" aria-live="polite"></p>
-          </form>
-        </section>
-
-        <section class="panel">
-          <div class="panel-header">
-            <div>
-              <p class="panel-kicker">Timeline</p>
-              <h3>観測記録</h3>
-            </div>
-          </div>
-
-          <input id="logSearch" class="log-search" type="search" placeholder="記録を検索..." aria-label="記録を検索" />
-
-          <div id="emptyState" class="empty-state">
-            <p class="empty-title">まだ観測記録がありません</p>
-            <p class="empty-copy">左の推しを選んで、最初の記録を追加してください。</p>
-          </div>
-
-          <ul id="logList" class="log-list" aria-label="観測記録一覧"></ul>
-        </section>
-      </section>
-    </section>
-  </main>
-
-  <footer class="app-footer">
-    <a href="https://portfolio-sizuku.vercel.app" target="_blank" rel="noopener">Made by Shizuku</a>
+  <footer class="footer">
+    <p class="footer-name">しずく ♡</p>
+    <p class="footer-copy">フリーランスデザイナー ／ 地雷・天使・水色界隈</p>
   </footer>
-  <script src="./app.js"></script>
+
+  <script>
+    (function () {
+      const targets = document.querySelectorAll('.hero, .section, .work-card, .kaiwai-card, .about-card');
+      if (!window.IntersectionObserver) { targets.forEach(el => el.classList.add('is-visible')); return; }
+      const io = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+        { threshold: 0.08 }
+      );
+      targets.forEach(el => io.observe(el));
+    })();
+  </script>
+
 </body>
 </html>

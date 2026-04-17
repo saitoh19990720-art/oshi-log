@@ -34,3 +34,7 @@ desktop.ini
 
 # worktrees (managed by Claude Code)
 .claude/worktrees/
+
+.claude/
+portfolio/
+prompts/
