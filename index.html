@@ -3,7 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>しずく</title>
+  <title>しずく｜界隈デザイン × Figma × AI</title>
+  <meta name="description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="しずく｜界隈デザイン × Figma × AI">
+  <meta property="og:description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+  <meta property="og:url" content="https://oshi-kp3diugpj-sizuku.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="しずく｜界隈デザイン × Figma × AI">
+  <meta name="twitter:description" content="地雷・天使・水色界隈の世界観を言語化して、FigmaとAIでプロダクトに落とし込むフリーランスデザイナー。">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "しずく",
+    "url": "https://oshi-kp3diugpj-sizuku.vercel.app",
+    "jobTitle": "フリーランス デザイナー・フロントエンドエンジニア",
+    "description": "地雷・天使・水色界隈の世界観をFigmaとAIでプロダクトに落とし込むフリーランスです。",
+    "knowsAbout": ["Figma", "HTML", "CSS", "JavaScript", "AI", "MCP", "界隈デザイン", "n8n"],
+    "sameAs": ["https://github.com/saitoh19990720-art"]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Hachi+Maru+Pop&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
@@ -16,7 +39,7 @@
     <ul class="nav-links">
       <li><a href="#about">about</a></li>
       <li><a href="#works">works</a></li>
-      <li><a href="#likes">好きなもの</a></li>
+      <li><a href="#contact">contact</a></li>
     </ul>
   </nav>
 
@@ -31,7 +54,10 @@
       <span>#地雷系</span><span>#天使界隈</span><span>#水色界隈</span>
       <span>#ホビ垢</span><span>#Figma</span><span>#AI</span>
     </div>
-    <a href="#works" class="cta-btn">つくったものを見る ↓</a>
+    <div class="hero-actions">
+      <a href="#contact" class="cta-btn">仕事を依頼する</a>
+      <a href="#works" class="ghost-btn">実績を見る</a>
+    </div>
   </section>
 
   <section id="about" class="section">
@@ -47,6 +73,22 @@
         フリーランスで、自分の世界観と合う仕事をゆるく受けています。
       </p>
     </div>
+
+    <div class="kaiwai-grid">
+      <div class="kaiwai-card" style="--kaiwai-color:#D4A8B8">
+        <span class="kaiwai-label">地雷</span>
+        <span class="kaiwai-desc">黒・くすみピンク・ハート<br>太め丸文字＋病み英字</span>
+      </div>
+      <div class="kaiwai-card" style="--kaiwai-color:#C4B4DC">
+        <span class="kaiwai-label">天使</span>
+        <span class="kaiwai-desc">白・ラベンダー・羽<br>細い手書き＋薄エフェクト</span>
+      </div>
+      <div class="kaiwai-card" style="--kaiwai-color:#A8C4CC">
+        <span class="kaiwai-label">水色</span>
+        <span class="kaiwai-desc">水色・白・泡・透明感<br>丸ゴ＋浮遊感レイアウト</span>
+      </div>
+    </div>
+
     <div class="about-grid">
       <div class="about-card">
         <p class="about-icon">🎀</p>
@@ -71,50 +113,92 @@
     <h2 class="section-title">つくったもの</h2>
     <div class="works-grid">
       <article class="work-card">
-        <div class="work-tag">SNS テンプレ</div>
-        <h3 class="work-title">地雷界隈ストーリーテンプレ</h3>
-        <p class="work-desc">黒×ピンク×ハート構成。Figmaコンポーネントで管理して差し替えだけで量産できるやつ。</p>
-        <span class="work-stack">Figma</span>
+        <div class="work-tag">LPコーディング</div>
+        <h3 class="work-title">Lumière — エステサロン LP（デモ）</h3>
+        <p class="work-desc">美容・エステ系サービスのLPデモ。明朝体＋アースカラーで品のある世界観を設計。SP最適化済み。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / Vercel</li>
+          <li><span>担当</span>デザイン / コーディング / SP最適化</li>
+        </ul>
+        <a class="work-link" href="https://salon-demo-shizuku.vercel.app" target="_blank" rel="noopener">デモを見る →</a>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">バナー制作</div>
+        <h3 class="work-title">バナー制作サンプル — 4サイズ</h3>
+        <p class="work-desc">728×90 / 300×250 / 320×50 / 160×600 の4サイズをHTML・CSSのみで制作。Figmaからの書き出しにも対応。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / Vercel</li>
+          <li><span>担当</span>デザイン / コーディング / マルチサイズ</li>
+        </ul>
+        <a class="work-link" href="https://banner-demo-shizuku.vercel.app" target="_blank" rel="noopener">デモを見る →</a>
+      </article>
+      <article class="work-card">
+        <div class="work-tag">Web App</div>
+        <h3 class="work-title">押印 — 推し活観測ログ</h3>
+        <p class="work-desc">自分用に作った推し活記録アプリ。水色透明系の世界観で設計。</p>
+        <ul class="work-meta">
+          <li><span>スタック</span>HTML / CSS / JS</li>
+          <li><span>担当</span>設計 / コーディング</li>
+        </ul>
       </article>
       <article class="work-card">
         <div class="work-tag">AI × Figma</div>
         <h3 class="work-title">界隈カラーシステム</h3>
         <p class="work-desc">地雷／天使／水色のトークンをMCPで切り替える実験。界隈ごとに世界観が変わる。</p>
-        <span class="work-stack">Figma MCP</span>
-      </article>
-      <article class="work-card">
-        <div class="work-tag">Web App</div>
-        <h3 class="work-title">押印 — 推し活観測ログ</h3>
-        <p class="work-desc">自分用に作った推し活記録アプリ。地雷系フォントとダークな世界観で組んでいます。</p>
-        <span class="work-stack">HTML / CSS / JS</span>
+        <ul class="work-meta">
+          <li><span>スタック</span>Figma MCP</li>
+          <li><span>担当</span>設計 / 実装</li>
+        </ul>
       </article>
       <article class="work-card work-card--wip">
         <div class="work-tag">つくってる途中</div>
         <h3 class="work-title">推し活ストーリー自動生成</h3>
         <p class="work-desc">推しの画像を投げたら界隈っぽいレイアウトに流し込まれる仕組みを実験中。</p>
-        <span class="work-stack">n8n × Figma API</span>
+        <ul class="work-meta">
+          <li><span>スタック</span>n8n × Figma API</li>
+        </ul>
       </article>
     </div>
   </section>
 
-  <section id="likes" class="section">
-    <p class="section-label">好きなもの ♡</p>
-    <h2 class="section-title">すきなこと</h2>
-    <ul class="likes-list">
-      <li><span class="like-icon">🖤</span> 地雷系・天使界隈・水色界隈の世界観</li>
-      <li><span class="like-icon">🎀</span> ホビ垢・推し活・界隈観察</li>
-      <li><span class="like-icon">✦</span> Figmaで設計すること</li>
-      <li><span class="like-icon">🤍</span> AIと話しながらものをつくること</li>
-      <li><span class="like-icon">🌙</span> 夜に作業すること</li>
-      <li><span class="like-icon">🫧</span> 透明感のあるもの・淡い色・泡っぽいデザイン</li>
+  <section id="contact" class="section">
+    <p class="section-label">contact ♡</p>
+    <h2 class="section-title">ご依頼・ご相談</h2>
+    <p class="contact-copy">
+      初回のやり取りは以下のいずれかからどうぞ。内容を確認後、対応可否と概算をお返しします。
+    </p>
+    <ul class="contact-list">
+      <li>
+        <span class="contact-label">CrowdWorks</span>
+        <span class="contact-text">「しずく」で検索、またはプロフィールURLをお問い合わせください</span>
+      </li>
+      <li>
+        <span class="contact-label">Lancers</span>
+        <span class="contact-text">「しずく」で検索、またはプロフィールURLをお問い合わせください</span>
+      </li>
+      <li>
+        <span class="contact-label">GitHub</span>
+        <a href="https://github.com/saitoh19990720-art" target="_blank" rel="noopener">実装サンプルを見る →</a>
+      </li>
     </ul>
   </section>
 
   <footer class="footer">
     <p class="footer-name">しずく ♡</p>
     <p class="footer-copy">フリーランスデザイナー ／ 地雷・天使・水色界隈</p>
-    <p class="footer-note">お仕事のご連絡はDMでどうぞ</p>
   </footer>
+
+  <script>
+    (function () {
+      const targets = document.querySelectorAll('.hero, .section, .work-card, .kaiwai-card, .about-card');
+      if (!window.IntersectionObserver) { targets.forEach(el => el.classList.add('is-visible')); return; }
+      const io = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+        { threshold: 0.08 }
+      );
+      targets.forEach(el => io.observe(el));
+    })();
+  </script>
 
 </body>
 </html>
