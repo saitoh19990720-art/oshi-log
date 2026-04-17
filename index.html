@@ -19,8 +19,23 @@
         <div class="section-title-row">
           <h2 class="section-title">推し一覧</h2>
           <span id="oshiCount" class="count-chip">4人</span>
+          <button id="addOshiBtn" class="add-oshi-btn" type="button" aria-label="推しを追加">＋</button>
         </div>
         <nav id="oshiList" class="oshi-list" aria-label="推し一覧"></nav>
+        <form id="addOshiForm" class="add-oshi-form is-hidden">
+          <input id="newOshiName" type="text" placeholder="推しの名前" maxlength="20" required />
+          <div class="color-swatches">
+            <button type="button" class="swatch is-selected" data-color="#4A86B8" style="background:#4A86B8"></button>
+            <button type="button" class="swatch" data-color="#E8A3BE" style="background:#E8A3BE"></button>
+            <button type="button" class="swatch" data-color="#B88AD8" style="background:#B88AD8"></button>
+            <button type="button" class="swatch" data-color="#7EC8A0" style="background:#7EC8A0"></button>
+            <button type="button" class="swatch" data-color="#E8B87A" style="background:#E8B87A"></button>
+            <button type="button" class="swatch" data-color="#E07A7A" style="background:#E07A7A"></button>
+            <button type="button" class="swatch" data-color="#7AB8E0" style="background:#7AB8E0"></button>
+            <button type="button" class="swatch" data-color="#C8C2BA" style="background:#C8C2BA"></button>
+          </div>
+          <button class="add-oshi-submit" type="submit">追加する</button>
+        </form>
       </section>
     </aside>
 
