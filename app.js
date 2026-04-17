@@ -1,35 +1,28 @@
 const STORAGE_KEY = "oshi-log-records";
+const MEMBERS_KEY = "oshi-log-members";
 
-const members = [
-  {
-    id: "hauki",
-    name: "はうきさん",
-    label: "SECRET BLUE",
-    color: "#4A86B8",
-    description: "青い余韻ごと保存しておきたいときの観測ログ。静かな熱量や、その日の印象を積み上げます。",
-  },
-  {
-    id: "maetor",
-    name: "めーとる",
-    label: "WHITE",
-    color: "#F3F0EB",
-    description: "やわらかい空気や言葉の残り香を記録するためのログ。白は枠線で見やすさを補っています。",
-  },
-  {
-    id: "m",
-    name: "M",
-    label: "PINK",
-    color: "#E8A3BE",
-    description: "きらっと残った瞬間や、あとで読み返したい高まりをまとめるピンクの観測メモです。",
-  },
-  {
-    id: "joker",
-    name: "JOKER",
-    label: "PURPLE",
-    color: "#B88AD8",
-    description: "紫の存在感ごと残していくログ。印象の強い瞬間や気分の振れ幅を書き留められます。",
-  },
+const DEFAULT_MEMBERS = [
+  { id: "hauki", name: "はうきさん", label: "SECRET BLUE", color: "#4A86B8", description: "青い余韻ごと保存しておきたいときの観測ログ。静かな熱量や、その日の印象を積み上げます。" },
+  { id: "maetor", name: "めーとる", label: "WHITE", color: "#F3F0EB", description: "やわらかい空気や言葉の残り香を記録するためのログ。白は枠線で見やすさを補っています。" },
+  { id: "m", name: "M", label: "PINK", color: "#E8A3BE", description: "きらっと残った瞬間や、あとで読み返したい高まりをまとめるピンクの観測メモです。" },
+  { id: "joker", name: "JOKER", label: "PURPLE", color: "#B88AD8", description: "紫の存在感ごと残していくログ。印象の強い瞬間や気分の振れ幅を書き留められます。" },
 ];
+
+function loadMembers() {
+  try {
+    const raw = localStorage.getItem(MEMBERS_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_MEMBERS.slice();
+  } catch {
+    return DEFAULT_MEMBERS.slice();
+  }
+}
+
+function saveMembers() {
+  localStorage.setItem(MEMBERS_KEY, JSON.stringify(members));
+}
+
+let members = loadMembers();
 
 const state = {
   selectedId: members[0].id,
@@ -52,16 +45,68 @@ const formMessage = document.querySelector("#formMessage");
 const logTitleInput = document.querySelector("#logTitle");
 const logDateInput = document.querySelector("#logDate");
 const logMemoInput = document.querySelector("#logMemo");
+const addOshiBtn = document.querySelector("#addOshiBtn");
+const addOshiForm = document.querySelector("#addOshiForm");
+const newOshiName = document.querySelector("#newOshiName");
+const themeToggle = document.querySelector("#themeToggle");
+const logSearch = document.querySelector("#logSearch");
+
+const THEME_KEY = "oshi-log-theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  themeToggle.textContent = theme === "light" ? "🌙" : "☀";
+}
+
+applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+
+themeToggle.addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
+
+logSearch.addEventListener("input", () => {
+  const member = getSelectedMember();
+  if (member) renderLogs(getLogsForMember(member.id), member);
+});
 
 logDateInput.value = new Date().toISOString().slice(0, 10);
 
+let selectedColor = "#4A86B8";
+
+addOshiBtn.addEventListener("click", () => {
+  addOshiForm.classList.toggle("is-hidden");
+  if (!addOshiForm.classList.contains("is-hidden")) {
+    newOshiName.focus();
+  }
+});
+
+addOshiForm.querySelectorAll(".swatch").forEach((swatch) => {
+  swatch.addEventListener("click", () => {
+    addOshiForm.querySelectorAll(".swatch").forEach((s) => s.classList.remove("is-selected"));
+    swatch.classList.add("is-selected");
+    selectedColor = swatch.dataset.color;
+  });
+});
+
+addOshiForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = newOshiName.value.trim();
+  if (!name) return;
+  const id = "oshi_" + Date.now();
+  members.push({ id, name, label: name.toUpperCase(), color: selectedColor, description: "" });
+  saveMembers();
+  state.selectedId = id;
+  newOshiName.value = "";
+  addOshiForm.classList.add("is-hidden");
+  formMessage.textContent = "";
+  render();
+});
+
 function loadLogs() {
   const raw = localStorage.getItem(STORAGE_KEY);
-
-  if (!raw) {
-    return {};
-  }
-
+  if (!raw) return {};
   try {
     const parsed = JSON.parse(raw);
     return parsed && typeof parsed === "object" ? parsed : {};
@@ -75,24 +120,33 @@ function saveLogs() {
 }
 
 function formatDate(value) {
-  if (!value) {
-    return "日付未設定";
-  }
-
-  return new Intl.DateTimeFormat("ja-JP", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(value));
+  if (!value) return "日付未設定";
+  return new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric" }).format(new Date(value));
 }
 
 function getSelectedMember() {
-  return members.find((member) => member.id === state.selectedId) ?? members[0];
+  return members.find((m) => m.id === state.selectedId) ?? members[0];
 }
 
 function getLogsForMember(memberId) {
   const logs = state.logs[memberId];
   return Array.isArray(logs) ? logs : [];
+}
+
+function deleteMember(id) {
+  const logs = getLogsForMember(id);
+  if (logs.length > 0) {
+    const ok = confirm(`記録が ${logs.length} 件あります。推しごと削除しますか？`);
+    if (!ok) return;
+    delete state.logs[id];
+    saveLogs();
+  }
+  members = members.filter((m) => m.id !== id);
+  saveMembers();
+  if (state.selectedId === id) {
+    state.selectedId = members[0]?.id ?? "";
+  }
+  render();
 }
 
 function renderSidebar() {
@@ -104,27 +158,30 @@ function renderSidebar() {
     button.type = "button";
     button.className = "oshi-button";
     button.style.setProperty("--accent-color", member.color);
-    if (member.id === state.selectedId) {
-      button.classList.add("is-active");
-    }
-    if (member.label === "WHITE") {
-      button.classList.add("is-white");
-    }
+    if (member.id === state.selectedId) button.classList.add("is-active");
+    if (member.label === "WHITE") button.classList.add("is-white");
 
     const logs = getLogsForMember(member.id);
     button.innerHTML = `
       <span class="color-dot" aria-hidden="true"></span>
       <span>
-        <span class="oshi-name">${member.name}</span>
-        <span class="oshi-meta">${member.label}</span>
+        <span class="oshi-name">${escapeHtml(member.name)}</span>
+        <span class="oshi-meta">${escapeHtml(member.label)}</span>
       </span>
       <span class="entry-count">${logs.length}</span>
+      <button class="member-delete-btn" type="button" aria-label="${escapeHtml(member.name)}を削除" title="削除">×</button>
     `;
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
+      if (e.target.closest(".member-delete-btn")) return;
       state.selectedId = member.id;
       formMessage.textContent = "";
       render();
+    });
+
+    button.querySelector(".member-delete-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteMember(member.id);
     });
 
     oshiList.appendChild(button);
@@ -133,6 +190,7 @@ function renderSidebar() {
 
 function renderMemberView() {
   const member = getSelectedMember();
+  if (!member) return;
   const logs = getLogsForMember(member.id);
 
   document.documentElement.style.setProperty("--accent-color", member.color);
@@ -148,10 +206,16 @@ function renderMemberView() {
 }
 
 function renderLogs(logs, member) {
-  logList.innerHTML = "";
-  emptyState.classList.toggle("is-hidden", logs.length > 0);
+  const query = logSearch.value.trim().toLowerCase();
+  const filtered = query
+    ? logs.filter((l) => l.title.toLowerCase().includes(query) || (l.memo || "").toLowerCase().includes(query))
+    : logs;
 
-  logs.forEach((log) => {
+  logList.innerHTML = "";
+  emptyState.classList.toggle("is-hidden", filtered.length > 0);
+
+  filtered.forEach((log) => {
+    const originalIndex = logs.indexOf(log);
     const item = document.createElement("li");
     item.className = "log-item";
     item.style.setProperty("--accent-color", member.color);
@@ -161,10 +225,21 @@ function renderLogs(logs, member) {
           <h4 class="log-item-title">${escapeHtml(log.title)}</h4>
           <span class="log-date">${formatDate(log.date)}</span>
         </div>
+        <button class="delete-button" type="button" aria-label="削除" data-index="${originalIndex}">×</button>
       </div>
       <p>${escapeHtml(log.memo || "メモはまだありません。")}</p>
     `;
     logList.appendChild(item);
+  });
+
+  logList.querySelectorAll(".delete-button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.index);
+      const memberId = state.selectedId;
+      state.logs[memberId] = getLogsForMember(memberId).filter((_, i) => i !== idx);
+      saveLogs();
+      render();
+    });
   });
 }
 
@@ -184,7 +259,6 @@ function render() {
 
 logForm.addEventListener("submit", (event) => {
   event.preventDefault();
-
   const title = logTitleInput.value.trim();
   const date = logDateInput.value;
   const memo = logMemoInput.value.trim();
@@ -196,11 +270,7 @@ logForm.addEventListener("submit", (event) => {
 
   const memberId = state.selectedId;
   const nextLogs = getLogsForMember(memberId).slice();
-  nextLogs.unshift({
-    title,
-    date,
-    memo,
-  });
+  nextLogs.unshift({ title, date, memo });
   state.logs[memberId] = nextLogs;
   saveLogs();
 
@@ -208,7 +278,6 @@ logForm.addEventListener("submit", (event) => {
   logMemoInput.value = "";
   logDateInput.value = new Date().toISOString().slice(0, 10);
   formMessage.textContent = `${getSelectedMember().name} の記録を追加しました。`;
-
   render();
 });
 
