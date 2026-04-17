@@ -1,5 +1,5 @@
 :root {
-  --bg:#f8fbff;--surface:#fff;--text:#1f2a37;--muted:#5b6b7a;
+  --bg:#f2f4f6;--surface:#f8f9fa;--text:#1f2a37;--muted:#5b6b7a;
   --line:#d9e6f2;--accent:#a9d6f5;--accent-strong:#6fafd6;
   --shadow:0 8px 24px rgba(31,42,55,.05);--radius:14px;--max-width:1040px;
 }
