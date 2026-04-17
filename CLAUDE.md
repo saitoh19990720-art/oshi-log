@@ -16,6 +16,16 @@ Default stance:
 - do not rewrite unrelated files
 - do not keep carrying irrelevant prior context
 
+Language:
+- always respond in Japanese
+- file output: no emoji unless explicitly requested
+- when user needs to make a choice, ask — do not decide unilaterally
+
+Project context:
+- Shizuku builds LPs and web pages using Figma × Claude Code
+- priority order: 日本案件 → 母艦サイト → Claude運用固定 → n8n最小1本 → 見せる場所
+- async / text-first / no calls required
+
 ---
 
 ## 1. Core operating rules
