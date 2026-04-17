@@ -442,6 +442,9 @@ button {
   }
 }
 
+.log-search{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:9px 14px;color:var(--text);font-size:.9rem;outline:none;margin-bottom:14px;transition:.15s}
+.log-search:focus{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.09)}
+.log-search::placeholder{color:var(--muted)}
 .app-footer{padding:16px 24px;text-align:center;border-top:1px solid var(--border)}
 .app-footer a{font-size:.85rem;color:var(--muted);text-decoration:none}
 .app-footer a:hover{color:var(--text)}
