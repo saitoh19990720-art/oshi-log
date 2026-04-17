@@ -15,12 +15,12 @@ n8n_*.json
 *.dmg
 *.pkg
 
-# images (unless intentional)
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.webp
+# images (root level only — portfolio/ images are tracked)
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+/*.webp
 
 # OS
 .DS_Store
