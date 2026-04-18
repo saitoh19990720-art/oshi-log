@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "aqua-festa",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "demos/aqua-festa"],
+      "autoPort": true
+    }
+  ]
+}
