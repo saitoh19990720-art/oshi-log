@@ -86,3 +86,21 @@ a{color:inherit;text-decoration:none}
   #about .about-pills li{flex-direction:column;gap:6px;padding:16px 18px}
   #about .about-pills li span{min-width:0}
 }
+
+/* ── lineup (lavender accent) ── */
+.section-lavender{background:linear-gradient(180deg,transparent,rgba(196,180,220,.08) 40%,transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.section-lead{color:var(--muted);margin:0 0 40px;max-width:620px}
+.lineup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.lineup-card{padding:28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);backdrop-filter:blur(8px);box-shadow:var(--shadow-soft);position:relative;overflow:hidden;transition:.3s ease}
+.lineup-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--lavender),rgba(196,180,220,.3));opacity:.7}
+.lineup-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+.lineup-role{font-family:var(--f-script);font-weight:700;color:#9d8bc2;font-size:1.05rem;margin:0 0 10px;letter-spacing:.05em}
+.lineup-name{font-family:var(--f-body);font-weight:700;font-size:1.2rem;margin:0 0 12px;color:var(--text)}
+.lineup-name em{font-style:normal;font-weight:400;color:var(--muted);font-size:.95rem;margin-left:6px}
+.lineup-desc{margin:0;color:var(--muted);font-size:.98rem;line-height:1.85}
+.lineup-note{margin:28px 0 0;color:var(--muted);font-size:.88rem;text-align:right}
+
+@media(max-width:640px){
+  .lineup-grid{grid-template-columns:1fr}
+  .lineup-card{padding:22px}
+}
