@@ -17,11 +17,10 @@
 ## 確認URL
 | 用途 | URL |
 |---|---|
-| ポートフォリオ | https://shizuku-portfolio.vercel.app |
-| oshi-log デモ | https://oshi-log-shizuku.vercel.app |
-| Stillwater デモ | https://lp-demo-shizuku.vercel.app |
-| Lumière デモ | https://salon-demo-shizuku.vercel.app |
-| バナーデモ | https://banner-demo-shizuku.vercel.app |
+| ポートフォリオ（母艦） | https://oshi-log-one.vercel.app |
+| Lumière LP デモ | https://salon-demo-sizuku.vercel.app |
+| サービスLP デモ | https://lp-demo-sizuku.vercel.app |
+| バナーデモ | https://banner-demo-sizuku.vercel.app |
 | GitHub | https://github.com/saitoh19990720-art |
 
 ## 次アクション
