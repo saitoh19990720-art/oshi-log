@@ -332,3 +332,11 @@ a { color: inherit; text-decoration: none; }
   .section { padding: 60px 20px; }
   .nav-links { gap: 20px; }
 }
+
+/* Philosophy section */
+#philosophy .philosophy-body{max-width:720px;margin:0 auto;line-height:2}
+#philosophy .philosophy-body p{margin:0 0 1.2em}
+#philosophy .philosophy-list{margin:1em 0 1.6em;padding-left:0;list-style:none}
+#philosophy .philosophy-list li{position:relative;padding:.2em 0 .2em 1.2em}
+#philosophy .philosophy-list li::before{content:"—";position:absolute;left:0;opacity:.55}
+#philosophy strong{font-weight:600}
