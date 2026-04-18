@@ -67,3 +67,22 @@ a{color:inherit;text-decoration:none}
   .hero-actions{flex-direction:column}
   .btn{width:100%}
 }
+
+/* ── sections base ── */
+.section{padding:var(--sp-6) 0}
+.narrow{width:min(100% - 32px,var(--narrow));margin:0 auto}
+.section-en{font-family:var(--f-script);font-weight:700;color:var(--aqua-deep);font-size:1.2rem;letter-spacing:.05em;margin:0 0 12px}
+.section-title{font-family:var(--f-display);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.5;margin:0 0 32px;letter-spacing:.02em}
+
+/* ── about ── */
+#about .about-body{font-size:1.02rem;color:var(--text)}
+#about .about-body p{margin:0 0 1.2em}
+#about .about-pills{list-style:none;padding:0;margin:36px 0 0;display:grid;gap:14px}
+#about .about-pills li{display:flex;gap:18px;align-items:baseline;padding:18px 22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);backdrop-filter:blur(8px);box-shadow:var(--shadow-soft)}
+#about .about-pills li span{font-family:var(--f-script);font-weight:700;color:var(--aqua-deep);min-width:64px;font-size:1.05rem;letter-spacing:.04em}
+
+@media(max-width:640px){
+  .section{padding:var(--sp-5) 0}
+  #about .about-pills li{flex-direction:column;gap:6px;padding:16px 18px}
+  #about .about-pills li span{min-width:0}
+}
