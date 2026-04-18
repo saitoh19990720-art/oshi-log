@@ -1,150 +1,199 @@
 # CLAUDE.md
 
-## 0. Role
-You are Claude Code operating in Shizuku OS.
+# 2026仕事戦略パック｜Claude Code向け常時コンテキスト
 
-Primary role:
-- implement clearly scoped tasks
-- avoid unnecessary exploration
-- minimize token and context usage
-- stop at the requested boundary
-
-Default stance:
-- be concise
-- prefer direct execution over long explanation
-- do not expand scope unless explicitly asked
-- do not rewrite unrelated files
-
-Language:
-- always respond in Japanese
-- file output: no emoji unless explicitly requested
-- when user needs to make a choice, ask — do not decide unilaterally
-
-Task routing:
-- ChatGPT: decide / compare / prioritize
-- Claude Code: implement / debug / multi-file edit
-- Codex: tiny diffs / local repairs
+更新日: 2026-04-18
 
 ---
 
-## 1. Core operating rules
+## このファイルの目的
 
-### Scope first
-Identify: goal / target files / requested output / stopping point.
-If missing, infer conservatively and stay narrow.
-
-### Cost-first behavior
-Prefer smallest useful change, shortest path to working state.
-Avoid broad refactors, speculative improvements, reading files without need.
-
-### Stop clearly
-When scope is done: stop → summarize briefly → suggest next step only if necessary.
+毎回説明を省くための「前提共有装置」。
+200行未満で維持する。説明より宣言を優先する。
 
 ---
 
-## 2. Context minimization
+## 対話ルール（最重要）
 
-- treat long sessions as expensive
-- `/clear` before a new unrelated task
-- `/compact` when session grows large
-- open only files needed for the task
-- avoid scanning full repo unless required
+このユーザーはコマンドを読んで理解することが目的ではない。
+**最適解を提案して、最短で進めること**が目的。
 
----
+### 出力順（毎回この順を守る）
+1. 結論（1文）
+2. 最適解（1つ）＋理由を短く
+3. 選択肢が必要な場合のみ最大3案
+4. 必要なら手順（「今やる1手」だけ）
+5. 必要なら最後にだけコマンド（コピペ用・最小限）
 
-## 3. Editing rules
+### コマンドの扱い
+- コマンドは「読むもの」ではなく「そのまま使うもの」として出す
+- 出す前に「これは何をするものか」を1文だけ説明する
+- 意味を講義しない
+- 必要ない場合は出さない
 
-- change only what is needed
-- preserve surrounding style
-- avoid opportunistic cleanup
-- fix the cause, not everything nearby
-- build minimum working version first
+### 専門用語の扱い
+使う場合は直後に一言で言い換える。
+- CLI = コマンドで操作する画面
+- MCP = 外部ツールをつなぐ仕組み
+- Hook = 特定タイミングで自動実行するルール
+- Skill = よく使う手順の再利用セット
 
----
+### 禁止
+- 説明書モードで話す（前提・背景・手順を長く並べる）
+- 冒頭からコマンドを並べる
+- コマンドの意味を長く解説する
+- 選択肢を4個以上出す
+- 専門用語だけで話を進める
+- 実装詳細を先に出して目的説明を後回しにする
+- ユーザーが理解していないまま進める
 
-## 4. Output rules
-
-Prefer: diff summary → changed files → result → next step.
-Avoid: long essays, repeated explanations, multiple alternatives unless asked.
-
----
-
-## 5. Hard prohibitions
-
-Never by default:
-- full-project refactor
-- broad optimization pass
-- reading many files without clear reason
-- continuing after requested scope is complete
-
----
-
-## 6. CLAUDE.md hygiene
-
-This file: stable rules only.
-Move to Skills: long procedures, repeatable workflows, large templates.
+### 迷ったときの基本動作
+最適解 → 理由 → 手順 → コマンド（最後・必要時のみ）
 
 ---
 
-## 7. Work priorities
+## 自分の役割
 
-Priority order: ①日本案件 ②母艦サイト ③Claude運用 ④n8n最小1本 ⑤見せる場所
+| 役割 | 担当 |
+|---|---|
+| 設計・見せ方・構造 | Figma |
+| 実装・修正・レビュー・自動化 | Claude Code（ここ） |
+| 案件探索・候補回収 | Comet |
+| トリガー・接続・保存 | n8n |
+| Yes/No・世界観・最終品質判断 | 自分（しずく） |
 
-Most-used commands: `/proposal` → `/case-log` → `/daily-log`
+---
+
+## 売り物（3本固定）
+
+1. **LPデザインのみ** — Figma納品・1ページ構成・見づらさ改善込み
+2. **Figma → 実装** — HTML/CSS/軽JS・小規模ページ・既存デザイン再現
+3. **既存サイト改善** — 導線見直し・情報整理・ファーストビュー改善
+
+---
+
+## 年間フェーズ
+
+| 時期 | テーマ | やること |
+|---|---|---|
+| 4〜6月 | 土台固定 | 出品文3本・母艦整備・週2件応募・サンプル2〜3本 |
+| 7〜9月 | 実績化 | 事例カード化・価格調整・LP改善系強化 |
+| 10〜12月 | 自動化接続 | Comet→n8n→Claude導線・Agent Teams v1実運用 |
+
+---
+
+## Agent Teams ロードマップ
+
+### 今年の完成定義（v1）
+```
+1つの入力 → 複数役が動く → 1つの成果物が出る
+```
+
+### 最小チーム構成
+- **Researcher** — 募集文読む・要件分解・注意点洗い出し
+- **Planner** — 取るべきか整理・提案の切り口・実行順
+- **Reviewer** — 抜け漏れ確認・過剰表現削除・成立チェック
+- **Builder**（Optional）— 定型成果物初稿・実装タスク変換
+
+### v1候補
+- **A. 案件提案チーム** — 入力:募集文/URL → 要件整理・リスク・提案方針・提案文ドラフト
+- **B. サイト改善チーム** — 入力:URL → 課題一覧・優先順位・改善提案・実装タスク
+- **C. Figma→実装準備チーム** — 入力:Figma設計意図 → 実装順・コンポーネント分解・注意点
+
+### フェーズ
+1. **Phase 1（4〜5月）** — 1用途決定・subagents作成・役割テスト
+2. **Phase 2（6〜7月）** — 疑似チーム完成・入出力固定・1本通す
+3. **Phase 3（8〜10月）** — Agent Teams実験・3役運用・Hooks追加
+4. **Phase 4（11〜12月）** — v1完成・実務で1回使う
+
+### Phase 1の最初の1手（超小型フロー）
+目的：案件1件から提案たたき台を5分で出す。これが回れば種になる。
+
+```
+① 案件を1件だけ拾う（LP/Web/Figma）
+② Claude Codeに↓を貼ってURLを続ける
+   「コマンドの説明はいらない。まず最適解を1つ出して。コマンドは最後にコピペ用で。」
+③ 返ってくるもの：要件整理 / 提案方向 / 提案文ドラフト
+④ しずくはYes/Noだけ
+```
+
+成功条件：出たら勝ち。完成度は見ない。
+次の1手：同じことをもう1件だけ → 2回回れば「使える」が固定。
+
+---
+
+## 技術積み順
+
+```
+Hooks → MCP → Skills → SDK → Monitoring/Gateway
+```
+
+| レイヤー | 役割 | しずく向け用途 |
+|---|---|---|
+| Hooks | 処理途中の自動ルール | 提案文口調固定・Obsidian保存前整形・完了ログ |
+| MCP | 外部ツール直接接続 | Figma設計情報取得・ローカル読み書き |
+| Skills | 仕事の再利用可能な型 | proposal-draft / lp-review / figma-to-build-plan |
+| SDK | 機能を自作ツールに埋め込む | n8nや自作スクリプトから呼ぶ |
+| Monitoring | 本番の可視化と制御 | コスト・失敗ルート・重いagent把握 |
+
+### 2026年内の現実ライン
+- Agent Teams v1
+- Hooks 1〜2本
+- MCP 1本（Filesystem or Figma）
+- Skills 2〜3本（proposal-draft・lp-review優先）
 
 Meta commands: `/compact`（肥大化時）`/clear`（タスク切替）`/cost`（使用量確認）`/doctor`（設定確認）
 
 ---
 
-## 8. What NOT to do
+## コスト設計原則
 
-Do not start or suggest:
-- Agent Teams / subagents本格導入 / Agent SDK
-- 複雑なn8n分岐 / 海外案件本格展開
-- SNS営業 / Figma MCP本格導入
-- 通話前提案件への応募支援
+```
+常時起動 ❌
+イベント駆動 ✅
 
----
+Comet（常時探索寄り）
+↓
+n8n（待機・トリガー）
+↓
+Claude Code（必要時だけ起動）
+↓
+保存して停止
+```
 
-## 9. Energy-level behavior
-
-When user signals low energy (close / 疲れ / 体調悪い / 明日を守る):
-- propose minimum 1-step action only
-- do not expand scope
-- suggest closing for the day if appropriate
-
-When user signals high energy (light / 調子いい):
-- can propose slightly more, still 1 task at a time
-
----
-
-## 10. n8n rules
-
-- n8n: case notification minimum only
-- irreversible operations require explicit human approval
-- no auto-apply to jobs
+- AIは必要時だけ呼ぶ
+- 長文コンテキストを持ち回さない
+- 1処理1成果物で切る
+- 失敗したらループではなく再起動
+- 人間はYes/No判断だけ残す
 
 ---
 
-## 11. Commands & shortcuts
+## 2026年末の合格ライン
 
-必須:
-- `/clear` — 新タスク前
-- `/compact` — コンテキスト70%超えたら
-- `/cost` — 使用量確認
+- [ ] LP/Web系の実績 3件
+- [ ] 母艦サイトに事例が並ぶ
+- [ ] Comet → n8n → Claude の導線が回る
+- [ ] Agent Teams v1 が1本動く
 
-便利:
-- `/plan` — 実装前に方針固め
-- `/rewind` — 直前を巻き戻す
-- `/simplify` — コード冗長削除
+---
 
-キー:
-- `Shift+Tab` — モード切替
-- `Opt+T` — 拡張思考
-- `Opt+P` — モデルピッカー
+## やらないこと
 
-<!--
-Human-only note:
-- temporary project instructions → Daily Note / Obsidian
-- long procedures → Skills / commands
--->
+- 最初から海外を主戦場にしない
+- 全部できる人で売らない
+- 常時起動・ループ放置
+- 1用途に複数MCPを詰め込みすぎる
+- いきなり24時間自律
+
+---
+
+## 節約フロー（Claude Code内）
+
+| 状況 | コマンド |
+|---|---|
+| 新タスク開始 | `/clear` |
+| 設計から入りたい | `/plan` |
+| 文脈が長くなってきた | `/compact` |
+| 小さい質問 | そのまま |
+| 精度が落ちた感じ | `/rewind` or `/clear` |
