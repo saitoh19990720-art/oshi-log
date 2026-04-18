@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg1" cx="15%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#c8dce3" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#eef6f8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg2" cx="100%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#e0ccd8" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#eef6f8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bg3" cx="50%" cy="110%" r="60%">
+      <stop offset="0%" stop-color="#d4c4dc" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#eef6f8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#eef6f8"/>
+  <rect width="1200" height="630" fill="url(#bg1)"/>
+  <rect width="1200" height="630" fill="url(#bg2)"/>
+  <rect width="1200" height="630" fill="url(#bg3)"/>
+
+  <text x="600" y="200" text-anchor="middle" font-family="'Dancing Script', cursive" font-size="58" fill="#6d9ba6" font-weight="700" letter-spacing="2">aqua festa 2026</text>
+
+  <text x="600" y="310" text-anchor="middle" font-family="'Cherry Bomb One', sans-serif" font-size="84" fill="#1e3a44">推しに出会った日の、</text>
+  <text x="600" y="410" text-anchor="middle" font-family="'Cherry Bomb One', sans-serif" font-size="84" fill="#6d9ba6">空気をもう一度。</text>
+
+  <text x="600" y="500" text-anchor="middle" font-family="sans-serif" font-size="26" fill="#6b8590">推し活カルチャーに捧ぐ一日 ／ 2026.10.18 sun ／ Tokyo</text>
+
+  <text x="600" y="580" text-anchor="middle" font-family="'Dancing Script', cursive" font-size="30" fill="#d4a8b8" font-weight="700">好きを、ちゃんと持っていける場所。</text>
+</svg>
