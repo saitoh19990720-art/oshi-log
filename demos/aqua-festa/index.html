@@ -219,6 +219,58 @@
         </div>
       </div>
     </section>
+
+    <section class="section section-apply" id="apply">
+      <div class="container narrow">
+        <p class="section-en apply-en">apply</p>
+        <h2 class="section-title apply-title">あなたの"好き"を、<br>連れてきてください。</h2>
+        <p class="apply-lead">
+          申し込みはメールまたは公式X DMから受付中。<br>
+          チケット種別・代表者名・参加人数をお知らせください。
+        </p>
+        <form class="apply-form" onsubmit="event.preventDefault();alert('デモLPのため送信は行われません。');">
+          <label class="apply-field">
+            <span>お名前</span>
+            <input type="text" name="name" required placeholder="しずく">
+          </label>
+          <label class="apply-field">
+            <span>メール</span>
+            <input type="email" name="email" required placeholder="you@example.com">
+          </label>
+          <label class="apply-field">
+            <span>チケット</span>
+            <select name="ticket" required>
+              <option value="">選んでください</option>
+              <option>1day pass</option>
+              <option>goods set pass</option>
+              <option>letter pass</option>
+            </select>
+          </label>
+          <label class="apply-field apply-field--full">
+            <span>参加人数</span>
+            <input type="number" name="count" min="1" max="4" value="1" required>
+            <small>最大4名まで</small>
+          </label>
+          <label class="apply-field apply-field--full">
+            <span>ひとこと<small>（任意）</small></span>
+            <textarea name="message" rows="3" placeholder="推しのこと、好きなもの、気分でどうぞ。"></textarea>
+          </label>
+          <button class="btn btn-primary apply-submit" type="submit">申し込む</button>
+        </form>
+        <p class="apply-footer">
+          送信後、3営業日以内に確認メールを返します。<br>
+          迷惑メールフォルダもご確認ください。
+        </p>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-logo">aqua festa 2026</p>
+      <p class="footer-tag">好きを、ちゃんと持っていける場所。</p>
+      <p class="footer-copy">© 2026 aqua festa — demo by Shizuku</p>
+    </div>
+  </footer>
 </body>
 </html>

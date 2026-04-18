@@ -157,3 +157,32 @@ a{color:inherit;text-decoration:none}
   .access-info,.access-notes{padding:24px 22px}
   .access-list div{grid-template-columns:1fr;gap:4px}
 }
+
+/* ── apply (aqua-deep・強めクロージング) ── */
+.section-apply{padding:var(--sp-6) 0 calc(var(--sp-6) + 20px);background:linear-gradient(180deg,transparent,rgba(168,196,204,.18))}
+.apply-en{color:var(--aqua-deep)}
+.apply-title{color:var(--text);text-align:center;margin-bottom:22px}
+.apply-lead{text-align:center;color:var(--muted);margin:0 0 44px}
+.apply-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:36px 32px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-l);backdrop-filter:blur(10px);box-shadow:var(--shadow-soft)}
+.apply-field{display:flex;flex-direction:column;gap:8px;font-size:.95rem}
+.apply-field--full{grid-column:1/-1}
+.apply-field span{font-family:var(--f-script);font-weight:700;color:var(--aqua-deep);letter-spacing:.04em;font-size:1rem}
+.apply-field span small{font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:.85rem;margin-left:4px}
+.apply-field input,.apply-field select,.apply-field textarea{font-family:inherit;font-size:1rem;color:var(--text);padding:12px 14px;border:1px solid var(--border);border-radius:var(--r-s);background:rgba(255,255,255,.85);transition:.2s ease}
+.apply-field input:focus,.apply-field select:focus,.apply-field textarea:focus{outline:none;border-color:var(--aqua-deep);box-shadow:0 0 0 3px rgba(109,155,166,.18)}
+.apply-field textarea{resize:vertical;min-height:80px}
+.apply-field small{color:var(--muted);font-size:.82rem}
+.apply-submit{grid-column:1/-1;margin-top:10px}
+.apply-footer{text-align:center;color:var(--muted);font-size:.88rem;margin:28px 0 0;line-height:1.9}
+
+/* ── footer ── */
+.site-footer{padding:var(--sp-5) 0 var(--sp-4);border-top:1px solid var(--border);background:rgba(255,255,255,.35)}
+.footer-inner{text-align:center}
+.footer-logo{font-family:var(--f-display);font-weight:400;font-size:1.5rem;color:var(--aqua-deep);margin:0 0 10px;letter-spacing:.02em}
+.footer-tag{font-family:var(--f-script);color:var(--pink);font-size:1.1rem;margin:0 0 18px}
+.footer-copy{margin:0;color:var(--muted);font-size:.85rem}
+
+@media(max-width:640px){
+  .apply-form{grid-template-columns:1fr;padding:28px 22px}
+  .apply-title{font-size:1.5rem}
+}
