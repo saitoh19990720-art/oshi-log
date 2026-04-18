@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>バナー・CSSアニメーション集 | しずく</title>
+  <meta name="description" content="HTML/CSSのみで制作したバナーとCSSアニメーションのサンプル集。SNS告知・キャンペーン用途に対応。" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title">Banner & CSS Animation</h1>
+      <p class="site-sub">HTML / CSS のみで制作したサンプル集</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SECTION: SNS正方形 -->
+    <section class="gallery-section">
+      <div class="container">
+        <p class="sec-label">SNS 正方形バナー（1:1）</p>
+        <div class="banner-row">
+
+          <!-- 界隈系 -->
+          <div class="banner-wrap">
+            <div class="banner sq kawaii">
+              <div class="kw-noise"></div>
+              <span class="kw-sub">New Arrival</span>
+              <p class="kw-title">地雷系<br /><em>新作入荷</em></p>
+              <span class="kw-date">04.18 — 04.30</span>
+            </div>
+            <p class="banner-caption">界隈系 / 1:1 / 薔薇×天使</p>
+          </div>
+
+          <!-- ミニマル -->
+          <div class="banner-wrap">
+            <div class="banner sq minimal">
+              <div class="mn-line mn-top"></div>
+              <div class="mn-line mn-bottom"></div>
+              <p class="mn-en">SPRING<br />SALE</p>
+              <p class="mn-ja">春の特別セール</p>
+              <p class="mn-rate">— 30% OFF —</p>
+            </div>
+            <p class="banner-caption">ミニマル / 1:1 / モノクロ</p>
+          </div>
+
+          <!-- サロン系 -->
+          <div class="banner-wrap">
+            <div class="banner sq salon">
+              <div class="sl-bg"></div>
+              <p class="sl-sub">Limited</p>
+              <p class="sl-title">初回<br />トライアル</p>
+              <p class="sl-price">¥ 3,000</p>
+              <p class="sl-note">通常¥8,000のところ</p>
+            </div>
+            <p class="banner-caption">サロン系 / 1:1 / ゴールド</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: 横長バナー -->
+    <section class="gallery-section">
+      <div class="container">
+        <p class="sec-label">横長バナー（16:5 相当）</p>
+        <div class="banner-col">
+
+          <div class="banner-wrap wide-wrap">
+            <div class="banner wide kawaii-wide">
+              <div class="kw-noise"></div>
+              <div class="kww-text">
+                <span class="kww-sub">Meurtre en Rose</span>
+                <p class="kww-title">薔薇色の殺意と、天使の祈りで。</p>
+              </div>
+              <div class="kww-deco">✝</div>
+            </div>
+            <p class="banner-caption">界隈系 / 横長 / ヘッダービジュアル想定</p>
+          </div>
+
+          <div class="banner-wrap wide-wrap">
+            <div class="banner wide minimal-wide">
+              <div class="mw-left">
+                <p class="mw-tag">EVENT</p>
+                <p class="mw-title">Spring<br /><em>Collection</em></p>
+              </div>
+              <div class="mw-right">
+                <p class="mw-date">2026.04.18 — 05.10</p>
+                <p class="mw-desc">新作をまとめて公開。<br />期間限定の特別価格でお届けします。</p>
+              </div>
+            </div>
+            <p class="banner-caption">ミニマル / 横長 / イベント告知</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: CSSアニメーション -->
+    <section class="gallery-section">
+      <div class="container">
+        <p class="sec-label">CSS アニメーション</p>
+        <div class="anim-grid">
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-pulse">
+              <div class="pulse-circle"></div>
+              <p>Pulse</p>
+            </div>
+            <p class="banner-caption">Pulse（呼吸するCTA）</p>
+          </div>
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-shimmer">
+              <div class="shimmer-bar">ローディング中...</div>
+            </div>
+            <p class="banner-caption">Shimmer（スケルトン）</p>
+          </div>
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-float">
+              <div class="float-card">
+                <span>✦</span>
+                <p>Float</p>
+              </div>
+            </div>
+            <p class="banner-caption">Float（ホバー浮遊）</p>
+          </div>
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-gradient">
+              <div class="grad-box">Gradient</div>
+            </div>
+            <p class="banner-caption">Gradient Shift（背景流動）</p>
+          </div>
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-typewriter">
+              <p class="typewriter">しずくのデザイン</p>
+            </div>
+            <p class="banner-caption">Typewriter（テキスト）</p>
+          </div>
+
+          <div class="anim-wrap">
+            <div class="anim-demo anim-border">
+              <div class="border-btn">ボタン</div>
+            </div>
+            <p class="banner-caption">Border Draw（ホバー枠）</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© しずく制作デモ — HTML / CSS のみで実装</p>
+  </footer>
+
+</body>
+</html>
