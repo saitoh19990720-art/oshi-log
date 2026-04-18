@@ -117,3 +117,23 @@ a{color:inherit;text-decoration:none}
   #highlight .highlight-item{padding:22px;gap:16px}
   #highlight .highlight-num{font-size:1.8rem;min-width:44px}
 }
+
+/* ── ticket (pink accent) ── */
+.section-pink{background:linear-gradient(180deg,transparent,rgba(212,168,184,.08) 40%,transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ticket-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.ticket-card{padding:32px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);backdrop-filter:blur(8px);box-shadow:var(--shadow-soft);display:flex;flex-direction:column;transition:.3s ease}
+.ticket-card::before{content:"";position:absolute}
+.ticket-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.ticket-card--recommend{border-color:rgba(212,168,184,.55);background:linear-gradient(180deg,rgba(255,247,250,.9),var(--surface));position:relative}
+.ticket-card--recommend::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--pink),#e8c8d4);border-radius:var(--r-m) var(--r-m) 0 0}
+.ticket-tag{font-family:var(--f-script);font-weight:700;color:#b4869a;font-size:1.05rem;letter-spacing:.05em;margin:0 0 10px}
+.ticket-name{font-family:var(--f-display);font-weight:400;font-size:1.5rem;margin:0 0 14px;color:var(--text);letter-spacing:.02em}
+.ticket-price{font-family:var(--f-body);font-weight:700;font-size:2.2rem;color:var(--aqua-deep);margin:0 0 22px;line-height:1}
+.ticket-price span{font-size:1.1rem;color:var(--muted);font-weight:400;margin-right:4px;vertical-align:top}
+.ticket-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.ticket-list li{position:relative;padding-left:18px;color:var(--muted);font-size:.95rem;line-height:1.7}
+.ticket-list li::before{content:"♡";position:absolute;left:0;color:var(--pink);font-size:.9rem;top:4px}
+.ticket-note{margin:28px 0 0;color:var(--muted);font-size:.88rem;text-align:right}
+
+@media(max-width:900px){.ticket-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.ticket-card{padding:26px 22px}}
