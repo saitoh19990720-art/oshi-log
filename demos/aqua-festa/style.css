@@ -1,0 +1,69 @@
+:root {
+  --bg:#eef6f8;--surface:rgba(255,255,255,.72);--surface-2:rgba(255,255,255,.55);
+  --border:rgba(168,196,204,.45);--text:#1e3a44;--muted:#6b8590;
+  --aqua:#a8c4cc;--aqua-deep:#6d9ba6;--pink:#d4a8b8;--lavender:#c4b4dc;--beige:#d8c8b4;
+  --f-display:"Cherry Bomb One","Hachi Maru Pop",sans-serif;
+  --f-body:"Hachi Maru Pop","M PLUS Rounded 1c",sans-serif;
+  --f-script:"Dancing Script",cursive;
+  --sp-1:8px;--sp-2:16px;--sp-3:24px;--sp-4:40px;--sp-5:64px;--sp-6:96px;
+  --r-s:10px;--r-m:18px;--r-l:28px;
+  --shadow-soft:0 10px 30px rgba(109,155,166,.14);
+  --shadow-lift:0 16px 40px rgba(109,155,166,.22);
+  --max-w:1040px;--narrow:760px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--f-body);color:var(--text);line-height:1.9;
+  background:
+    radial-gradient(900px 500px at 12% -6%, rgba(168,196,204,.35), transparent 60%),
+    radial-gradient(800px 460px at 108% 22%, rgba(196,180,220,.22), transparent 60%),
+    radial-gradient(700px 420px at 50% 118%, rgba(212,168,184,.18), transparent 60%),
+    var(--bg);
+  overflow-x:hidden;position:relative;
+}
+a{color:inherit;text-decoration:none}
+.container{width:min(100% - 32px,var(--max-w));margin:0 auto;position:relative;z-index:1}
+
+/* ── header ── */
+.site-header{position:sticky;top:0;z-index:20;background:rgba(238,246,248,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.header-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--f-script);font-weight:700;font-size:1.5rem;color:var(--aqua-deep);letter-spacing:.02em}
+.nav{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.nav a{color:var(--muted);font-size:.95rem;transition:color .25s}
+.nav a:hover{color:var(--aqua-deep)}
+.nav-cta{padding:8px 18px;border:1px solid var(--aqua);border-radius:999px;color:var(--aqua-deep)!important}
+.nav-cta:hover{background:var(--aqua);color:#fff!important}
+
+/* ── hero ── */
+.hero{position:relative;padding:120px 0 110px;overflow:hidden}
+.mood-en{position:absolute;font-family:var(--f-script);font-weight:700;font-size:clamp(7rem,18vw,15rem);color:rgba(109,155,166,.08);pointer-events:none;z-index:0;white-space:nowrap;top:4%;left:-3%}
+.mood-en-2{top:auto;left:auto;bottom:-4%;right:-5%;color:rgba(212,168,184,.10)}
+.hero-inner{max-width:720px}
+.hero-en{font-family:var(--f-script);font-weight:700;color:var(--aqua-deep);font-size:1.35rem;margin:0 0 18px;letter-spacing:.04em}
+.hero-title{font-family:var(--f-display);font-weight:400;font-size:clamp(2.2rem,5.4vw,3.8rem);line-height:1.45;margin:0 0 26px;letter-spacing:.02em}
+.hero-accent{color:var(--aqua-deep)}
+.hero-lead{margin:0 0 36px;color:var(--muted);font-size:1.05rem}
+.hero-meta{display:flex;gap:var(--sp-4);flex-wrap:wrap;margin:0 0 40px;padding:22px 26px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-m);backdrop-filter:blur(8px);box-shadow:var(--shadow-soft)}
+.hero-meta div{display:flex;flex-direction:column;gap:2px}
+.hero-meta dt{font-family:var(--f-script);color:var(--aqua-deep);font-size:1.05rem;font-weight:700;margin:0}
+.hero-meta dd{margin:0;font-size:1rem;color:var(--text)}
+.hero-meta dd span{font-family:var(--f-script);color:var(--pink);margin-left:4px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;border-radius:999px;font-family:inherit;font-weight:400;border:1px solid var(--border);transition:.25s ease;background:rgba(255,255,255,.6);backdrop-filter:blur(6px)}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-soft)}
+.btn-primary{background:var(--aqua-deep);border-color:var(--aqua-deep);color:#fff}
+.btn-primary:hover{background:#5a8a95;border-color:#5a8a95}
+.btn-ghost{color:var(--text)}
+
+/* ── responsive ── */
+@media(max-width:900px){.nav{gap:14px;font-size:.9rem}}
+@media(max-width:640px){
+  .header-inner{min-height:64px}
+  .logo{font-size:1.3rem}
+  .nav{display:none}
+  .hero{padding:80px 0 72px}
+  .hero-meta{flex-direction:column;gap:14px;padding:20px}
+  .hero-actions{flex-direction:column}
+  .btn{width:100%}
+}
