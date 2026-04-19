@@ -1,210 +1,204 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>しずく | AIとデザインでLP・Webページ制作</title>
-  <meta name="description" content="Figmaで設計し、Claude Codeで実装まで。設計から実装まで一気通貫で対応するフリーランス制作者。" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sizuku | LP制作・Figma実装・サイト改善</title>
+  <meta name="description" content="界隈系・女性向けWebデザイン制作。Figma設計からHTML/CSS実装まで一貫対応。通話不要・テキストベース。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header class="site-header">
     <div class="header-inner">
-      <span class="header-logo">しずく</span>
-      <nav class="header-nav">
-        <a href="#services">できること</a>
-        <a href="#flow">流れ</a>
-        <a href="#samples">サンプル</a>
-        <a href="#contact">相談</a>
-      </nav>
+      <a href="#" class="logo">sizuku</a>
+      <a href="https://portfolio-sizuku.vercel.app" target="_blank" class="header-link">portfolio →</a>
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- hero -->
   <section class="hero">
-    <div class="container hero-inner">
-      <p class="eyebrow">LP制作 / Webページ制作 / Figma設計</p>
-      <h1>AIとデザインで、<br /><em>伝わるLP・Webページ</em><br />をつくります。</h1>
-      <p class="hero-text">
-        Figmaで設計し、Claude Codeで実装までつなげながら、<br />
-        見やすく、崩れにくく、あとから直しやすいページを制作します。<br />
-        「どう見せるか」から「どう動かすか」まで一気通貫で考えます。
+    <div class="hero-inner">
+      <p class="hero-sub fade">LP制作 / Figma実装 / サイト改善</p>
+      <h1 class="hero-title fade">
+        界隈系・女性向けの<br>
+        <em>Webデザイン制作</em>
+      </h1>
+      <p class="hero-body fade">
+        Figma設計からHTML/CSS実装まで一貫対応。<br>
+        通話不要・テキストベース・非同期で進めます。
       </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#samples">制作サンプルを見る</a>
-        <a class="btn btn-secondary" href="#contact">相談する</a>
+      <div class="hero-badges fade">
+        <span class="badge">地雷 / 天使 / 水色界隈</span>
+        <span class="badge">通話不要</span>
+        <span class="badge">スマホ対応込み</span>
       </div>
     </div>
   </section>
 
-  <!-- SERVICES -->
-  <section id="services" class="section section-soft fade-in">
-    <div class="container">
-      <p class="section-label">Services</p>
-      <h2 class="section-heading">できること</h2>
-      <div class="service-grid">
-        <article class="service-card">
-          <span class="service-icon">🗂</span>
-          <h3>LPデザイン</h3>
-          <p>読みやすさ・導線・スマホ表示を意識した1ページ構成を設計します。</p>
-        </article>
-        <article class="service-card">
-          <span class="service-icon">🌐</span>
-          <h3>Webページ制作</h3>
-          <p>小規模サイトや紹介ページを、シンプルで見やすく整えます。</p>
-        </article>
-        <article class="service-card">
-          <span class="service-icon">✦</span>
-          <h3>Figmaから実装</h3>
-          <p>デザインの意図を汲み取りながら、HTML/CSSベースで形にします。</p>
-        </article>
-        <article class="service-card">
-          <span class="service-icon">🔧</span>
-          <h3>既存ページの整理・改善</h3>
-          <p>情報の順番・余白・見せ方を調整して、伝わりやすく整えます。</p>
-        </article>
-      </div>
-    </div>
-  </section>
+  <!-- services -->
+  <section class="services" id="services">
+    <div class="services-inner">
+      <div class="section-label fade">services</div>
 
-  <!-- FIT -->
-  <section class="fit section fade-in">
-    <div class="container narrow">
-      <p class="section-label">For</p>
-      <h2 class="section-heading">こんな依頼に向いています</h2>
-      <ul class="fit-list">
-        <li>デザインと実装を分けずに相談したい</li>
-        <li>非同期で落ち着いて進めたい</li>
-        <li>派手すぎないけれど、今っぽく整えたい</li>
-        <li>スマホでも見やすいページを作りたい</li>
-        <li>AIを使いながらも、雑ではない仕上がりにしたい</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- FLOW -->
-  <section id="flow" class="flow section section-soft fade-in">
-    <div class="container">
-      <p class="section-label">Flow</p>
-      <h2 class="section-heading">制作の流れ</h2>
-      <div class="flow-list">
-        <div class="flow-item">
-          <span class="flow-num">01</span>
-          <div>
-            <h3>目的と情報を整理</h3>
-            <p>何を伝えたいか、誰に届けたいかをテキストで確認します。</p>
+      <div class="service-card fade">
+        <div class="service-num">01</div>
+        <div class="service-body">
+          <h2 class="service-title">LP制作<br><span class="service-sub">デザイン〜コーディング一貫</span></h2>
+          <p class="service-desc">
+            Figmaで設計し、HTML/CSS/JSで実装。Vercel公開まで込み。<br>
+            「界隈っぽい」「かわいい」「高級感がある」など、雰囲気オーダーOK。
+          </p>
+          <ul class="service-list">
+            <li>1ページ構成のLP（トップ〜CTAまで）</li>
+            <li>Figmaワイヤー〜デザイン設計</li>
+            <li>HTML / CSS / JS 実装・Vercel公開</li>
+            <li>スマホ最適化込み</li>
+          </ul>
+          <div class="service-price">
+            <span class="price-label">デザインのみ</span><span class="price-val">¥15,000〜</span>
+            <span class="price-label">デザイン＋実装</span><span class="price-val">¥25,000〜</span>
           </div>
         </div>
-        <div class="flow-item">
-          <span class="flow-num">02</span>
-          <div>
-            <h3>構成を設計</h3>
-            <p>Figmaでレイアウト・セクション順・情報設計を組みます。</p>
-          </div>
-        </div>
-        <div class="flow-item">
-          <span class="flow-num">03</span>
-          <div>
-            <h3>デザイン・実装</h3>
-            <p>HTML/CSS/JSで実装し、Vercelで確認できる状態にします。</p>
-          </div>
-        </div>
-        <div class="flow-item">
-          <span class="flow-num">04</span>
-          <div>
-            <h3>修正・納品</h3>
-            <p>テキストで認識を揃えながら仕上げ、公開できる形でお渡しします。</p>
-          </div>
+        <div class="service-demo">
+          <a href="https://lp-demo-kaiwai.vercel.app" target="_blank" class="demo-link">地雷×天使デモ →</a>
+          <a href="https://lp-mizuiro.vercel.app" target="_blank" class="demo-link">水色界隈デモ →</a>
+          <a href="https://lp-cosme.vercel.app" target="_blank" class="demo-link">コスメブランドデモ →</a>
         </div>
       </div>
+
+      <div class="service-card fade">
+        <div class="service-num">02</div>
+        <div class="service-body">
+          <h2 class="service-title">Figma → 実装<br><span class="service-sub">コーディングのみ</span></h2>
+          <p class="service-desc">
+            デザインはできているけど実装が難しい方へ。<br>
+            FigmaリンクをいただければHTML/CSS/JSで実装します。
+          </p>
+          <ul class="service-list">
+            <li>Figmaデータを元にHTML/CSS実装</li>
+            <li>スマホ・タブレット対応（レスポンシブ）</li>
+            <li>CSSアニメーション・ホバーエフェクト対応</li>
+            <li>Vercel公開まで含む</li>
+          </ul>
+          <div class="service-price">
+            <span class="price-label">1〜3セクション</span><span class="price-val">¥8,000〜</span>
+            <span class="price-label">1ページ全体</span><span class="price-val">¥15,000〜</span>
+          </div>
+        </div>
+        <div class="service-demo">
+          <a href="https://salon-demo-sizuku.vercel.app" target="_blank" class="demo-link">サロンLPデモ →</a>
+          <a href="https://lp-demo-sizuku.vercel.app" target="_blank" class="demo-link">訪問看護LPデモ →</a>
+        </div>
+      </div>
+
+      <div class="service-card fade">
+        <div class="service-num">03</div>
+        <div class="service-body">
+          <h2 class="service-title">既存サイト改善<br><span class="service-sub">デザイン改善・修正</span></h2>
+          <p class="service-desc">
+            「なんか見づらい」「離脱が多い」「古くなった」——<br>
+            サイトURLをいただければ、問題点を整理して修正します。
+          </p>
+          <ul class="service-list">
+            <li>ファーストビューの情報整理・視線誘導改善</li>
+            <li>CTAボタンの配置・文言見直し</li>
+            <li>フォント・余白・配色の調整</li>
+            <li>SP表示崩れの修正</li>
+          </ul>
+          <div class="service-price">
+            <span class="price-label">小修正（1〜3箇所）</span><span class="price-val">¥3,000〜</span>
+            <span class="price-label">全体改修</span><span class="price-val">¥10,000〜</span>
+          </div>
+        </div>
+        <div class="service-demo">
+          <a href="https://banner-demo-sizuku.vercel.app" target="_blank" class="demo-link">CSS改善サンプル →</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- SAMPLES -->
-  <section id="samples" class="samples section fade-in">
-    <div class="container">
-      <p class="section-label">Samples</p>
-      <h2 class="section-heading">制作サンプル</h2>
-      <div class="sample-grid">
-        <a class="sample-card" href="https://oshi-log-one.vercel.app/aqua-festa/" target="_blank" rel="noopener">
-          <div class="sample-img sample-img-04">
-            <span class="sample-tag">推し活イベントLP</span>
+  <!-- flow -->
+  <section class="flow" id="flow">
+    <div class="flow-inner">
+      <div class="section-label fade">flow</div>
+      <h2 class="flow-title fade">進め方</h2>
+      <div class="flow-steps">
+        <div class="flow-step fade">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>ヒアリング</h3>
+            <p>テキストで要件を確認。通話なし。</p>
           </div>
-          <div class="sample-info">
-            <h3>aqua festa 2026</h3>
-            <p>水色透明系の推し活イベントLP。7セクション・フォーム付き。</p>
+        </div>
+        <div class="flow-arrow fade">→</div>
+        <div class="flow-step fade">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>提案・確認</h3>
+            <p>方向性を共有・合意。</p>
           </div>
-        </a>
-        <a class="sample-card" href="https://lp-demo-kaiwai.vercel.app" target="_blank" rel="noopener">
-          <div class="sample-img sample-img-01">
-            <span class="sample-tag">界隈グッズLP</span>
+        </div>
+        <div class="flow-arrow fade">→</div>
+        <div class="flow-step fade">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>制作</h3>
+            <p>Figma設計→実装→確認。</p>
           </div>
-          <div class="sample-info">
-            <h3>Meurtre en Rose</h3>
-            <p>地雷×天使モチーフの架空ブランドLP。世界観×構成設計。</p>
+        </div>
+        <div class="flow-arrow fade">→</div>
+        <div class="flow-step fade">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>納品</h3>
+            <p>URL or ファイル渡し。</p>
           </div>
-        </a>
-        <a class="sample-card" href="https://lp-cosme.vercel.app" target="_blank" rel="noopener">
-          <div class="sample-img sample-img-02">
-            <span class="sample-tag">コスメブランドLP</span>
-          </div>
-          <div class="sample-info">
-            <h3>Pétale</h3>
-            <p>界隈向けコスメLP。ライトテーマ×透明感×ローズ配色。</p>
-          </div>
-        </a>
-        <a class="sample-card" href="https://salon-demo-sizuku.vercel.app" target="_blank" rel="noopener">
-          <div class="sample-img sample-img-03">
-            <span class="sample-tag">エステサロンLP</span>
-          </div>
-          <div class="sample-info">
-            <h3>Lumière</h3>
-            <p>個人サロン向けLP。明朝体×余白で高級感を設計。</p>
-          </div>
-        </a>
+        </div>
       </div>
-      <div class="sample-more">
-        <a class="btn btn-secondary" href="https://portfolio-sizuku.vercel.app" target="_blank" rel="noopener">すべての制作物を見る</a>
-      </div>
+      <p class="flow-note fade">修正は1〜2往復以内を目安にしています。</p>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="contact section section-soft fade-in">
-    <div class="container narrow">
-      <p class="section-label">Contact</p>
-      <h2 class="section-heading">まずは相談ベースで大丈夫です</h2>
-      <p class="contact-text">
-        「こういうページを作りたい」<br />
-        「今ある情報を見やすく整理したい」<br />
-        そんな段階からでも大丈夫です。<br />
-        目的や見せ方を一緒に整理しながら、形にしていきます。
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-inner">
+      <h2 class="cta-title fade">まずはお気軽にご相談を</h2>
+      <p class="cta-body fade">
+        CrowdWorks / ランサーズ から依頼いただけます。<br>
+        ポートフォリオで実績をご確認ください。
       </p>
-      <div class="contact-note">
-        <span>通話なし・テキストベース</span>
-        <span>非同期OK</span>
-        <span>参考画像だけでもOK</span>
+      <div class="cta-btns fade">
+        <a href="https://portfolio-sizuku.vercel.app" target="_blank" class="btn-primary">ポートフォリオを見る</a>
+        <a href="https://crowdworks.jp" target="_blank" class="btn-ghost">CrowdWorks で依頼</a>
       </div>
-      <a class="btn btn-primary" href="https://portfolio-sizuku.vercel.app#contact" target="_blank" rel="noopener">相談する</a>
     </div>
   </section>
 
   <footer class="site-footer">
-    <div class="footer-inner">
-      <span class="footer-logo">しずく</span>
-      <p>© しずく — フリーランスデザイナー</p>
-    </div>
+    <p class="footer-copy">&copy; 2026 sizuku — <a href="https://portfolio-sizuku.vercel.app" target="_blank">portfolio</a></p>
   </footer>
 
   <script>
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('is-visible'); observer.unobserve(e.target) } }),
-      { threshold: 0.08 }
-    );
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+    const fadeEls = document.querySelectorAll('.fade');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
 
+    const header = document.querySelector('.site-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
 </body>
 </html>
