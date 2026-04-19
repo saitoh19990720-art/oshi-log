@@ -1,24 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=M+PLUS+Rounded+1c:wght@400;700&display=swap');
 
 :root {
+  /* Standard tokens */
   --bg: #faf7f9;
   --bg2: #f4eff3;
-  --surface: rgba(255,255,255,0.72);
-  --text: #2e2030;
-  --muted: #8a7090;
+  --surface: #FFFFFF;
+  --text: #4B5563;
+  --muted: #6B7280;
+  --border-std: #E5EDF5;
+  /* Cosme-specific */
   --rose: #c8789a;
   --rose-light: #e0a0be;
   --rose-pale: rgba(200,120,154,0.1);
-  --blue: #98c0d4;
-  --blue-pale: rgba(152,192,212,0.12);
+  --blue: #A9D6F5;
+  --blue-pale: rgba(169,214,245,0.1);
   --angel: #d4c8f0;
   --line: rgba(200,120,154,0.18);
-  --line2: rgba(152,192,212,0.25);
-  --shadow: 0 8px 32px rgba(200,120,154,0.1);
-  --glow: 0 0 32px rgba(200,120,154,0.18);
+  --line2: rgba(229,237,245,0.8);
+  --shadow: 0 4px 20px rgba(200,120,154,0.08);
+  --glow: 0 0 28px rgba(200,120,154,0.15);
   --radius: 16px;
   --font-display: 'Cormorant Garamond', serif;
-  --font-body: 'M PLUS Rounded 1c', sans-serif;
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
   --max: 1000px;
 }
 
