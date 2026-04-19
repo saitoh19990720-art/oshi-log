@@ -277,6 +277,16 @@
     </section>
   </main>
 
+  <script>
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+      { threshold: 0.08 }
+    );
+    document.querySelectorAll('.section, .lineup-card, .highlight-item, .ticket-card').forEach(el => {
+      el.classList.add('fade-in'); io.observe(el);
+    });
+  </script>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <p class="footer-logo">aqua festa 2026</p>
