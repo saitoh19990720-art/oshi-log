@@ -32,9 +32,10 @@ Figma設計からHTML/CSS実装まで一貫して制作しています。
 
 【確認できる実績】
 https://portfolio-sizuku.vercel.app
+https://lp-service-beta.vercel.app（サービス詳細ページ）
 https://lp-demo-kaiwai.vercel.app（地雷×天使系LPデモ）
 https://lp-mizuiro.vercel.app（水色界隈LPデモ）
-https://lp-cosme-ql3aunhe6-sizuku.vercel.app（界隈コスメブランドデモ）
+https://lp-cosme.vercel.app（界隈コスメブランドデモ）
 
 ---
 
