@@ -34,6 +34,7 @@ Figma設計 → HTML/CSS実装 → Vercel公開まで
 https://portfolio-sizuku.vercel.app
 https://lp-demo-kaiwai.vercel.app（地雷×天使系デモ）
 https://lp-cosme.vercel.app（界隈コスメブランドデモ）
+https://lp-mizuiro.vercel.app（水色界隈デジタルグッズデモ）
 
 ---
 
