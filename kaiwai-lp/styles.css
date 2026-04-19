@@ -316,3 +316,24 @@ section { position: relative; z-index: 1; }
   .hero { padding: 80px 24px; }
   .concept, .items, .worldview, .contact { padding-left: 24px; padding-right: 24px; }
 }
+
+/* ── Sticky Header ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,12,16,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--panel-border);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 900px; margin: 0 auto;
+  min-height: 56px; padding: 0 24px;
+}
+.header-logo {
+  font-family: "Raleway", sans-serif; font-size: .9rem;
+  letter-spacing: .15em; color: var(--pink);
+}
+.header-nav { display: flex; gap: 24px }
+.header-nav a { font-size: .82rem; color: var(--muted); transition: color .2s; letter-spacing: .08em }
+.header-nav a:hover { color: var(--pink) }
+@media(max-width:600px) { .header-nav { display: none } }
