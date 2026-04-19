@@ -19,7 +19,8 @@
 |---|---|
 | ポートフォリオ（母艦） | https://portfolio-sizuku.vercel.app |
 | サービス紹介LP | https://lp-service-sizuku.vercel.app |
-| 界隈系グッズLP | https://lp-demo-kaiwai.vercel.app |
+| YUME GRUNGE LP | https://kaiwai-lp.vercel.app |
+| Meurtre en Rose LP | https://lp-demo-kaiwai.vercel.app |
 | コスメLP | https://lp-cosme.vercel.app |
 | 水色界隈LP | https://lp-mizuiro.vercel.app |
 | Lumière LP | https://salon-demo-sizuku.vercel.app |
