@@ -18,11 +18,14 @@
 | 用途 | URL |
 |---|---|
 | ポートフォリオ（母艦） | https://portfolio-sizuku.vercel.app |
+| サービス紹介LP | https://lp-service-sizuku.vercel.app |
 | 界隈系グッズLP | https://lp-demo-kaiwai.vercel.app |
+| コスメLP | https://lp-cosme.vercel.app |
+| 水色界隈LP | https://lp-mizuiro.vercel.app |
+| Lumière LP | https://salon-demo-sizuku.vercel.app |
+| Stillwater LP | https://lp-demo-sizuku.vercel.app |
 | Ne Stopper | https://ne-stopper.vercel.app |
 | 押印（推し活ログ） | https://oshi-log-one.vercel.app |
-| Lumière LP デモ | https://salon-demo-sizuku.vercel.app |
-| Stillwater LP デモ | https://lp-demo-sizuku.vercel.app |
 | 似合いどころ診断 | https://diagnosis-sizuku.vercel.app |
 | バナーデモ | https://banner-demo-sizuku.vercel.app |
 | GitHub | https://github.com/saitoh19990720-art |
