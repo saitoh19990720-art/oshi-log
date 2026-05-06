@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>推しログカード A5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- 印刷時に隠れる操作バー -->
+<nav class="controls" aria-label="操作">
+  <fieldset class="theme-switch">
+    <legend>テーマ</legend>
+    <label><input type="radio" name="theme" value="mono"> mono</label>
+    <label><input type="radio" name="theme" value="soft" checked> soft</label>
+    <label><input type="radio" name="theme" value="deep"> deep</label>
+  </fieldset>
+  <button type="button" class="btn-print" onclick="window.print()">印刷 / PDF保存</button>
+</nav>
+
+<main class="oshi-log theme-soft" id="card">
+  <header class="card-head">
+    <h1>推しログ</h1>
+    <span class="brand-mark" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" />
+      </svg>
+    </span>
+  </header>
+
+  <section class="meta" aria-label="基本情報">
+    <label>日付<input name="date" type="date"></label>
+    <label>イベント<input name="event" type="text"></label>
+    <label>会場<input name="venue" type="text"></label>
+    <label>連番<input name="serial" type="text"></label>
+    <label>金額<input name="price" type="text" inputmode="numeric"></label>
+    <label>同行<input name="with" type="text"></label>
+  </section>
+
+  <section class="photos grid-4" aria-label="写真スロット">
+    <div class="photo-slot" data-slot="1" tabindex="0">
+      <button class="add-photo" type="button" aria-label="写真を追加 1">＋ Add photo</button>
+    </div>
+    <div class="photo-slot" data-slot="2" tabindex="0">
+      <button class="add-photo" type="button" aria-label="写真を追加 2">＋ Add photo</button>
+    </div>
+    <div class="photo-slot" data-slot="3" tabindex="0">
+      <button class="add-photo" type="button" aria-label="写真を追加 3">＋ Add photo</button>
+    </div>
+    <div class="photo-slot" data-slot="4" tabindex="0">
+      <button class="add-photo" type="button" aria-label="写真を追加 4">＋ Add photo</button>
+    </div>
+  </section>
+
+  <section class="tags" aria-label="タグ">
+    <button type="button">尊い</button>
+    <button type="button">初見</button>
+    <button type="button">神対応</button>
+    <button type="button">レア</button>
+    <button type="button">推し変</button>
+  </section>
+
+  <section class="memo">
+    <label>
+      メモ
+      <textarea rows="6" placeholder="その日の出来事・感情・印象的な一言…"></textarea>
+    </label>
+  </section>
+
+  <section class="stickers" aria-label="ステッカー貼り付け枠">
+    <div class="box"></div>
+    <div class="box"></div>
+  </section>
+
+  <footer class="index-back">
+    <small>裏表紙インデックス</small>
+    <ol>
+      <li>—</li><li>—</li><li>—</li><li>—</li>
+    </ol>
+  </footer>
+</main>
+
+<input type="file" id="photoPicker" accept="image/*" hidden />
+
+<script src="script.js"></script>
+</body>
+</html>

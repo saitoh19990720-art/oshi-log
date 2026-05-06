@@ -1,0 +1,224 @@
+/* === Theme variables === */
+:root {
+  --accent: #FF6B6B;
+  --grid: #F3D7DB;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+  --bg: #FFF5F7;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --muted: #6B7280;
+  --focus: #1D4ED8;
+}
+.theme-mono {
+  --accent: #111827;
+  --grid: #E5E7EB;
+  --bg: #FAFAFA;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --muted: #6B7280;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.05);
+}
+.theme-soft {
+  --accent: #FF6B6B;
+  --grid: #F3D7DB;
+  --bg: #FFF5F7;
+  --surface: #FFFFFF;
+  --text: #111827;
+  --muted: #6B7280;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.06);
+}
+.theme-deep {
+  --accent: #7B2CBF;
+  --grid: #2A2438;
+  --bg: #14101F;
+  --surface: #1F1A2E;
+  --text: #F5F3FA;
+  --muted: #A89DC4;
+  --shadow-sm: 0 4px 12px rgba(0,0,0,.4);
+}
+
+/* === Base === */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 13px/1.5 "Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* === Controls (印刷時に隠す) === */
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--grid);
+}
+.theme-switch { border: 0; padding: 0; margin: 0; }
+.theme-switch legend { font-size: 11px; color: var(--muted); }
+.theme-switch label { margin-right: 8px; font-size: 12px; cursor: pointer; }
+.btn-print {
+  margin-left: auto;
+  padding: 6px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* === Card === */
+.oshi-log {
+  width: 148mm;
+  min-height: 210mm;
+  margin: 16px auto;
+  padding: 11mm;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  gap: 4mm;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--grid);
+  padding-bottom: 3mm;
+}
+.card-head h1 {
+  font-size: 14pt;
+  margin: 0;
+  font-weight: 700;
+  color: var(--accent);
+}
+.brand-mark { color: var(--accent); display: inline-flex; }
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm 4mm;
+}
+.meta label {
+  display: grid;
+  grid-template-columns: 14mm 1fr;
+  align-items: center;
+  font-size: 9pt;
+  color: var(--muted);
+}
+.meta input {
+  border: 0;
+  border-bottom: 1px solid var(--grid);
+  background: transparent;
+  padding: 2px 4px;
+  font: inherit;
+  color: var(--text);
+}
+.meta input:focus { outline: none; border-bottom-color: var(--accent); }
+
+.photos.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2mm;
+}
+.photo-slot {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--bg);
+  border: 1px dashed var(--grid);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.photo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.add-photo {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 10pt;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tags button {
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 999px;
+  font-size: 9pt;
+  cursor: pointer;
+}
+.tags button:hover { background: var(--accent); color: #fff; }
+
+.memo label { display: block; font-size: 9pt; color: var(--muted); }
+.memo textarea {
+  width: 100%;
+  border: 1px solid var(--grid);
+  border-radius: 4px;
+  padding: 6px;
+  font: inherit;
+  background: transparent;
+  color: var(--text);
+  resize: vertical;
+}
+.memo textarea:focus { outline: none; border-color: var(--accent); }
+
+.stickers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4mm;
+}
+.stickers .box {
+  aspect-ratio: 2 / 1;
+  border: 1px dashed var(--grid);
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.02) 6px 12px);
+}
+
+.index-back {
+  margin-top: auto;
+  border-top: 1px solid var(--grid);
+  padding-top: 3mm;
+  font-size: 9pt;
+  color: var(--muted);
+}
+.index-back ol { margin: 2mm 0 0; padding-left: 16px; columns: 2; }
+
+/* === Print: A5 portrait, 10-12mm margin, 3mm bleed optional === */
+@page {
+  size: A5 portrait;
+  margin: 11mm;
+  /* bleed 3mmを使うなら印刷ダイアログで「拡大縮小なし」+ プリンタ設定で余白調整 */
+}
+@media print {
+  html, body { background: #fff; }
+  .controls { display: none !important; }
+  .oshi-log {
+    margin: 0;
+    box-shadow: none;
+    width: auto;
+    min-height: auto;
+    padding: 0;
+  }
+  .add-photo { display: none; }
+  .photo-slot:not(:has(img)) { background: transparent; }
+  .tags button { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
