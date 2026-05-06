@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>コマンド早見表</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>html,body,#root{margin:0;padding:0}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+const TOOLS = {
+  claudeCode: {
+    label: "Claude Code",
+    sub: "実装本体",
+    color: "#b8d4f0",
+    accent: "#2d6fa8",
+    dark: "#1a4a70",
+    note: "スラッシュコマンドが使える唯一のツール",
+    rows: [
+      { cmd: "/init",    use: "CLAUDE.md生成",   when: "新プロジェクト開始時" },
+      { cmd: "/clear",   use: "会話履歴リセット", when: "新タスク切り替え時" },
+      { cmd: "/compact", use: "コンテキスト圧縮", when: "会話が長くなったとき" },
+      { cmd: "/plan",    use: "設計・計画モード", when: "実装前・構造から考えたいとき" },
+      { cmd: "/rewind",  use: "直前操作を戻す",   when: "ミスしたとき" },
+    ],
+  },
+  figma: {
+    label: "Figma",
+    sub: "設計ハブ",
+    color: "#b8e8c4",
+    accent: "#2d7a45",
+    dark: "#1a4f2c",
+    note: "迷ったら ⌘K。これだけ覚えれば入口はOK",
+    rows: [
+      { cmd: "⌘K / ⌘P",     use: "アクション検索・AI・プラグイン", when: "★★★ 迷ったらまずここ" },
+      { cmd: "Shift + A",    use: "Auto Layout化",                  when: "★★★ UI制作の基礎" },
+      { cmd: "Shift + D",    use: "Dev Mode切替",                   when: "★★★ Claude Code連携前" },
+      { cmd: "⌘+Opt+K",     use: "Component作成",                  when: "★★ パーツ化するとき" },
+      { cmd: "⌘+Opt+G",     use: "Frame化",                        when: "★★ 要素をまとめるとき" },
+      { cmd: "Option+Drag",  use: "複製",                           when: "★★ UIパーツ量産" },
+      { cmd: "⌘+G",         use: "Group化",                        when: "★ 軽い整理" },
+    ],
+  },
+  chatgpt: {
+    label: "ChatGPT",
+    sub: "発想・画像",
+    color: "#ffd9b3",
+    accent: "#c45000",
+    dark: "#7a3200",
+    note: "スラッシュコマンドは存在しない。機能ベースで使う",
+    rows: [
+      { cmd: "画像生成",    use: "UI案・世界観・LPラフ",   when: "Figmaに渡す前" },
+      { cmd: "通常チャット", use: "深掘り・比較・構造整理", when: "アイデア出し" },
+      { cmd: "Web検索ON",  use: "一次情報検索",            when: "最新情報が必要なとき" },
+      { cmd: "Canvas",     use: "長文設計・整理",           when: "Obsidianに入れる前" },
+    ],
+  },
+};
+
+const LOOKUP = [
+  { want: "アイデア出したい",    tool: "ChatGPT",    how: "通常チャット",  tc: "#c45000" },
+  { want: "UI画像が欲しい",     tool: "ChatGPT",    how: "画像生成",      tc: "#c45000" },
+  { want: "Figmaで何かしたい",  tool: "Figma",      how: "⌘K で検索",    tc: "#2d7a45" },
+  { want: "実装したい",          tool: "Claude Code", how: "/plan → 実装", tc: "#2d6fa8" },
+  { want: "文章・設計書作りたい", tool: "Claude",     how: "そのまま投げる", tc: "#7b4fbf" },
+  { want: "コンテキスト詰まった", tool: "Claude Code", how: "/compact",    tc: "#2d6fa8" },
+  { want: "新タスクに切り替え",  tool: "Claude Code", how: "/clear",       tc: "#2d6fa8" },
+  { want: "構造から考えたい",    tool: "Claude Code", how: "/plan",        tc: "#2d6fa8" },
+];
+
+function App() {
+  const [view, setView] = useState("claudeCode");
+  const isLookup = view === "lookup";
+  const current = TOOLS[view];
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#f0ede8",
+      fontFamily: "'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif",
+      padding: "20px 14px 40px",
+    }}>
+      <div style={{ maxWidth: 580, margin: "0 auto" }}>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 10, color: "#aaa", letterSpacing: "0.1em", marginBottom: 3 }}>
+            AIコマンドリファレンス — 実在コマンドのみ
+          </div>
+          <div style={{ fontSize: 19, fontWeight: 800, color: "#1a1a1a" }}>
+            コマンド早見表 🩵
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 7, marginBottom: 18, flexWrap: "wrap" }}>
+          {Object.entries(TOOLS).map(([key, t]) => {
+            const active = view === key && !isLookup;
+            return (
+              <button key={key} onClick={() => setView(key)} style={{
+                padding: "6px 13px",
+                borderRadius: 20,
+                border: active ? `2px solid ${t.accent}` : "2px solid #d8d4ce",
+                background: active ? t.color : "#faf8f5",
+                color: active ? t.dark : "#888",
+                fontWeight: active ? 700 : 400,
+                fontSize: 12,
+                cursor: "pointer",
+                transition: "all 0.12s",
+              }}>
+                {t.label}
+                <span style={{ fontSize: 10, marginLeft: 4, opacity: 0.7 }}>{t.sub}</span>
+              </button>
+            );
+          })}
+          <button onClick={() => setView("lookup")} style={{
+            padding: "6px 13px",
+            borderRadius: 20,
+            border: isLookup ? "2px solid #7b4fbf" : "2px solid #d8d4ce",
+            background: isLookup ? "#ede0ff" : "#faf8f5",
+            color: isLookup ? "#5a2d9a" : "#888",
+            fontWeight: isLookup ? 700 : 400,
+            fontSize: 12,
+            cursor: "pointer",
+          }}>
+            🔍 わからんw逆引き
+          </button>
+        </div>
+
+        {isLookup && (
+          <div style={{ background: "#fff", borderRadius: 14, padding: "18px 16px", boxShadow: "0 2px 14px rgba(0,0,0,0.07)" }}>
+            <div style={{ fontSize: 11, color: "#5a2d9a", fontWeight: 700, marginBottom: 14, letterSpacing: "0.04em" }}>
+              やりたいことが先、コマンドは後でいい
+            </div>
+            {LOOKUP.map((row, i) => (
+              <div key={i} style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "9px 0",
+                borderBottom: i < LOOKUP.length - 1 ? "1px solid #f2f0ec" : "none",
+              }}>
+                <span style={{ flex: "0 0 160px", fontSize: 13, color: "#333" }}>{row.want}</span>
+                <span style={{
+                  fontSize: 10, padding: "2px 9px", borderRadius: 10,
+                  background: row.tc + "18", color: row.tc,
+                  fontWeight: 700, whiteSpace: "nowrap",
+                }}>{row.tool}</span>
+                <code style={{
+                  flex: 1, fontSize: 12, background: "#f5f3f0",
+                  color: "#2a2a2a", padding: "3px 10px", borderRadius: 6,
+                  whiteSpace: "nowrap",
+                }}>{row.how}</code>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!isLookup && current && (
+          <div style={{ background: "#fff", borderRadius: 14, padding: "18px 16px", boxShadow: "0 2px 14px rgba(0,0,0,0.07)" }}>
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: current.dark }}>{current.label}</div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 2 }}>{current.note}</div>
+            </div>
+
+            <div style={{ display: "flex", gap: 8, marginBottom: 6, paddingBottom: 6, borderBottom: "1px solid #f0ede8" }}>
+              <span style={{ flex: "0 0 130px", fontSize: 10, color: "#bbb", fontWeight: 600, letterSpacing: "0.06em" }}>コマンド</span>
+              <span style={{ flex: 1.4, fontSize: 10, color: "#bbb", fontWeight: 600, letterSpacing: "0.06em" }}>用途</span>
+              <span style={{ flex: 1.6, fontSize: 10, color: "#bbb", fontWeight: 600, letterSpacing: "0.06em" }}>タイミング</span>
+            </div>
+
+            {current.rows.map((row, i) => (
+              <div key={i} style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 8,
+                padding: "10px 0",
+                borderBottom: i < current.rows.length - 1 ? "1px solid #f5f3f0" : "none",
+              }}>
+                <code style={{
+                  flex: "0 0 130px", fontSize: 12, fontWeight: 700,
+                  color: current.accent,
+                  background: current.color + "66",
+                  padding: "3px 9px", borderRadius: 6,
+                  whiteSpace: "nowrap",
+                }}>{row.cmd}</code>
+                <span style={{ flex: 1.4, fontSize: 12, color: "#333", lineHeight: 1.5 }}>{row.use}</span>
+                <span style={{ flex: 1.6, fontSize: 11, color: "#888", lineHeight: 1.5 }}>{row.when}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{ fontSize: 10, color: "#bbb", textAlign: "center", marginTop: 18 }}>
+          Codexは実運用入り次第追記 · 見直し条件: ツール構成変更 or 新コマンド確認時
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
