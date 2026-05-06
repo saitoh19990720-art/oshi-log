@@ -1,0 +1,24 @@
+{
+  "Title": {
+    "title": [
+      { "text": { "content": "={{$json[\"notion\"][\"title\"]}}" } }
+    ]
+  },
+  "Source": {
+    "select": { "name": "={{$json[\"notion\"][\"source\"] || \"Unknown\"}}" }
+  },
+  "Author": {
+    "rich_text": [
+      { "text": { "content": "={{$json[\"notion\"][\"author\"]}}" } }
+    ]
+  },
+  "Posted": {
+    "date": { "start": "={{$json[\"notion\"][\"posted\"]}}" }
+  },
+  "URL": {
+    "url": "={{$json[\"notion\"][\"url\"]}}"
+  },
+  "Tags": {
+    "multi_select": "={{$json[\"notion\"][\"tags\"].map(t=>({name:t}))}}"
+  }
+}
