@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shizuku.dev/schemas/publish-request.json",
+  "title": "PublishRequest",
+  "description": "Safe-publish payload. Anything that costs money or changes visibility must satisfy this schema before reaching production.",
+  "type": "object",
+  "required": ["run_id", "session_id", "confirm_required", "diff_hash", "asset_manifest", "resume_url", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "description": "Immutable per-run id. Survives session restarts.",
+      "type": "string",
+      "format": "uuid"
+    },
+    "session_id": {
+      "description": "Agent session id. May change across resumes.",
+      "type": "string",
+      "minLength": 1
+    },
+    "confirm_required": {
+      "description": "Must be true at draft time. Server flips it to false only after human approval + signature.",
+      "type": "boolean"
+    },
+    "diff_hash": {
+      "description": "sha256 of the packaged diff. Must match server-side recompute.",
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{8,64}$"
+    },
+    "asset_manifest": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Asset" }
+    },
+    "notes": { "type": "string", "maxLength": 2000 },
+    "resume_url": { "type": "string", "format": "uri" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "signature": {
+      "description": "HMAC over the canonical payload. Required when confirm_required=false.",
+      "type": "string",
+      "minLength": 16
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "confirm_required": { "const": false } }, "required": ["confirm_required"] },
+      "then": { "required": ["signature"] }
+    }
+  ],
+  "$defs": {
+    "Asset": {
+      "type": "object",
+      "required": ["asset_id", "action", "price_jpy", "visibility", "files"],
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": { "type": "string", "minLength": 1 },
+        "action": { "enum": ["create", "update", "delete"] },
+        "version_from": { "type": "string" },
+        "version_to": { "type": "string" },
+        "price_jpy": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "visibility": { "enum": ["listed", "unlisted", "private"] },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["path", "checksum"],
+            "additionalProperties": false,
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "checksum": { "type": "string", "pattern": "^sha256:[0-9a-f]{8,64}$" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

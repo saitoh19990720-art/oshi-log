@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>Oshi-Log Generator</title>
+<style>
+  :root { font-family: -apple-system, "Helvetica Neue", "Hiragino Sans", sans-serif; font-size: 13px; }
+  body { margin: 0; padding: 16px; color: #222; }
+  h1 { font-size: 14px; margin: 0 0 12px; }
+  section { margin-bottom: 12px; }
+  label { display: block; font-weight: 600; margin: 6px 0 4px; }
+  input, select { width: 100%; box-sizing: border-box; padding: 6px 8px; border: 1px solid #d0d0d0; border-radius: 6px; font-size: 13px; }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; }
+  .palette { display: flex; gap: 6px; }
+  .swatch { width: 100%; aspect-ratio: 1 / 1; border-radius: 6px; border: 1px solid #d0d0d0; }
+  .actions { display: flex; gap: 8px; margin-top: 16px; }
+  button { flex: 1; padding: 8px 12px; border-radius: 6px; border: 0; cursor: pointer; font-weight: 600; }
+  .primary { background: #18a0fb; color: white; }
+  .ghost { background: #f0f0f0; color: #222; }
+  .preset-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .preset-chip { padding: 4px 8px; border-radius: 999px; border: 1px solid #d0d0d0; cursor: pointer; font-size: 12px; }
+  .preset-chip.active { background: #18a0fb; color: white; border-color: #18a0fb; }
+  .hint { font-size: 11px; color: #888; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <h1>Oshi-Log Template Generator</h1>
+
+  <section>
+    <label>プリセット</label>
+    <div class="preset-list" id="presets"></div>
+    <div class="hint">プリセットJSON（presets/oshi.json）を読み込んだ状態</div>
+  </section>
+
+  <section>
+    <label>推し名</label>
+    <input id="name" placeholder="—" />
+  </section>
+
+  <section class="row">
+    <div>
+      <label>生誕日</label>
+      <input id="birthday" placeholder="YYYY-MM-DD" />
+    </div>
+    <div>
+      <label>tone</label>
+      <select id="tone">
+        <option>ふんわり</option>
+        <option>毒舌</option>
+        <option>淡々</option>
+      </select>
+    </div>
+  </section>
+
+  <section>
+    <label>tags（スペース区切り）</label>
+    <input id="tags" placeholder="#箱 #生誕2026" />
+  </section>
+
+  <section>
+    <label>palette（背景 / 見出し / アクセント）</label>
+    <div class="row">
+      <input id="c0" value="#F6C1D1" />
+      <input id="c1" value="#FFE6EE" />
+      <input id="c2" value="#A85C7C" />
+    </div>
+    <div class="palette" style="margin-top: 6px;">
+      <div class="swatch" id="s0"></div>
+      <div class="swatch" id="s1"></div>
+      <div class="swatch" id="s2"></div>
+    </div>
+  </section>
+
+  <section class="row">
+    <div>
+      <label>exportProfile</label>
+      <select id="exportProfile">
+        <option>A5</option>
+        <option>GoodNotes</option>
+        <option>BOOTH</option>
+      </select>
+    </div>
+    <div>
+      <label>variants</label>
+      <input id="variants" type="number" min="1" max="5" value="3" />
+    </div>
+  </section>
+
+  <div class="actions">
+    <button class="ghost" id="cancel">Cancel</button>
+    <button class="primary" id="run">Generate</button>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const PRESETS = [
+    { id: "default_pink", label: "ピンク", name: "—", birthday: "—", palette: ["#F6C1D1","#FFE6EE","#A85C7C"], tone: "ふんわり", tags: ["#おたく記録"], exportProfile: "A5" },
+    { id: "sky_blue", label: "スカイ", name: "—", birthday: "—", palette: ["#CFE6FB","#E8F2FB","#3D6FA7"], tone: "淡々", tags: ["#現場記録"], exportProfile: "GoodNotes" },
+    { id: "mono_acid", label: "毒舌モノクロ", name: "—", birthday: "—", palette: ["#1F1F1F","#3A3A3A","#F2E94E"], tone: "毒舌", tags: ["#解像度"], exportProfile: "BOOTH" }
+  ];
+
+  function applyPreset(p) {
+    $("name").value = p.name;
+    $("birthday").value = p.birthday;
+    $("tone").value = p.tone;
+    $("tags").value = p.tags.join(" ");
+    $("c0").value = p.palette[0];
+    $("c1").value = p.palette[1];
+    $("c2").value = p.palette[2];
+    $("exportProfile").value = p.exportProfile;
+    refreshSwatches();
+    document.querySelectorAll(".preset-chip").forEach((el) => el.classList.toggle("active", el.dataset.id === p.id));
+  }
+
+  function refreshSwatches() {
+    $("s0").style.background = $("c0").value;
+    $("s1").style.background = $("c1").value;
+    $("s2").style.background = $("c2").value;
+  }
+
+  function renderPresets() {
+    const root = $("presets");
+    root.innerHTML = "";
+    for (const p of PRESETS) {
+      const el = document.createElement("div");
+      el.className = "preset-chip";
+      el.dataset.id = p.id;
+      el.textContent = p.label;
+      el.onclick = () => applyPreset(p);
+      root.appendChild(el);
+    }
+    applyPreset(PRESETS[0]);
+  }
+
+  ["c0","c1","c2"].forEach((id) => $(id).addEventListener("input", refreshSwatches));
+
+  $("cancel").onclick = () => parent.postMessage({ pluginMessage: { type: "cancel" } }, "*");
+  $("run").onclick = () => {
+    const preset = {
+      id: "ui",
+      label: "ui",
+      name: $("name").value,
+      birthday: $("birthday").value,
+      palette: [$("c0").value, $("c1").value, $("c2").value],
+      tone: $("tone").value,
+      tags: $("tags").value.split(/\s+/).filter(Boolean),
+      exportProfile: $("exportProfile").value
+    };
+    const variants = parseInt($("variants").value, 10) || 1;
+    parent.postMessage({ pluginMessage: { type: "generate", preset, variants } }, "*");
+  };
+
+  renderPresets();
+</script>
+</body>
+</html>
