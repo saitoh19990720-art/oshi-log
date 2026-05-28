@@ -1,0 +1,42 @@
+name: publish-guard
+
+on:
+  pull_request:
+    paths:
+      - "publish/**"
+  push:
+    branches: [main]
+    paths:
+      - "publish/**"
+  workflow_dispatch:
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+
+      - name: Validate valid sample
+        run: node publish/validate.mjs publish/sample.json
+
+      - name: Validate invalid sample must fail
+        run: |
+          if node publish/validate.mjs publish/sample.invalid.json; then
+            echo "::error::sample.invalid.json was accepted but should have failed"
+            exit 1
+          else
+            echo "ok: invalid sample was correctly rejected"
+          fi
+
+      - name: Validate every publish/payloads/*.json (if any)
+        run: |
+          shopt -s nullglob
+          fail=0
+          for f in publish/payloads/*.json; do
+            echo "::group::$f"
+            node publish/validate.mjs "$f" || fail=1
+            echo "::endgroup::"
+          done
+          exit $fail

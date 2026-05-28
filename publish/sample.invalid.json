@@ -1,0 +1,17 @@
+{
+  "run_id": "b8e0a9b4-2d6a-45a2-9b68-7d4f2f2f1b10",
+  "session_id": "agent-ctx-bad",
+  "confirm_required": false,
+  "diff_hash": "not-a-hash",
+  "asset_manifest": [
+    {
+      "asset_id": "figma-kit:landing-v3",
+      "action": "update",
+      "price_jpy": -100,
+      "visibility": "public",
+      "files": []
+    }
+  ],
+  "resume_url": "not-a-url",
+  "created_at": "yesterday"
+}

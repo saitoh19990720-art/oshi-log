@@ -1,0 +1,23 @@
+{
+  "run_id": "b8e0a9b4-2d6a-45a2-9b68-7d4f2f2f1b10",
+  "session_id": "agent-ctx-20260511-1130",
+  "confirm_required": true,
+  "diff_hash": "sha256:9b3d4f2a1c0e5b6d7f8a9b0c1d2e3f405162738495a6b7c8d9e0f1a2b3c4d5e1",
+  "asset_manifest": [
+    {
+      "asset_id": "figma-kit:landing-v3",
+      "action": "update",
+      "version_from": "2.4.1",
+      "version_to": "2.5.0",
+      "price_jpy": 2800,
+      "visibility": "listed",
+      "files": [
+        { "path": "figma/landing-v3.fig", "checksum": "sha256:ab12ff34cd56ef78901234567890abcdef1234567890abcdef1234567890abff" },
+        { "path": "docs/changelog.md", "checksum": "sha256:09cd42aabbccddeeff00112233445566778899aabbccddeeff0011223344556" }
+      ]
+    }
+  ],
+  "notes": "CTA配色調整・ヒーロー画像差し替え",
+  "resume_url": "https://review.example.com/publish?run=b8e0a9b4",
+  "created_at": "2026-05-11T10:22:00Z"
+}

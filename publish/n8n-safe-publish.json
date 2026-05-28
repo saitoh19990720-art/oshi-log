@@ -1,0 +1,130 @@
+{
+  "name": "safe-publish (draft → human approval → publish)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "publish-request",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook (publish request)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [240, 320]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"accepted\": true, \"run_id\": $json.body.run_id}",
+        "options": { "responseCode": 202 }
+      },
+      "id": "2",
+      "name": "Respond 202",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [460, 320]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const crypto = require('crypto');\nconst body = $json.body;\nconst signature = $json.headers?.['x-signature'];\nconst secret = $env.N8N_HMAC_SECRET;\nconst calc = crypto.createHmac('sha256', secret).update(JSON.stringify(body)).digest('hex');\nif (!signature || signature !== calc) {\n  throw new Error('Invalid HMAC signature');\n}\nbody.idempotency_key = crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex');\nbody.resume_token = crypto.randomBytes(16).toString('hex');\nreturn [{ json: body }];"
+      },
+      "id": "3",
+      "name": "Verify HMAC + tokens",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 320]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.MARKETPLACE_API}}/drafts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Idempotency-Key", "value": "={{$json.idempotency_key}}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "4",
+      "name": "Create Draft",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 320]
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": "={{$env.NOTION_DB_PUBLISH}}",
+        "propertiesUi": {
+          "propertyValues": [
+            { "key": "Title", "title": "=publish: {{$json.asset_manifest[0].asset_id}}" },
+            { "key": "Status", "selectValue": "draft" },
+            { "key": "run_id", "richTextValue": "={{$json.run_id}}" },
+            { "key": "resume_url", "urlValue": "={{$execution.resumeUrl}}?t={{$json.resume_token}}" }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "Notion archive row",
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [1120, 320]
+    },
+    {
+      "parameters": { "resume": "webhook" },
+      "id": "6",
+      "name": "Wait for human approval",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1340, 320],
+      "webhookId": "approval-resume"
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const incomingToken = $json.query?.t;\nconst stored = $('Verify HMAC + tokens').first().json.resume_token;\nif (!incomingToken || incomingToken !== stored) {\n  throw new Error('Invalid or expired resume token');\n}\nconst body = $('Verify HMAC + tokens').first().json;\nbody.confirm_required = false;\nreturn [{ json: body }];"
+      },
+      "id": "7",
+      "name": "Verify resume token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 320]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.MARKETPLACE_API}}/publish",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Idempotency-Key", "value": "={{$json.idempotency_key}}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "8",
+      "name": "Final Publish",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 320]
+    }
+  ],
+  "connections": {
+    "Webhook (publish request)": { "main": [[{ "node": "Respond 202", "type": "main", "index": 0 }, { "node": "Verify HMAC + tokens", "type": "main", "index": 0 }]] },
+    "Verify HMAC + tokens": { "main": [[{ "node": "Create Draft", "type": "main", "index": 0 }]] },
+    "Create Draft": { "main": [[{ "node": "Notion archive row", "type": "main", "index": 0 }]] },
+    "Notion archive row": { "main": [[{ "node": "Wait for human approval", "type": "main", "index": 0 }]] },
+    "Wait for human approval": { "main": [[{ "node": "Verify resume token", "type": "main", "index": 0 }]] },
+    "Verify resume token": { "main": [[{ "node": "Final Publish", "type": "main", "index": 0 }]] }
+  }
+}

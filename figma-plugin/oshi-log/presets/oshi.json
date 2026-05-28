@@ -1,0 +1,32 @@
+[
+  {
+    "id": "default_pink",
+    "label": "ピンク",
+    "name": "—",
+    "birthday": "—",
+    "palette": ["#F6C1D1", "#FFE6EE", "#A85C7C"],
+    "tone": "ふんわり",
+    "tags": ["#おたく記録"],
+    "exportProfile": "A5"
+  },
+  {
+    "id": "sky_blue",
+    "label": "スカイ",
+    "name": "—",
+    "birthday": "—",
+    "palette": ["#CFE6FB", "#E8F2FB", "#3D6FA7"],
+    "tone": "淡々",
+    "tags": ["#現場記録"],
+    "exportProfile": "GoodNotes"
+  },
+  {
+    "id": "mono_acid",
+    "label": "毒舌モノクロ",
+    "name": "—",
+    "birthday": "—",
+    "palette": ["#1F1F1F", "#3A3A3A", "#F2E94E"],
+    "tone": "毒舌",
+    "tags": ["#解像度"],
+    "exportProfile": "BOOTH"
+  }
+]
