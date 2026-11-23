@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ne Stopper</title>
+<script>
+/* 初回描画前にテーマを決める（ちらつき防止）。初期はダーク、切り替えた設定は localStorage に保持 */
+(function () {
+  var t = null;
+  try { t = localStorage.getItem('ne_stopper_theme'); } catch (e) {}
+  document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark';
+})();
+</script>
 <!-- APIキーは環境変数で管理。開発時はここに直書きしてもOK（gitにpushしないこと） -->
 <!-- <meta name="api-key" content="sk-ant-..."> -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
@@ -24,9 +32,33 @@
   --warn: #ffb84d;
   --danger: #ff6b6b;
   --green: #7dff9e;
+  --green-bg: rgba(125,255,158,0.06);
   --mono: 'DM Mono', monospace;
   --serif: 'Shippori Mincho', serif;
 }
+
+/* 昼用ライト：オフホワイト＋青灰。文字は背景に対して 4.5:1 以上 */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f4ef;
+  --surface: #fcfbf8;
+  --surface2: #efede7;
+  --border: rgba(38,52,72,0.10);
+  --border2: rgba(38,52,72,0.22);
+  --text: #1f2630;
+  --text2: #4a5462;
+  --text3: #5c6573;
+  --accent: #3d5675;
+  --accent-bg: rgba(61,86,117,0.12);
+  --accent-border: rgba(61,86,117,0.40);
+  --warn: #9a5500;
+  --danger: #b3261e;
+  --green: #1d6e3a;
+  --green-bg: rgba(29,110,58,0.08);
+}
+:root[data-theme="dark"] { color-scheme: dark; }
+/* ライトでは選択中フェーズを色だけに頼らず、下線と太さでも示す */
+:root[data-theme="light"] .phase.active { box-shadow: inset 0 -2px 0 var(--accent); font-weight: 500; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -59,6 +91,11 @@ body {
   font-size: 11px; color: var(--text3);
   letter-spacing: 0.08em; text-transform: uppercase;
 }
+.theme-toggle {
+  margin-left: auto; align-self: center; flex-shrink: 0;
+  height: 32px; padding: 0 12px; font-size: 11px;
+}
+.theme-toggle[aria-pressed="true"] { background: var(--accent-bg); border-color: var(--accent-border); color: var(--accent); }
 
 /* ===== フェーズバー ===== */
 .phases {
@@ -215,7 +252,7 @@ body {
   font-family: var(--mono); font-size: 13px; cursor: pointer; transition: all 0.15s;
 }
 .decide-btn:hover,
-.decide-btn.decided { border-color: var(--green); color: var(--green); background: rgba(125,255,158,0.06); }
+.decide-btn.decided { border-color: var(--green); color: var(--green); background: var(--green-bg); }
 .result-display { font-size: 13px; color: var(--text3); font-family: var(--serif); min-height: 20px; }
 </style>
 </head>
@@ -225,6 +262,7 @@ body {
   <div class="header">
     <span class="header-title">Ne Stopper</span>
     <span class="header-sub">INTP / INFP / ENTP / ENFP — 話を着地させる</span>
+    <button class="btn theme-toggle" id="theme-toggle" type="button" onclick="toggleTheme()" aria-pressed="false" aria-label="昼用ライトテーマ">ライト</button>
   </div>
 
   <!-- フェーズバー -->
@@ -342,6 +380,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ai-ready').style.display = 'block';
   }
 });
+
+/* ===== テーマ（見た目だけ切り替え。進行中の状態には触れない） ===== */
+function applyThemeButton() {
+  const light = document.documentElement.dataset.theme === 'light';
+  const b = document.getElementById('theme-toggle');
+  b.setAttribute('aria-pressed', String(light));
+}
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('ne_stopper_theme', next); } catch (e) {}
+  applyThemeButton();
+}
+document.addEventListener('DOMContentLoaded', applyThemeButton);
 
 /* ===== フェーズ ===== */
 function setPhase(idx, el) {
