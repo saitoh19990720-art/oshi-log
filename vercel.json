@@ -15,5 +15,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://saitoh19990720-art.github.io/works/",
+      "permanent": false
+    }
   ]
 }
